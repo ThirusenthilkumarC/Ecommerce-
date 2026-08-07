@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Product
 
 
@@ -23,10 +23,11 @@ def contact(request):
 
 
 def products(request):
-    data = Product.objects.all()
+
+    products = Product.objects.all()
 
     return render(request, "products.html", {
-        "products": data
+        "products": products
     })
 
 
@@ -34,18 +35,20 @@ def add_product(request):
 
     if request.method == "POST":
 
-        name = request.POST.get("name")
-        price = request.POST.get("price")
-        description = request.POST.get("description")
-        image = request.FILES.get("image")
-        status = request.POST.get("status")
-
         Product.objects.create(
-            name=name,
-            price=price,
-            description=description,
-            image=image,
-            status=status
+
+            name=request.POST.get("name"),
+
+            price=request.POST.get("price"),
+
+            description=request.POST.get("description"),
+
+            image=request.FILES.get("image"),
+
+            status=request.POST.get("status")
+
         )
+
+        return redirect("products")
 
     return render(request, "add_product.html")

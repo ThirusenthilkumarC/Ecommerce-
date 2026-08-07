@@ -1,34 +1,76 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Product</title>
-</head>
-<body>
+{% extends 'masterpage.html' %}
 
-<h2>Add Product</h2>
+{% block title %}
+Add Product
+{% endblock %}
 
-<form method="POST" enctype="multipart/form-data">
+{% block content %}
 
-{% csrf_token %}
+<div class="container">
 
-<input type="text" name="name" placeholder="Name"><br><br>
+    <h1 align="center">Add Product</h1>
+<form method="POST" enctype="multipart/form-data" onsubmit="return confirmSave()"></form>
+ 
 
-<input type="number" name="price" placeholder="Price"><br><br>
+        {% csrf_token %}
 
-<textarea name="description"></textarea><br><br>
+        <label>Product Name</label>
 
-<input type="file" name="image"><br><br>
+        <input type="text"
+               name="name"
+               required>
 
-<select name="status">
-    <option>Available</option>
-    <option>Out of Stock</option>
-</select>
+        <br><br>
 
-<br><br>
+        <label>Price</label>
 
-<button type="submit">Save</button>
+        <input type="number"
+               name="price"
+               step="0.01"
+               required>
 
-</form>
+        <br><br>
 
-</body>
-</html>
+        <label>Description</label>
+
+        <textarea
+            name="description"
+            rows="5"
+            required></textarea>
+
+        <br><br>
+
+        <label>Image</label>
+
+        <input type="file"
+               name="image">
+
+        <br><br>
+
+        <label>Status</label>
+
+        <select name="status">
+
+            <option value="Available">
+                Available
+            </option>
+
+            <option value="Out of Stock">
+                Out of Stock
+            </option>
+
+        </select>
+
+        <br><br>
+
+        <button type="submit">
+
+            Save Product
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

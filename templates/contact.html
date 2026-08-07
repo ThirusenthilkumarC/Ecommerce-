@@ -1,24 +1,47 @@
 {% extends 'masterpage.html' %}
 
-{% block title %}Contact{% endblock %}
+{% block title %}
+Contact
+{% endblock %}
 
 {% block content %}
 
-<h2>Contact Us</h2>
+<div class="container">
 
-<form>
+    <h1>Contact Us</h1>
 
-<label>Name</label><br>
-<input type="text"><br><br>
+    <form>
 
-<label>Email</label><br>
-<input type="email"><br><br>
+        <label>Name</label>
 
-<label>Message</label><br>
-<textarea rows="5"></textarea><br><br>
+        <input
+            type="text"
+            placeholder="Enter your name">
 
-<button>Send</button>
+        <label>Email</label>
 
-</form>
+        <input
+            type="email"
+            placeholder="Enter your email">
+
+        <label>Subject</label>
+
+        <input
+            type="text"
+            placeholder="Enter subject">
+
+        <label>Message</label>
+
+        <textarea
+            rows="6"
+            placeholder="Enter your message"></textarea>
+
+        <button type="submit">
+            Send Message
+        </button>
+
+    </form>
+
+</div>
 
 {% endblock %}

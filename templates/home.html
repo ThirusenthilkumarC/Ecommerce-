@@ -1,10 +1,94 @@
 {% extends 'masterpage.html' %}
 
-{% block title %}Home{% endblock %}
+{% load static %}
+
+{% block title %}
+Home
+{% endblock %}
+
 
 {% block content %}
 
-<h2>Welcome to Ecommerce</h2>
-<p>Shop the latest products, manage inventory, and grow your business.</p>
+<section class="hero">
+
+    <div class="hero-left">
+
+        <h1>
+
+            Welcome to Our
+            <span>E-Commerce Store</span>
+
+        </h1>
+
+        <p>
+
+            Shop the latest products at the best prices.
+            Add, Manage and Explore products easily.
+
+        </p>
+
+        <a href="/products/">
+
+            <button>
+
+                Shop Now
+
+            </button>
+
+        </a>
+
+    </div>
+
+    <div class="hero-right">
+
+        <img src="{% static 'images/hero.png' %}" width="500">
+
+    </div>
+
+</section>
+
+<section>
+
+    <h2 align="center">
+
+        Why Choose Us?
+
+    </h2>
+
+    <br>
+
+    <table width="100%">
+
+        <tr align="center">
+
+            <td>
+
+                <h3>🚚 Fast Delivery</h3>
+
+                <p>Quick Shipping Across India</p>
+
+            </td>
+
+            <td>
+
+                <h3>💳 Secure Payment</h3>
+
+                <p>100% Safe Transactions</p>
+
+            </td>
+
+            <td>
+
+                <h3>⭐ Best Quality</h3>
+
+                <p>Premium Products</p>
+
+            </td>
+
+        </tr>
+
+    </table>
+
+</section>
 
 {% endblock %}

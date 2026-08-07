@@ -3,7 +3,7 @@ from django.db import models
 
 class Product(models.Model):
 
-    STATUS = [
+    STATUS_CHOICES = [
         ("Available", "Available"),
         ("Out of Stock", "Out of Stock"),
     ]
@@ -22,16 +22,29 @@ class Product(models.Model):
     )
 
     image = models.ImageField(
-        upload_to="uploads/",
+        upload_to="products/",
         blank=True,
         null=True
     )
 
     status = models.CharField(
         max_length=20,
-        choices=STATUS,
+        choices=STATUS_CHOICES,
         default="Available"
     )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    class Meta:
+        ordering = ["-id"]
+        verbose_name = "Product"
+        verbose_name_plural = "Products"
 
     def __str__(self):
         return self.name

@@ -1,53 +1,72 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Products</title>
-</head>
-<body>
+{% extends 'masterpage.html' %}
 
-<a href="/">Home</a> |
-<a href="/login/">Login</a> |
-<a href="/dashboard/">Dashboard</a> |
-<a href="/about/">About</a> |
-<a href="/contact/">Contact</a> |
-<a href="/products/">Products</a> |
-<a href="/add-product/">Add Product</a>
+{% block title %}
+Products
+{% endblock %}
 
-<h2>Product List</h2>
+{% block content %}
 
-<table border="1" cellpadding="10">
+<div class="container">
 
-<tr>
-    <th>Name</th>
-    <th>Price</th>
-    <th>Description</th>
-    <th>Image</th>
-    <th>Status</th>
-</tr>
+    <h1 align="center">Product List</h1>
 
-{% for p in products %}
+    <br>
 
-<tr>
+    <table border="1" width="100%" cellpadding="10">
 
-<td>{{ p.name }}</td>
-<td>{{ p.price }}</td>
-<td>{{ p.description }}</td>
+        <tr bgcolor="#343a40" style="color:white;">
 
-<td>
+            <th>ID</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Status</th>
 
-{% if p.image %}
-<img src="{{ p.image.url }}" width="100">
-{% endif %}
+        </tr>
 
-</td>
+        {% for product in products %}
 
-<td>{{ p.status }}</td>
+        <tr>
 
-</tr>
+            <td>{{ product.id }}</td>
 
-{% endfor %}
+            <td>
 
-</table>
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" width="80">
+                {% else %}
+                    No Image
+                {% endif %}
 
-</body>
-</html>
+            </td>
+
+            <td>{{ product.name }}</td>
+
+            <td>₹ {{ product.price }}</td>
+
+            <td>{{ product.description }}</td>
+
+            <td>{{ product.status }}</td>
+
+        </tr>
+
+        {% empty %}
+
+        <tr>
+
+            <td colspan="6" align="center">
+
+                No Products Found
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+{% endblock %}

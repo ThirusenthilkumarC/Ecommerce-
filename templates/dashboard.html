@@ -1,11 +1,74 @@
 {% extends 'masterpage.html' %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}
+Dashboard
+{% endblock %}
 
 {% block content %}
 
-<h2>Dashboard</h2>
+<div class="container">
 
-<p>Welcome to Ecommerce Dashboard</p>
+    <h1 align="center">
+
+        Dashboard
+
+    </h1>
+
+    <br>
+
+    <table
+        border="1"
+        width="100%"
+        cellpadding="15">
+
+        <tr>
+
+            <th>Total Products</th>
+
+            <th>Available</th>
+
+            <th>Out of Stock</th>
+
+        </tr>
+
+        <tr>
+
+            <td align="center">
+
+                {{ products|length }}
+
+            </td>
+
+            <td align="center">
+
+                --
+
+            </td>
+
+            <td align="center">
+
+                --
+
+            </td>
+
+        </tr>
+
+    </table>
+
+    <br>
+
+    <h3>
+
+        Welcome to Admin Dashboard
+
+    </h3>
+
+    <p>
+
+        Manage your products, inventory, pricing and reports from here.
+
+    </p>
+
+</div>
 
 {% endblock %}

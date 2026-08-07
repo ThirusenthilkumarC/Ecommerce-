@@ -1,21 +1,43 @@
 {% extends 'masterpage.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}
+Login
+{% endblock %}
 
 {% block content %}
 
-<h2>Login Page</h2>
+<div class="container">
 
-<form>
+    <h1 align="center">
 
-<label>Username</label><br>
-<input type="text"><br><br>
+        Login
 
-<label>Password</label><br>
-<input type="password"><br><br>
+    </h1>
 
-<button>Login</button>
+    <form>
 
-</form>
+        <label>Email</label>
+
+        <input type="email"
+               placeholder="Enter Email">
+
+        <br><br>
+
+        <label>Password</label>
+
+        <input type="password"
+               placeholder="Enter Password">
+
+        <br><br>
+
+        <button>
+
+            Login
+
+        </button>
+
+    </form>
+
+</div>
 
 {% endblock %}

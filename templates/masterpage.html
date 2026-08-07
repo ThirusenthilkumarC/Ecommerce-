@@ -1,25 +1,71 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Ecommerce</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}E-Commerce{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+<script src="{% static 'js/main.js' %}"></script>
+
 </head>
+
 <body>
 
-<a href="/login/">Login</a> |
-<a href="/dashboard/">Dashboard</a> |
-<a href="/about/">About</a> |
-<a href="/contact/">Contact</a> |
-<a href="/products/">Products</a> |
-<a href="/add-product/">Add Product</a>
+<header>
 
-<hr>
+    <div class="logo">
+        <a href="/">
+            <img src="{% static 'images/logo.png' %}" width="50">
+        </a>
+
+        <h2>E-Commerce</h2>
+    </div>
+
+    <nav>
+
+        <a href="/">Home</a>
+
+        <a href="/login/">Login</a>
+
+        <a href="/dashboard/">Dashboard</a>
+
+        <a href="/about/">About</a>
+
+        <a href="/contact/">Contact</a>
+
+        <a href="/products/">Products</a>
+
+        <a href="/add-product/">Add Product</a>
+
+    </nav>
+
+</header>
+
 
 {% block content %}
+
 {% endblock %}
 
-<hr>
 
-<h2>iM footer page</h2>
+<footer>
+
+    <p>
+
+        © 2026 Ecommerce Project
+
+    </p>
+
+</footer>
+
+<script src="{% static 'js/main.js' %}"></script>
 
 </body>
+
 </html>
