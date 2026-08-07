@@ -1,37 +1,53 @@
-{% extends 'masterpage.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products</title>
+</head>
+<body>
 
-{% block title %}Products{% endblock %}
+<a href="/">Home</a> |
+<a href="/login/">Login</a> |
+<a href="/dashboard/">Dashboard</a> |
+<a href="/about/">About</a> |
+<a href="/contact/">Contact</a> |
+<a href="/products/">Products</a> |
+<a href="/add-product/">Add Product</a>
 
-{% block content %}
-
-<h2>Products</h2>
+<h2>Product List</h2>
 
 <table border="1" cellpadding="10">
 
 <tr>
-<th>ID</th>
-<th>Product Name</th>
-<th>Price</th>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Description</th>
+    <th>Image</th>
+    <th>Status</th>
 </tr>
 
-<tr>
-<td>1</td>
-<td>Laptop</td>
-<td>50000</td>
-</tr>
+{% for p in products %}
 
 <tr>
-<td>2</td>
-<td>Mouse</td>
-<td>800</td>
+
+<td>{{ p.name }}</td>
+<td>{{ p.price }}</td>
+<td>{{ p.description }}</td>
+
+<td>
+
+{% if p.image %}
+<img src="{{ p.image.url }}" width="100">
+{% endif %}
+
+</td>
+
+<td>{{ p.status }}</td>
+
 </tr>
 
-<tr>
-<td>3</td>
-<td>Keyboard</td>
-<td>1200</td>
-</tr>
+{% endfor %}
 
 </table>
 
-{% endblock %}
+</body>
+</html>

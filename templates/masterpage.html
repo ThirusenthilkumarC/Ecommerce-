@@ -1,32 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}Ecommerce{% endblock %}</title>
+    <title>Ecommerce</title>
 </head>
 <body>
 
-<h1>Ecommerce Website</h1>
-
-<hr>
-
-<a href="{% url 'login' %}">Login</a> |
-<a href="{% url 'dashboard' %}">Dashboard</a> |
-<a href="{% url 'about' %}">About</a> |
-<a href="{% url 'contact' %}">Contact</a> |
-<a href="{% url 'products' %}">Products</a> |
-<a href="{% url 'add_product' %}">Add Product</a>
+<a href="/login/">Login</a> |
+<a href="/dashboard/">Dashboard</a> |
+<a href="/about/">About</a> |
+<a href="/contact/">Contact</a> |
+<a href="/products/">Products</a> |
+<a href="/add-product/">Add Product</a>
 
 <hr>
 
 {% block content %}
-
 {% endblock %}
 
 <hr>
 
-<footer>
-<p align="center">© 2026 Ecommerce Website</p>
-</footer>
+<h2>iM footer page</h2>
 
 </body>
 </html>
