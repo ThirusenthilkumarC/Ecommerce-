@@ -14,23 +14,35 @@ Login
 
     </h1>
 
-    <form>
+    <form method="POST">
+        {% csrf_token %}
 
-        <label>Email</label>
+        {% if error %}
+            <div class="form-error" style="color: red; margin-bottom: 1rem;">
+                {{ error }}
+            </div>
+        {% endif %}
 
-        <input type="email"
-               placeholder="Enter Email">
+        <label>Username</label>
+
+        <input type="text"
+               name="username"
+               placeholder="Enter Username"
+               value="{{ username }}"
+               required>
 
         <br><br>
 
         <label>Password</label>
 
         <input type="password"
-               placeholder="Enter Password">
+               name="password"
+               placeholder="Enter Password"
+               required>
 
         <br><br>
 
-        <button>
+        <button type="submit">
 
             Login
 

@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login as auth_login
 from .models import Product
+from .forms import ProductForm
 
 
 def home(request):
@@ -7,7 +9,20 @@ def home(request):
 
 
 def login(request):
-    return render(request, "login.html")
+    error = None
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            auth_login(request, user)
+            return redirect("home")
+        error = "Invalid username or password. Please try again."
+
+    return render(request, "login.html", {
+        "error": error,
+        "username": request.POST.get("username", "") if request.method == "POST" else "",
+    })
 
 
 def dashboard(request):
@@ -34,21 +49,13 @@ def products(request):
 def add_product(request):
 
     if request.method == "POST":
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("products")
+    else:
+        form = ProductForm()
 
-        Product.objects.create(
-
-            name=request.POST.get("name"),
-
-            price=request.POST.get("price"),
-
-            description=request.POST.get("description"),
-
-            image=request.FILES.get("image"),
-
-            status=request.POST.get("status")
-
-        )
-
-        return redirect("products")
-
-    return render(request, "add_product.html")
+    return render(request, "add_product.html", {
+        "form": form,
+    })
