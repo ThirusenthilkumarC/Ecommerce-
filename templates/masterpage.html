@@ -20,14 +20,6 @@
 
 <header>
 
-    <div class="logo">
-        <a href="/">
-            <img src="{% static 'images/logo.png' %}" width="50">
-        </a>
-
-        <h2>E-Commerce</h2>
-    </div>
-
     <nav>
 
         <a href="/">Home</a>
@@ -50,6 +42,15 @@
 
 
 {% block content %}
+
+{% if messages %}
+    <div class="container">
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+
+{% endif %}
 
 {% endblock %}
 

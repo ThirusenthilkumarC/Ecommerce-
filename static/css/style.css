@@ -29,22 +29,6 @@ header{
 
 }
 
-.logo{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-}
-
-.logo h2{
-
-    color:white;
-
-}
-
 nav{
 
     display:flex;

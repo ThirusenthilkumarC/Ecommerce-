@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login
+from django.contrib import messages
 from .models import Product
 from .forms import ProductForm
 
@@ -26,7 +27,22 @@ def login(request):
 
 
 def dashboard(request):
-    return render(request, "dashboard.html")
+
+    products = Product.objects.all()
+
+    total_products = products.count()
+
+    # Use the existing `status` field to determine availability
+    available = products.filter(status="Available").count()
+
+    out_of_stock = products.filter(status="Out of Stock").count()
+
+    return render(request, "dashboard.html", {
+        "products": products,
+        "total_products": total_products,
+        "available": available,
+        "out_of_stock": out_of_stock,
+    })
 
 
 def about(request):
@@ -52,6 +68,7 @@ def add_product(request):
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, "Product added successfully.")
             return redirect("products")
     else:
         form = ProductForm()
