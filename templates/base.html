@@ -1,0 +1,327 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Nexus Electronics — Future Technology Today{% endblock %}</title>
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Master Design System & Responsive Stylesheets -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+  
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+  <!-- ==========================================
+       TOP ANNOUNCEMENT BAR
+       ========================================== -->
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar-left">
+        <span style="display: flex; align-items: center; gap: 6px;">
+          <i class="fa-solid fa-globe"></i>
+          <select aria-label="Language selector">
+            <option>English</option>
+            <option>Español</option>
+            <option>Français</option>
+          </select>
+        </span>
+        <span style="display: flex; align-items: center; gap: 6px;">
+          <i class="fa-solid fa-dollar-sign"></i>
+          <select aria-label="Currency selector">
+            <option>USD $</option>
+            <option>EUR €</option>
+            <option>INR ₹</option>
+          </select>
+        </span>
+      </div>
+
+      <div class="top-bar-center">
+        <span>⚡ Free Express Shipping on All Orders Over ${{ free_shipping_threshold|default:100 }}</span>
+      </div>
+
+      <div class="top-bar-right">
+        <a href="{% url 'track_order' %}"><i class="fa-solid fa-truck-fast"></i> Track Order</a>
+        <a href="{% url 'contact' %}"><i class="fa-solid fa-headset"></i> Support</a>
+        <a href="{% url 'about' %}"><i class="fa-solid fa-location-dot"></i> Store Locator</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MAIN STICKY NAVBAR
+       ========================================== -->
+  <header class="main-navbar">
+    <div class="container">
+      <div class="nav-wrapper">
+        <!-- Logo -->
+        <a href="{% url 'home' %}" class="brand-logo">
+          <div class="brand-icon">
+            <i class="fa-solid fa-bolt"></i>
+          </div>
+          <span>Nexus</span>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <ul class="nav-links">
+          <li class="nav-item">
+            <a href="{% url 'home' %}" class="nav-link {% if request.path == '/' %}active{% endif %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'products' %}" class="nav-link {% if 'products' in request.path %}active{% endif %}">
+              Shop <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+            </a>
+            <div class="nav-dropdown">
+              <a href="{% url 'products' %}" class="nav-dropdown-item"><i class="fa-solid fa-layer-group"></i> All Products</a>
+              <a href="{% url 'products' %}?deals=1" class="nav-dropdown-item"><i class="fa-solid fa-fire text-red"></i> Flash Deals</a>
+              <a href="{% url 'products' %}?sort=newest" class="nav-dropdown-item"><i class="fa-solid fa-sparkles"></i> New Arrivals</a>
+              <a href="{% url 'products' %}?sort=rating" class="nav-dropdown-item"><i class="fa-solid fa-star text-amber"></i> Top Rated</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'products' %}" class="nav-link">
+              Categories <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+            </a>
+            <div class="nav-dropdown">
+              {% for cat in nav_categories %}
+                <a href="{% url 'products' %}?category={{ cat.slug }}" class="nav-dropdown-item">
+                  <i class="fa-solid {{ cat.icon|default:'fa-tag' }}"></i> {{ cat.name }}
+                </a>
+              {% endfor %}
+            </div>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'products' %}?deals=1" class="nav-link">Deals</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'products' %}?sort=newest" class="nav-link">New Arrivals</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'about' %}" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'contact' %}" class="nav-link">Contact</a>
+          </li>
+        </ul>
+
+        <!-- Live Search Bar -->
+        <form action="{% url 'products' %}" method="GET" class="nav-search-form">
+          <input type="text" name="q" value="{{ request.GET.q|default:'' }}" placeholder="Search for products..." class="nav-search-input">
+          <button type="submit" class="nav-search-btn" aria-label="Submit search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </form>
+
+        <!-- Right Action Icons (User, Wishlist, Cart) -->
+        <div class="nav-actions">
+          <!-- User Account Dropdown -->
+          <div class="nav-item" style="position: relative;">
+            <button class="nav-action-btn" id="userAccountBtn" aria-label="User Account">
+              <i class="fa-regular fa-user"></i>
+            </button>
+            <div class="nav-dropdown" id="userDropdown" style="right: 0; left: auto; min-width: 200px;">
+              {% if user.is_authenticated %}
+                <div style="padding: 8px 14px; font-size: 12px; color: var(--text-muted); border-bottom: 1px solid var(--border-light);">
+                  Signed in as <strong>{{ user.username }}</strong>
+                </div>
+                <a href="{% url 'profile' %}" class="nav-dropdown-item"><i class="fa-solid fa-id-card"></i> My Profile</a>
+                <a href="{% url 'my_orders' %}" class="nav-dropdown-item"><i class="fa-solid fa-box"></i> My Orders</a>
+                <a href="{% url 'wishlist' %}" class="nav-dropdown-item"><i class="fa-regular fa-heart"></i> My Wishlist</a>
+                {% if user.is_staff %}
+                  <a href="{% url 'admin_dashboard' %}" class="nav-dropdown-item" style="color: var(--primary); font-weight: 700;">
+                    <i class="fa-solid fa-chart-line"></i> Admin Dashboard
+                  </a>
+                {% endif %}
+                <div style="border-top: 1px solid var(--border-light); margin-top: 4px; padding-top: 4px;">
+                  <a href="{% url 'logout' %}" class="nav-dropdown-item" style="color: #EF4444;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+                </div>
+              {% else %}
+                <a href="{% url 'login' %}" class="nav-dropdown-item"><i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In</a>
+                <a href="{% url 'register' %}" class="nav-dropdown-item"><i class="fa-solid fa-user-plus"></i> Create Account</a>
+                <a href="{% url 'track_order' %}" class="nav-dropdown-item"><i class="fa-solid fa-truck-fast"></i> Track Order</a>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Wishlist Button -->
+          <a href="{% url 'wishlist' %}" class="nav-action-btn" aria-label="Wishlist">
+            <i class="fa-regular fa-heart"></i>
+            <span class="badge-count wishlist-badge-count" style="{% if wishlist_count == 0 %}display: none;{% endif %}">{{ wishlist_count }}</span>
+          </a>
+
+          <!-- Shopping Cart Button -->
+          <a href="{% url 'cart' %}" class="nav-action-btn" aria-label="Shopping Cart">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span class="badge-count cart-badge-count" style="{% if cart_count == 0 %}display: none;{% endif %}">{{ cart_count }}</span>
+          </a>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Open navigation menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================
+       MOBILE DRAWER MENU
+       ========================================== -->
+  <div id="mobileDrawer" style="position: fixed; top: 0; left: -300px; width: 280px; height: 100%; background: #FFFFFF; z-index: 9999; box-shadow: var(--shadow-lg); transition: left 0.3s ease; padding: 24px; display: flex; flex-direction: column; gap: 20px;">
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+      <a href="{% url 'home' %}" class="brand-logo">
+        <div class="brand-icon"><i class="fa-solid fa-bolt"></i></div>
+        <span>Nexus</span>
+      </a>
+      <button id="drawerClose" style="font-size: 20px; color: var(--text-muted);"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <form action="{% url 'products' %}" method="GET" style="margin-top: 10px;">
+      <input type="text" name="q" placeholder="Search products..." class="form-input" style="border-radius: var(--radius-full);">
+    </form>
+
+    <div style="display: flex; flex-direction: column; gap: 12px; font-weight: 600; font-size: 15px;">
+      <a href="{% url 'home' %}" style="padding: 8px 0;">Home</a>
+      <a href="{% url 'products' %}" style="padding: 8px 0;">All Products</a>
+      <a href="{% url 'products' %}?deals=1" style="padding: 8px 0; color: #EF4444;"><i class="fa-solid fa-fire"></i> Flash Deals</a>
+      <a href="{% url 'cart' %}" style="padding: 8px 0;">Shopping Cart ({{ cart_count }})</a>
+      <a href="{% url 'wishlist' %}" style="padding: 8px 0;">Wishlist ({{ wishlist_count }})</a>
+      <a href="{% url 'about' %}" style="padding: 8px 0;">About Us</a>
+      <a href="{% url 'contact' %}" style="padding: 8px 0;">Contact Support</a>
+    </div>
+
+    <div style="margin-top: auto; border-top: 1px solid var(--border-light); padding-top: 16px;">
+      {% if user.is_authenticated %}
+        <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">Logged in as {{ user.username }}</div>
+        <a href="{% url 'profile' %}" class="btn btn-outline btn-sm w-full" style="margin-bottom: 8px;">My Account</a>
+        <a href="{% url 'logout' %}" class="btn btn-primary btn-sm w-full">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn btn-outline btn-sm w-full" style="margin-bottom: 8px;">Sign In</a>
+        <a href="{% url 'register' %}" class="btn btn-primary btn-sm w-full">Register</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- ==========================================
+       TOAST NOTIFICATIONS
+       ========================================== -->
+  {% if messages %}
+    <div class="toast-container">
+      {% for message in messages %}
+        <div class="toast toast-{{ message.tags }}">
+          <i class="fa-solid {% if message.tags == 'error' %}fa-circle-exclamation text-red{% elif message.tags == 'warning' %}fa-triangle-exclamation text-amber{% else %}fa-circle-check text-green{% endif %}"></i>
+          <span>{{ message }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- ==========================================
+       MAIN CONTENT BLOCK
+       ========================================== -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ==========================================
+       MEGA FOOTER (DARK OBSIDIAN)
+       ========================================== -->
+  <footer class="footer-main">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Col 1: Brand Info -->
+        <div class="footer-brand">
+          <a href="{% url 'home' %}" class="brand-logo" style="color: #FFFFFF;">
+            <div class="brand-icon"><i class="fa-solid fa-bolt"></i></div>
+            <span>Nexus</span>
+          </a>
+          <p>Your premier destination for next-generation smart electronics, premium audio gear, ultrabooks, and creator accessories.</p>
+          <div class="footer-social-links">
+            <a href="#" class="footer-social-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="footer-social-btn" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" class="footer-social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="footer-social-btn" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <!-- Col 2: Shop Links -->
+        <div class="footer-col">
+          <h4>Shop Catalog</h4>
+          <ul>
+            <li><a href="{% url 'products' %}">All Products</a></li>
+            <li><a href="{% url 'products' %}?deals=1">Flash Deals</a></li>
+            <li><a href="{% url 'products' %}?sort=newest">New Arrivals</a></li>
+            <li><a href="{% url 'products' %}?sort=rating">Best Sellers</a></li>
+            <li><a href="{% url 'products' %}?category=smartphones">Smartphones</a></li>
+            <li><a href="{% url 'products' %}?category=laptops">Laptops</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Customer Service -->
+        <div class="footer-col">
+          <h4>Customer Service</h4>
+          <ul>
+            <li><a href="{% url 'contact' %}">Help Center & FAQ</a></li>
+            <li><a href="{% url 'track_order' %}">Track Your Order</a></li>
+            <li><a href="{% url 'cart' %}">View Shopping Cart</a></li>
+            <li><a href="{% url 'about' %}">Shipping & Delivery</a></li>
+            <li><a href="{% url 'about' %}">Returns & Warranty</a></li>
+            <li><a href="{% url 'contact' %}">Contact Support</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Company -->
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="{% url 'about' %}">About Nexus</a></li>
+            <li><a href="{% url 'about' %}">Careers</a></li>
+            <li><a href="{% url 'about' %}">Press & Media</a></li>
+            <li><a href="{% url 'about' %}">Affiliate Program</a></li>
+            <li><a href="{% url 'contact' %}">Store Locations</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 5: Legal & Payments -->
+        <div class="footer-col">
+          <h4>Legal & Payment</h4>
+          <ul>
+            <li><a href="{% url 'about' %}">Terms & Conditions</a></li>
+            <li><a href="{% url 'about' %}">Privacy Policy</a></li>
+            <li><a href="{% url 'about' %}">Cookie Policy</a></li>
+          </ul>
+          <div style="margin-top: 16px;">
+            <div style="font-size: 12px; color: #9CA3AF; margin-bottom: 8px; font-weight: 600;">We Accept:</div>
+            <div class="footer-payment-badges">
+              <span class="payment-badge"><i class="fa-brands fa-cc-visa"></i> Visa</span>
+              <span class="payment-badge"><i class="fa-brands fa-cc-mastercard"></i> MC</span>
+              <span class="payment-badge"><i class="fa-brands fa-cc-paypal"></i> PayPal</span>
+              <span class="payment-badge"><i class="fa-brands fa-cc-apple-pay"></i> Apple</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Nexus Electronics Inc. All rights reserved.</div>
+        <div style="display: flex; gap: 16px;">
+          <a href="{% url 'about' %}" style="color: #9CA3AF;">Privacy</a>
+          <a href="{% url 'about' %}" style="color: #9CA3AF;">Terms</a>
+          <a href="{% url 'contact' %}" style="color: #9CA3AF;">Security</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/cart.js' %}"></script>
+  {% block extra_scripts %}{% endblock %}
+
+</body>
+</html>

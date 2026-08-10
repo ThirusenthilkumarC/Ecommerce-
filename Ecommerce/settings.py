@@ -12,7 +12,7 @@ SECRET_KEY = "django-insecure-change-this-key"
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Installed Apps
 INSTALLED_APPS = [
@@ -23,7 +23,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    # Your App
+    # Ecommerce App
     "Customers",
 ]
 
@@ -51,6 +51,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "Customers.context_processors.ecommerce_context",
             ],
         },
     },
@@ -58,15 +59,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "Ecommerce.wsgi.application"
 
-# Database (MySQL)
+# Database Configuration (SQLite default with support for SQLite database in BASE_DIR)
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "ecommerce",
-        "USER": "root",
-        "PASSWORD": "",
-        "HOST": "127.0.0.1",
-        "PORT": "3306",
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -86,26 +83,27 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Language
+# Language & Time
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "Asia/Kolkata"
-
 USE_I18N = True
-
 USE_TZ = True
 
 # Static Files
-STATIC_URL = "static/"
-
+STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Media Files
 MEDIA_URL = "/media/"
-
 MEDIA_ROOT = BASE_DIR / "media"
 
 # Default Primary Key
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Auth Redirects
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"

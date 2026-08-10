@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Order Confirmed — #{{ order.order_number }}{% endblock %}
+
+{% block content %}
+<div class="container section-spacer" style="max-width: 860px;">
+  
+  <!-- Success Hero Card -->
+  <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 48px 36px; text-align: center; box-shadow: var(--shadow-md); margin-bottom: 32px;">
+    <div style="width: 72px; height: 72px; background: rgba(0, 184, 148, 0.15); color: #00B894; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 20px;">
+      <i class="fa-solid fa-check"></i>
+    </div>
+    <span class="badge badge-green" style="margin-bottom: 12px;">ORDER CONFIRMED</span>
+    <h1 style="font-size: 32px; font-weight: 800; margin-bottom: 10px;">Thank You For Your Order!</h1>
+    <p style="color: var(--text-muted); font-size: 15px; max-width: 480px; margin: 0 auto 24px;">
+      We have received your order <strong>#{{ order.order_number }}</strong> and our team is preparing your package for shipment.
+    </p>
+
+    <!-- Tracking Stepper -->
+    <div style="display: flex; justify-content: space-between; position: relative; margin: 36px auto; max-width: 540px;">
+      <div style="position: absolute; top: 18px; left: 10%; width: 80%; height: 2px; background: #E5E7EB; z-index: 1;"></div>
+      
+      <div style="position: relative; z-index: 2; text-align: center;">
+        <div style="width: 36px; height: 36px; border-radius: 50%; background: #00B894; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 14px; margin: 0 auto 8px;">
+          <i class="fa-solid fa-check"></i>
+        </div>
+        <span style="font-size: 12px; font-weight: 700;">Confirmed</span>
+      </div>
+
+      <div style="position: relative; z-index: 2; text-align: center;">
+        <div style="width: 36px; height: 36px; border-radius: 50%; background: {% if order.order_status in 'Processing,Shipped,Delivered' %}#00B894{% else %}#E5E7EB{% endif %}; color: {% if order.order_status in 'Processing,Shipped,Delivered' %}#FFFFFF{% else %}#9CA3AF{% endif %}; display: flex; align-items: center; justify-content: center; font-size: 14px; margin: 0 auto 8px;">
+          <i class="fa-solid fa-box-open"></i>
+        </div>
+        <span style="font-size: 12px; font-weight: 600; color: var(--text-muted);">Processing</span>
+      </div>
+
+      <div style="position: relative; z-index: 2; text-align: center;">
+        <div style="width: 36px; height: 36px; border-radius: 50%; background: {% if order.order_status in 'Shipped,Delivered' %}#00B894{% else %}#E5E7EB{% endif %}; color: {% if order.order_status in 'Shipped,Delivered' %}#FFFFFF{% else %}#9CA3AF{% endif %}; display: flex; align-items: center; justify-content: center; font-size: 14px; margin: 0 auto 8px;">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+        <span style="font-size: 12px; font-weight: 600; color: var(--text-muted);">Shipped</span>
+      </div>
+
+      <div style="position: relative; z-index: 2; text-align: center;">
+        <div style="width: 36px; height: 36px; border-radius: 50%; background: {% if order.order_status == 'Delivered' %}#00B894{% else %}#E5E7EB{% endif %}; color: {% if order.order_status == 'Delivered' %}#FFFFFF{% else %}#9CA3AF{% endif %}; display: flex; align-items: center; justify-content: center; font-size: 14px; margin: 0 auto 8px;">
+          <i class="fa-solid fa-house-chimney"></i>
+        </div>
+        <span style="font-size: 12px; font-weight: 600; color: var(--text-muted);">Delivered</span>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+      <a href="{% url 'my_orders' %}" class="btn btn-primary btn-sm">
+        <i class="fa-solid fa-box"></i> View My Orders
+      </a>
+      <a href="{% url 'products' %}" class="btn btn-outline btn-sm">
+        Continue Shopping
+      </a>
+    </div>
+  </div>
+
+  <!-- Receipt Breakdown Details -->
+  <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 32px; box-shadow: var(--shadow-sm);">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 16px; margin-bottom: 20px;">
+      <h3 style="font-size: 18px; font-weight: 800;">Order Receipt Summary</h3>
+      <span style="font-size: 13px; color: var(--text-muted);">Placed on {{ order.created_at|date:"M d, Y, h:i A" }}</span>
+    </div>
+
+    <!-- Items -->
+    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+      {% for item in order.items.all %}
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border-light);">
+          <div>
+            <strong style="font-size: 14px;">{{ item.product_name }}</strong>
+            <div style="font-size: 12px; color: var(--text-muted);">Quantity: {{ item.quantity }} × ${{ item.price }}</div>
+          </div>
+          <span style="font-weight: 700; font-size: 14px;">${{ item.subtotal }}</span>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Details Grid -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding-top: 16px; border-top: 1px solid var(--border-light);">
+      <div>
+        <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">Delivery Address</h4>
+        <p style="font-size: 13px; color: #4B5563; line-height: 1.5;">
+          <strong>{{ order.full_name }}</strong><br>
+          {{ order.address }}<br>
+          {{ order.city }}, {{ order.state }} {{ order.postal_code }}<br>
+          {{ order.country }}<br>
+          Phone: {{ order.phone }}
+        </p>
+      </div>
+
+      <div>
+        <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">Payment & Total</h4>
+        <div style="font-size: 13px; color: #4B5563; line-height: 1.6;">
+          <div>Method: <strong>{{ order.payment_method }}</strong></div>
+          <div>Payment Status: <span class="badge {% if order.payment_status == 'Paid' %}badge-green{% else %}badge-yellow{% endif %}">{{ order.payment_status }}</span></div>
+          <div>Shipping: <strong>{% if order.shipping_fee == 0 %}FREE{% else %}${{ order.shipping_fee }}{% endif %}</strong></div>
+          <div style="font-size: 16px; font-weight: 800; color: var(--text-main); margin-top: 8px;">
+            Total Paid: ${{ order.total_amount }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

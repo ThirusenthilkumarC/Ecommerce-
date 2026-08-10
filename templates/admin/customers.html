@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Customers — Nexus Admin{% endblock %}
+
+{% block content %}
+<div class="container section-spacer">
+  
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+    <div>
+      <div style="font-size: 13px; color: var(--text-muted);"><a href="{% url 'admin_dashboard' %}">Dashboard</a> / Customers</div>
+      <h1 style="font-size: 28px; font-weight: 800;">Registered Customers</h1>
+    </div>
+  </div>
+
+  <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); overflow-x: auto;">
+    <table class="cart-table">
+      <thead>
+        <tr>
+          <th>Customer</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Date Joined</th>
+          <th>Orders Placed</th>
+          <th>Total Spending</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in customers %}
+          <tr>
+            <td>
+              <strong style="font-size: 14px;">{{ c.first_name }} {{ c.last_name }}</strong>
+            </td>
+            <td style="font-size: 13px; font-weight: 600; color: var(--primary);">@{{ c.username }}</td>
+            <td style="font-size: 13px;">{{ c.email }}</td>
+            <td style="font-size: 13px; color: var(--text-muted);">{{ c.date_joined|date:"M d, Y" }}</td>
+            <td style="font-size: 14px; font-weight: 700;">{{ c.order_count }}</td>
+            <td style="font-size: 14px; font-weight: 800; color: var(--text-main);">
+              ${{ c.total_spent|default:"0.00" }}
+            </td>
+            <td>
+              <span class="badge badge-green">Active</span>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 40px; color: var(--text-muted);">No customer accounts registered yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Categories — Nexus Admin{% endblock %}
+
+{% block content %}
+<div class="container section-spacer">
+  
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+    <div>
+      <div style="font-size: 13px; color: var(--text-muted);"><a href="{% url 'admin_dashboard' %}">Dashboard</a> / Categories</div>
+      <h1 style="font-size: 28px; font-weight: 800;">Category Management</h1>
+    </div>
+    <a href="{% url 'admin_category_add' %}" class="btn btn-primary btn-sm">
+      <i class="fa-solid fa-plus"></i> Add New Category
+    </a>
+  </div>
+
+  <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); overflow-x: auto;">
+    <table class="cart-table">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Icon</th>
+          <th>Slug</th>
+          <th>Products</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cat in categories %}
+          <tr>
+            <td>
+              <strong style="font-size: 14px;">{{ cat.name }}</strong>
+              <div style="font-size: 12px; color: var(--text-muted);">{{ cat.description|truncatewords:8 }}</div>
+            </td>
+            <td>
+              <div style="width: 36px; height: 36px; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; border-radius: var(--radius-xs);">
+                <i class="fa-solid {{ cat.icon }}"></i>
+              </div>
+            </td>
+            <td style="font-size: 13px; color: var(--text-muted);">{{ cat.slug }}</td>
+            <td style="font-size: 14px; font-weight: 700;">{{ cat.product_count }}</td>
+            <td>
+              <span class="badge {% if cat.is_active %}badge-green{% else %}badge-discount{% endif %}">
+                {% if cat.is_active %}Active{% else %}Inactive{% endif %}
+              </span>
+            </td>
+            <td>
+              <div style="display: flex; gap: 8px;">
+                <a href="{% url 'admin_category_edit' category_id=cat.id %}" class="btn btn-outline btn-sm" style="padding: 4px 8px; font-size: 12px;" title="Edit Category">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+                <a href="{% url 'admin_category_delete' category_id=cat.id %}" class="btn btn-outline btn-sm" style="padding: 4px 8px; font-size: 12px; color: #EF4444; border-color: #FCA5A5;" title="Delete Category">
+                  <i class="fa-solid fa-trash"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">No categories created yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+{% endblock %}

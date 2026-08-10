@@ -1,89 +1,79 @@
-{% extends 'masterpage.html' %}
+{% extends 'base.html' %}
+{% load static %}
 
-{% block title %}
-Add Product
-{% endblock %}
+{% block title %}Add Product — Nexus Admin{% endblock %}
 
 {% block content %}
+<div class="container section-spacer" style="max-width: 800px;">
+  <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-sm);">
+    <h1 style="font-size: 26px; font-weight: 800; margin-bottom: 24px;">Add New Product</h1>
 
-<div class="container">
+    {% if form.errors %}
+      <div style="padding: 12px 16px; background: #FEF2F2; border-left: 4px solid #EF4444; border-radius: var(--radius-sm); margin-bottom: 20px; font-size: 13px; color: #991B1B;">
+        Please fix the errors in the form below.
+      </div>
+    {% endif %}
 
-    <h1 align="center">Add Product</h1>
-    <form method="POST" enctype="multipart/form-data" onsubmit="return confirmSave()">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
 
-        {% csrf_token %}
+      <div class="form-group">
+        <label class="form-label">Product Name *</label>
+        {{ form.name }}
+      </div>
 
-        {% if form.errors %}
-            <div class="form-errors">
-                {{ form.non_field_errors }}
-                <ul>
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            <li>{{ field.label }}: {{ error }}</li>
-                        {% endfor %}
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          {{ form.category }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Brand</label>
+          {{ form.brand }}
+        </div>
+      </div>
 
-        <label>Product Name</label>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+        <div class="form-group">
+          <label class="form-label">Price ($) *</label>
+          {{ form.price }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Discount Price ($)</label>
+          {{ form.discount_price }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Stock Quantity *</label>
+          {{ form.stock }}
+        </div>
+      </div>
 
-        <input type="text"
-               name="name"
-               value="{{ form.name.value|default_if_none:'' }}"
-               required>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        {{ form.description }}
+      </div>
 
-        <br><br>
+      <div class="form-group">
+        <label class="form-label">Image</label>
+        {{ form.image }}
+      </div>
 
-        <label>Price</label>
+      <div style="display: flex; gap: 24px; margin: 20px 0;">
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600;">
+          {{ form.featured }} Featured
+        </label>
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600;">
+          {{ form.is_deal }} Flash Deal
+        </label>
+      </div>
 
-        <input type="number"
-               name="price"
-               step="0.01"
-               required>
-
-        <br><br>
-
-        <label>Description</label>
-
-        <textarea
-            name="description"
-            rows="5"
-            required>{{ form.description.value }}</textarea>
-
-        <br><br>
-
-        <label>Image</label>
-
-        <input type="file"
-               name="image">
-
-        <br><br>
-
-        <label>Status</label>
-
-        <select name="status">
-
-            <option value="Available" {% if form.status.value == "Available" %}selected{% endif %}>
-                Available
-            </option>
-
-            <option value="Out of Stock" {% if form.status.value == "Out of Stock" %}selected{% endif %}>
-                Out of Stock
-            </option>
-
-        </select>
-
-        <br><br>
-
-        <button type="submit">
-
-            Save Product
-
+      <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+        <a href="{% url 'admin_products' %}" class="btn btn-outline btn-md">Cancel</a>
+        <button type="submit" class="btn btn-primary btn-md">
+          <i class="fa-solid fa-floppy-disk"></i> Save Product
         </button>
-
+      </div>
     </form>
-
+  </div>
 </div>
-
 {% endblock %}

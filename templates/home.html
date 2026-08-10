@@ -1,94 +1,619 @@
-{% extends 'masterpage.html' %}
-
+{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}
-Home
-{% endblock %}
-
+{% block title %}Nexus Electronics — Future Technology Today{% endblock %}
 
 {% block content %}
 
-<section class="hero">
+<!-- ==========================================
+     1. HERO SECTION (DARK & NEON VIOLET GLOW)
+     ========================================== -->
+<section class="hero-section">
+  <div class="hero-glow hero-glow-right"></div>
+  <div class="hero-glow hero-glow-left"></div>
 
-    <div class="hero-left">
+  <div class="container">
+    <!-- Hero Slides -->
+    {% for product in hero_products %}
+      <div class="hero-grid hero-slide" id="heroSlide{{ forloop.counter }}" style="{% if not forloop.first %}display: none;{% endif %}">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <i class="fa-solid fa-bolt"></i> NEW LAUNCH 2026
+          </div>
+          <h1 class="hero-title">
+            Future Technology <span>Today.</span>
+          </h1>
+          <p class="hero-description">
+            Explore the latest smart devices, ultrabooks, noise-canceling audio gear, and cutting-edge innovations built for your lifestyle.
+          </p>
+          <div class="hero-actions">
+            <a href="{% url 'products' %}" class="btn btn-gradient btn-lg">
+              Shop Now <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <a href="{% url 'product_detail' slug=product.slug %}" class="btn btn-translucent btn-lg">
+              <i class="fa-solid fa-circle-play"></i> Explore {{ product.brand }}
+            </a>
+          </div>
 
-        <h1>
+          <div class="hero-trust-bar">
+            <div class="hero-trust-item">
+              <i class="fa-solid fa-truck-fast hero-trust-icon"></i>
+              <div class="hero-trust-text">
+                <strong>Free Delivery</strong>
+                <span>On orders over $100</span>
+              </div>
+            </div>
+            <div class="hero-trust-item">
+              <i class="fa-solid fa-shield-check hero-trust-icon"></i>
+              <div class="hero-trust-text">
+                <strong>Secure Payment</strong>
+                <span>100% protected</span>
+              </div>
+            </div>
+            <div class="hero-trust-item">
+              <i class="fa-solid fa-arrow-rotate-left hero-trust-icon"></i>
+              <div class="hero-trust-text">
+                <strong>Easy Returns</strong>
+                <span>30 day return</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-            Welcome to Our
-            <span>E-Commerce Store</span>
+        <div class="hero-visual">
+          <div class="hero-circle-backdrop"></div>
+          <img src="{{ product.get_image_url }}" alt="{{ product.name }}" class="hero-product-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=700&auto=format&fit=crop&q=80';">
+        </div>
+      </div>
+    {% endfor %}
 
-        </h1>
+    <!-- Carousel Controls -->
+    <div class="hero-nav-controls">
+      <button class="hero-arrow-btn" id="heroPrevBtn" aria-label="Previous slide">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+      <div class="hero-slide-indicator">
+        <span id="heroCurrentIndex">01</span> / <span id="heroTotalIndex">03</span>
+      </div>
+      <button class="hero-arrow-btn" id="heroNextBtn" aria-label="Next slide">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</section>
 
-        <p>
 
-            Shop the latest products at the best prices.
-            Add, Manage and Explore products easily.
+<!-- ==========================================
+     2. CATEGORY SECTION (HORIZONTAL CARDS)
+     ========================================== -->
+<section class="section-spacer-sm" style="background: #FFFFFF; border-bottom: 1px solid var(--border-color);">
+  <div class="container">
+    <div class="categories-container">
+      {% for cat in categories %}
+        <a href="{% url 'products' %}?category={{ cat.slug }}" class="category-card">
+          <div class="category-icon-box">
+            <i class="fa-solid {{ cat.icon|default:'fa-laptop' }}"></i>
+          </div>
+          <span class="category-name">{{ cat.name }}</span>
+          <span class="category-count">{{ cat.total_products }} Items</span>
+        </a>
+      {% endfor %}
+      <a href="{% url 'products' %}" class="category-card category-card-all">
+        <div class="category-icon-box">
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+        <span class="category-name">View All</span>
+        <span class="category-count">Categories</span>
+      </a>
+    </div>
+  </div>
+</section>
 
-        </p>
 
-        <a href="/products/">
+<!-- ==========================================
+     3. PROMOTIONAL BENTO GRID
+     ========================================== -->
+<section class="section-spacer">
+  <div class="container">
+    <div class="promo-grid">
+      <!-- Card 1: Large MacBook Pro/Air Card -->
+      <div class="promo-card promo-card-large">
+        <div>
+          <div class="promo-tag">LIMITED TIME OFFER</div>
+          <h3 class="promo-title">MacBook Air M2</h3>
+          <p class="promo-desc">Supercharged by Apple M2 silicon for peak creative performance.</p>
+          <div class="promo-price">From $1099.00</div>
+          <a href="{% url 'products' %}?category=laptops" class="btn btn-white btn-sm">
+            Shop Now <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+          <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&auto=format&fit=crop&q=80" alt="MacBook Air" class="promo-image" style="border-radius: var(--radius-md);" loading="lazy">
+        </div>
+      </div>
 
-            <button>
+      <!-- Card 2: Vibrant Solid Purple Card (Mega Deal) -->
+      <div class="promo-card promo-card-purple">
+        <div>
+          <div class="promo-tag">MEGA DEAL</div>
+          <h3 class="promo-title">Grab Up to<br>40% Off</h3>
+          <p class="promo-desc">On selected premium audio and smart wearables.</p>
+          <a href="{% url 'products' %}?deals=1" class="btn btn-white btn-sm">
+            Shop Deals <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+          <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=80" alt="Studio Headphones" class="promo-image" style="border-radius: var(--radius-md);" loading="lazy">
+        </div>
+      </div>
 
-                Shop Now
+      <!-- Card 3: Soft Blue Audio Card -->
+      <div class="promo-card promo-card-blue">
+        <div>
+          <div class="promo-tag">AUDIO ESSENTIALS</div>
+          <h3 class="promo-title" style="font-size: 22px;">Sound That Moves You.</h3>
+          <p class="promo-desc" style="font-size: 13px;">Premium audio experience for every moment.</p>
+          <a href="{% url 'products' %}?category=audio" class="view-all-link">
+            Shop Audio <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+        <div style="align-self: flex-end; margin-top: -20px;">
+          <img src="https://images.unsplash.com/photo-1545454675-3531b543be5d?w=240&auto=format&fit=crop&q=80" alt="Speaker" style="width: 100px; height: 100px; object-fit: contain;" loading="lazy">
+        </div>
+      </div>
 
+      <!-- Card 4: Soft Lime Green Camera Card -->
+      <div class="promo-card promo-card-lime">
+        <div>
+          <div class="promo-tag">CREATOR GEAR</div>
+          <h3 class="promo-title" style="font-size: 22px;">Capture Every Detail.</h3>
+          <p class="promo-desc" style="font-size: 13px;">Professional mirrorless cameras for creators.</p>
+          <a href="{% url 'products' %}?category=cameras" class="view-all-link" style="color: #00B894;">
+            Shop Cameras <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+        <div style="align-self: flex-end; margin-top: -20px;">
+          <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=240&auto=format&fit=crop&q=80" alt="Camera" style="width: 100px; height: 100px; object-fit: contain;" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==========================================
+     4. FEATURED COLLECTIONS
+     ========================================== -->
+<section class="section-spacer-sm">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Featured Collections</h2>
+      <a href="{% url 'products' %}" class="view-all-link">
+        View All <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+
+    <div class="collections-grid">
+      <!-- Collection 1: Apple -->
+      <a href="{% url 'products' %}?brand=Apple" class="collection-card">
+        <div class="collection-info">
+          <h4>Apple Collection</h4>
+          <p>Explore Ecosystem</p>
+          <span class="collection-link">Explore Now <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+        <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=200&auto=format&fit=crop&q=80" alt="Apple Collection" class="collection-img" loading="lazy">
+      </a>
+
+      <!-- Collection 2: Gaming -->
+      <a href="{% url 'products' %}?category=gaming" class="collection-card">
+        <div class="collection-info">
+          <h4>Gaming Zone</h4>
+          <p>Level Up Your Game</p>
+          <span class="collection-link">Explore Now <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+        <img src="https://images.unsplash.com/photo-1606318801954-d46d46d3360a?w=200&auto=format&fit=crop&q=80" alt="Gaming Gear" class="collection-img" loading="lazy">
+      </a>
+
+      <!-- Collection 3: Smart Living -->
+      <a href="{% url 'products' %}?category=smartwatches" class="collection-card">
+        <div class="collection-info">
+          <h4>Smart Living</h4>
+          <p>Innovate Your Life</p>
+          <span class="collection-link">Explore Now <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&auto=format&fit=crop&q=80" alt="Smartwatch" class="collection-img" loading="lazy">
+      </a>
+
+      <!-- Collection 4: Work From Home -->
+      <a href="{% url 'products' %}?category=laptops" class="collection-card">
+        <div class="collection-info">
+          <h4>Work From Home</h4>
+          <p>Productivity Gear</p>
+          <span class="collection-link">Explore Now <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+        <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=200&auto=format&fit=crop&q=80" alt="Laptop" class="collection-img" loading="lazy">
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==========================================
+     5. FLASH DEALS SECTION (WITH LIVE COUNTDOWN)
+     ========================================== -->
+<section class="section-spacer">
+  <div class="container">
+    <div class="flash-deals-header">
+      <div style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
+        <h2 class="section-title">Flash Deals</h2>
+        <div class="countdown-box">
+          <span class="countdown-unit" id="dealHours">07</span>
+          <span class="countdown-colon">:</span>
+          <span class="countdown-unit" id="dealMinutes">45</span>
+          <span class="countdown-colon">:</span>
+          <span class="countdown-unit" id="dealSeconds">32</span>
+        </div>
+      </div>
+      <a href="{% url 'products' %}?deals=1" class="view-all-link">
+        View All Deals <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+
+    <div class="product-grid-6">
+      {% for product in flash_deals %}
+        <div class="product-card">
+          <!-- Discount Badge -->
+          {% if product.discount_percent > 0 %}
+            <span class="badge badge-discount product-card-badge">-{{ product.discount_percent }}%</span>
+          {% endif %}
+
+          <!-- Wishlist Toggle -->
+          <button class="product-wishlist-btn ajax-wishlist-btn" data-product-id="{{ product.id }}" aria-label="Add to Wishlist">
+            <i class="fa-regular fa-heart"></i>
+          </button>
+
+          <!-- Product Image Link -->
+          <a href="{% url 'product_detail' slug=product.slug %}" class="product-img-wrapper">
+            <img src="{{ product.get_image_url }}" alt="{{ product.name }}" class="product-thumb" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=80';">
+          </a>
+
+          <div>
+            <div class="product-category-tag">{{ product.category.name|default:product.brand }}</div>
+            <a href="{% url 'product_detail' slug=product.slug %}">
+              <h3 class="product-title" title="{{ product.name }}">{{ product.name }}</h3>
+            </a>
+
+            <div class="product-rating">
+              <i class="fa-solid fa-star"></i>
+              <span style="font-weight: 700; color: var(--text-main); font-size: 11px;">{{ product.rating }}</span>
+              <span class="product-rating-count">({{ product.review_count }})</span>
+            </div>
+
+            <div class="product-bottom-row">
+              <div class="product-prices">
+                <span class="product-price-current">${{ product.current_price }}</span>
+                {% if product.discount_price %}
+                  <span class="product-price-original">${{ product.price }}</span>
+                {% endif %}
+              </div>
+              <button class="product-cart-btn ajax-add-cart-btn" data-product-id="{{ product.id }}" aria-label="Add to Cart">
+                <i class="fa-solid fa-bag-shopping"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- ==========================================
+     6. NEW ARRIVALS SECTION
+     ========================================== -->
+<section class="section-spacer">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">New Arrivals</h2>
+      <a href="{% url 'products' %}?sort=newest" class="view-all-link">
+        View All <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+
+    <div class="new-arrivals-layout">
+      <!-- Spotlight Product (Left Banner) -->
+      {% if new_arrival_hero %}
+        <div class="new-arrival-feature-card">
+          <div>
+            <span class="badge" style="background: rgba(255, 255, 255, 0.15); color: #FFFFFF; margin-bottom: 12px;">
+              JUST LAUNCHED
+            </span>
+            <h3 style="font-size: 30px; font-weight: 800; line-height: 1.1; margin-bottom: 10px;">
+              {{ new_arrival_hero.name }}
+            </h3>
+            <p style="font-size: 14px; color: #9CA3AF; max-width: 320px; line-height: 1.5; margin-bottom: 20px;">
+              {{ new_arrival_hero.description|truncatewords:15 }}
+            </p>
+            <div style="font-size: 24px; font-weight: 800; color: #FFFFFF; margin-bottom: 20px;">
+              ${{ new_arrival_hero.current_price }}
+            </div>
+            <a href="{% url 'product_detail' slug=new_arrival_hero.slug %}" class="btn btn-gradient btn-sm">
+              Explore Now <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+
+          <div style="text-align: center; margin: 20px 0;">
+            <img src="{{ new_arrival_hero.get_image_url }}" alt="{{ new_arrival_hero.name }}" class="new-arrival-feature-img" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=500&auto=format&fit=crop&q=80';">
+          </div>
+        </div>
+      {% endif %}
+
+      <!-- Right Sub-grid Products -->
+      <div class="product-grid-4" style="grid-template-columns: repeat(2, 1fr);">
+        {% for product in new_arrival_sub %}
+          <div class="product-card">
+            <span class="badge badge-new product-card-badge">NEW</span>
+            <button class="product-wishlist-btn ajax-wishlist-btn" data-product-id="{{ product.id }}" aria-label="Add to Wishlist">
+              <i class="fa-regular fa-heart"></i>
             </button>
 
-        </a>
+            <a href="{% url 'product_detail' slug=product.slug %}" class="product-img-wrapper">
+              <img src="{{ product.get_image_url }}" alt="{{ product.name }}" class="product-thumb" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=80';">
+            </a>
 
+            <div>
+              <div class="product-category-tag">{{ product.category.name|default:product.brand }}</div>
+              <a href="{% url 'product_detail' slug=product.slug %}">
+                <h3 class="product-title">{{ product.name }}</h3>
+              </a>
+
+              <div class="product-rating">
+                <i class="fa-solid fa-star"></i>
+                <span style="font-weight: 700; color: var(--text-main); font-size: 11px;">{{ product.rating }}</span>
+                <span class="product-rating-count">({{ product.review_count }})</span>
+              </div>
+
+              <div class="product-bottom-row">
+                <div class="product-prices">
+                  <span class="product-price-current">${{ product.current_price }}</span>
+                </div>
+                <button class="product-cart-btn ajax-add-cart-btn" data-product-id="{{ product.id }}" aria-label="Add to Cart">
+                  <i class="fa-solid fa-bag-shopping"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
     </div>
-
-    <div class="hero-right">
-
-        <img src="{% static 'images/hero.png' %}" width="500">
-
-    </div>
-
+  </div>
 </section>
 
-<section>
 
-    <h2 align="center">
+<!-- ==========================================
+     7. BEST SELLERS (DARK OBSIDIAN THEME)
+     ========================================== -->
+<section class="section-spacer best-sellers-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Best Sellers</h2>
+      <a href="{% url 'products' %}?sort=rating" class="view-all-link" style="color: #A29BFE;">
+        View All <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
 
-        Why Choose Us?
+    <div class="best-sellers-grid">
+      {% for product in best_sellers %}
+        <div class="best-seller-card">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <span class="best-seller-rank">0{{ forloop.counter }}</span>
+            <span class="best-seller-tag">BEST SELLER</span>
+          </div>
 
-    </h2>
+          <a href="{% url 'product_detail' slug=product.slug %}" style="text-align: center;">
+            <img src="{{ product.get_image_url }}" alt="{{ product.name }}" class="best-seller-img" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=80';">
+          </a>
 
-    <br>
+          <div>
+            <a href="{% url 'product_detail' slug=product.slug %}">
+              <h3 class="product-title" style="color: #FFFFFF;">{{ product.name }}</h3>
+            </a>
 
-    <table width="100%">
+            <div class="product-rating" style="margin-bottom: 12px;">
+              <i class="fa-solid fa-star"></i>
+              <span style="font-weight: 700; color: #FFFFFF; font-size: 11px;">{{ product.rating }}</span>
+              <span style="font-size: 11px; color: #9CA3AF;">({{ product.review_count }})</span>
+            </div>
 
-        <tr align="center">
-
-            <td>
-
-                <h3>🚚 Fast Delivery</h3>
-
-                <p>Quick Shipping Across India</p>
-
-            </td>
-
-            <td>
-
-                <h3>💳 Secure Payment</h3>
-
-                <p>100% Safe Transactions</p>
-
-            </td>
-
-            <td>
-
-                <h3>⭐ Best Quality</h3>
-
-                <p>Premium Products</p>
-
-            </td>
-
-        </tr>
-
-    </table>
-
+            <div class="product-bottom-row" style="border-top: 1px solid var(--dark-border);">
+              <div class="product-prices">
+                <span class="product-price-current">${{ product.current_price }}</span>
+                {% if product.discount_price %}
+                  <span class="product-price-original" style="color: #6B7280;">${{ product.price }}</span>
+                {% endif %}
+              </div>
+              <button class="product-cart-btn ajax-add-cart-btn" data-product-id="{{ product.id }}" aria-label="Add to Cart">
+                <i class="fa-solid fa-bag-shopping"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
 </section>
 
+
+<!-- ==========================================
+     8. TRUST & SERVICE CARDS (5-COL ROW)
+     ========================================== -->
+<section class="section-spacer">
+  <div class="container">
+    <div class="trust-grid">
+      <!-- Card 1 -->
+      <div class="trust-card">
+        <div class="trust-icon-box"><i class="fa-solid fa-shield-halved"></i></div>
+        <h4>100% Secure Payment</h4>
+        <p>Your transactions are safe, encrypted, and backed by PCI DSS standard.</p>
+        <a href="{% url 'about' %}" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="trust-card">
+        <div class="trust-icon-box"><i class="fa-solid fa-truck-fast"></i></div>
+        <h4>Fast & Free Delivery</h4>
+        <p>Free standard shipping on all domestic orders over ${{ free_shipping_threshold|default:100 }}.</p>
+        <a href="{% url 'about' %}" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="trust-card">
+        <div class="trust-icon-box"><i class="fa-solid fa-arrow-rotate-left"></i></div>
+        <h4>30-Day Easy Returns</h4>
+        <p>Hassle-free returns and instant replacement within 30 days of receipt.</p>
+        <a href="{% url 'about' %}" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="trust-card">
+        <div class="trust-icon-box"><i class="fa-solid fa-headset"></i></div>
+        <h4>24/7 Customer Support</h4>
+        <p>Our dedicated technical specialists are available around the clock.</p>
+        <a href="{% url 'contact' %}" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="trust-card">
+        <div class="trust-icon-box"><i class="fa-solid fa-award"></i></div>
+        <h4>Official Warranty</h4>
+        <p>100% genuine brand new products covered with authentic warranties.</p>
+        <a href="{% url 'about' %}" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==========================================
+     9. APP PROMOTION BANNER
+     ========================================== -->
+<section class="section-spacer-sm">
+  <div class="container">
+    <div class="app-promo-card">
+      <!-- Left: Mockup Visual -->
+      <div style="text-align: center;">
+        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&auto=format&fit=crop&q=80" alt="Mobile App Mockup" class="app-mockup-img" style="border-radius: var(--radius-md);" loading="lazy">
+      </div>
+
+      <!-- Center: App Pitch -->
+      <div class="app-promo-info">
+        <h3>Shop Smarter with Nexus App</h3>
+        <p>Unlock exclusive mobile-only discounts, real-time live GPS order tracking, and 1-click biometric checkout.</p>
+        <div class="app-store-btns">
+          <a href="#" class="app-store-btn"><i class="fa-brands fa-apple" style="font-size: 18px;"></i> App Store</a>
+          <a href="#" class="app-store-btn"><i class="fa-brands fa-google-play" style="font-size: 16px;"></i> Google Play</a>
+        </div>
+      </div>
+
+      <!-- Right: Feature List & QR Code -->
+      <div>
+        <div class="app-features-list">
+          <div class="app-feature-item"><i class="fa-solid fa-bolt"></i> Exclusive App Deals</div>
+          <div class="app-feature-item"><i class="fa-solid fa-shield-check"></i> Faster & Secure Checkout</div>
+          <div class="app-feature-item"><i class="fa-solid fa-location-crosshairs"></i> Real-Time Order Tracking</div>
+          <div class="app-feature-item"><i class="fa-solid fa-headset"></i> Instant Support Chat</div>
+        </div>
+        <div class="qr-box">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://nexuselectronics.com/app" alt="Download QR" class="qr-code-img" loading="lazy">
+          <div style="font-size: 12px; color: var(--text-muted);">
+            Scan to Download<br><strong>Nexus App</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==========================================
+     10. BOTTOM TRIAD (TESTIMONIAL, NEWSLETTER, STATS)
+     ========================================== -->
+<section class="section-spacer">
+  <div class="container">
+    <div class="bottom-triad-grid">
+      <!-- Triad 1: Testimonials -->
+      <div class="triad-card triad-testimonial">
+        <div>
+          <div style="font-size: 12px; font-weight: 700; color: var(--primary); text-transform: uppercase; margin-bottom: 8px;">
+            WHAT OUR CUSTOMERS SAY
+          </div>
+          {% if testimonials %}
+            {% with t=testimonials.0 %}
+              <div class="testimonial-quote">
+                "{{ t.content }}"
+              </div>
+              <div class="testimonial-author">
+                <img src="{{ t.get_avatar_url }}" alt="{{ t.name }}" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;" loading="lazy">
+                <div class="testimonial-meta">
+                  <strong>{{ t.name }}</strong>
+                  <span><i class="fa-solid fa-circle-check"></i> {{ t.role_or_title }}</span>
+                </div>
+              </div>
+            {% endwith %}
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Triad 2: Join Nexus Club Newsletter -->
+      <div class="triad-card triad-newsletter">
+        <div>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <h3>Join Nexus Club</h3>
+            <i class="fa-regular fa-envelope" style="font-size: 28px; color: #A29BFE;"></i>
+          </div>
+          <p>Get exclusive flash offers, VIP new arrival alerts, and insider discounts delivered directly to your inbox.</p>
+        </div>
+
+        <form action="{% url 'newsletter_subscribe' %}" method="POST" class="newsletter-form">
+          {% csrf_token %}
+          <input type="email" name="email" placeholder="Enter your email address" class="newsletter-input" required>
+          <button type="submit" class="btn btn-primary btn-sm">Subscribe</button>
+        </form>
+      </div>
+
+      <!-- Triad 3: Trust Statistics -->
+      <div class="triad-card triad-stats">
+        <div class="stat-item">
+          <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+          <div>
+            <div class="stat-number">10K+</div>
+            <div class="stat-label">Happy Customers</div>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-icon"><i class="fa-solid fa-certificate"></i></div>
+          <div>
+            <div class="stat-number">{{ total_brands_count }}+</div>
+            <div class="stat-label">Top Tech Brands</div>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
+          <div>
+            <div class="stat-number">99.8%</div>
+            <div class="stat-label">Satisfaction Rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+  <script src="{% static 'js/slider.js' %}"></script>
+  <script src="{% static 'js/countdown.js' %}"></script>
 {% endblock %}

@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }} — Nexus Admin{% endblock %}
+
+{% block content %}
+<div class="container section-spacer" style="max-width: 800px;">
+  
+  <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">
+    <a href="{% url 'admin_dashboard' %}">Dashboard</a> / <a href="{% url 'admin_products' %}">Products</a> / {{ title }}
+  </div>
+
+  <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-sm);">
+    <h1 style="font-size: 26px; font-weight: 800; margin-bottom: 24px;">{{ title }}</h1>
+
+    {% if form.errors %}
+      <div style="padding: 12px 16px; background: #FEF2F2; border-left: 4px solid #EF4444; border-radius: var(--radius-sm); margin-bottom: 20px; font-size: 13px; color: #991B1B;">
+        Please correct the errors in the form below.
+      </div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label class="form-label">Product Name *</label>
+        {{ form.name }}
+        {{ form.name.errors }}
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          {{ form.category }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Brand / Manufacturer</label>
+          {{ form.brand }}
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+        <div class="form-group">
+          <label class="form-label">Price ($) *</label>
+          {{ form.price }}
+          {{ form.price.errors }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Discount Price ($)</label>
+          {{ form.discount_price }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Available Stock Quantity *</label>
+          {{ form.stock }}
+          {{ form.stock.errors }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Detailed Description</label>
+        {{ form.description }}
+      </div>
+
+      <!-- Dual Image Input: Upload File or Online Image URL -->
+      <div style="background: #F9FAFB; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 20px; margin-bottom: 20px;">
+        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;">Product Image (Choose Either Option)</h4>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Option 1: Upload File</label>
+            {{ form.image }}
+            {% if product and product.image %}
+              <div style="margin-top: 6px; font-size: 12px; color: var(--text-muted);">
+                Uploaded: <a href="{{ product.image.url }}" target="_blank">{{ product.image.name }}</a>
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Option 2: Online Image URL</label>
+            {{ form.image_url }}
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">e.g. Unsplash, CDN direct link</div>
+          </div>
+        </div>
+
+        {% if product and product.get_image_url %}
+          <div style="margin-top: 14px; display: flex; align-items: center; gap: 12px;">
+            <img src="{{ product.get_image_url }}" alt="Preview" style="width: 48px; height: 48px; object-fit: contain; border-radius: 4px; border: 1px solid var(--border-light); background: #FFF;" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=80';">
+            <span style="font-size: 12px; color: var(--text-muted);">Current Active Display Image</span>
+          </div>
+        {% endif %}
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="form-group">
+          <label class="form-label">Inventory Status</label>
+          {{ form.status }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deal Discount Override (%)</label>
+          {{ form.deal_discount_percent }}
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 24px; margin: 20px 0; padding: 16px; background: #F9FAFB; border-radius: var(--radius-sm);">
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">
+          {{ form.featured }} Featured on Home
+        </label>
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">
+          {{ form.is_deal }} Include in Flash Deals
+        </label>
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">
+          {{ form.is_active }} Active & Visible
+        </label>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 28px;">
+        <a href="{% url 'admin_products' %}" class="btn btn-outline btn-md">Cancel</a>
+        <button type="submit" class="btn btn-primary btn-md">
+          <i class="fa-solid fa-floppy-disk"></i> Save Product
+        </button>
+      </div>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

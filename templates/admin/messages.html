@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Customer Inquiries — Nexus Admin{% endblock %}
+
+{% block content %}
+<div class="container section-spacer">
+  
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+    <div>
+      <div style="font-size: 13px; color: var(--text-muted);"><a href="{% url 'admin_dashboard' %}">Dashboard</a> / Messages</div>
+      <h1 style="font-size: 28px; font-weight: 800;">Customer Inquiries</h1>
+    </div>
+  </div>
+
+  <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); overflow-x: auto;">
+    <table class="cart-table">
+      <thead>
+        <tr>
+          <th>Sender</th>
+          <th>Subject</th>
+          <th>Message</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in messages_list %}
+          <tr style="{% if not m.is_read %}background: #F9FAFB;{% endif %}">
+            <td>
+              <strong style="font-size: 14px;">{{ m.name }}</strong>
+              <div style="font-size: 12px; color: var(--text-muted);">{{ m.email }}</div>
+            </td>
+            <td style="font-size: 13px; font-weight: 600;">{{ m.subject }}</td>
+            <td style="font-size: 13px; color: #4B5563; max-width: 320px;">{{ m.message }}</td>
+            <td style="font-size: 12px; color: var(--text-muted);">{{ m.created_at|date:"M d, Y, h:i A" }}</td>
+            <td>
+              <span class="badge {% if m.is_read %}badge-green{% else %}badge-yellow{% endif %}">
+                {% if m.is_read %}Read{% else %}New{% endif %}
+              </span>
+            </td>
+            <td>
+              {% if not m.is_read %}
+                <a href="{% url 'admin_message_mark_read' message_id=m.id %}" class="btn btn-primary btn-sm" style="padding: 4px 8px; font-size: 11px;">
+                  Mark Read
+                </a>
+              {% else %}
+                <span style="font-size: 12px; color: var(--text-muted);">Resolved</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 40px; color: var(--text-muted);">No messages received yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+{% endblock %}

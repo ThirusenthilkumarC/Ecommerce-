@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} — Nexus Electronics{% endblock %}
+
+{% block content %}
+<div class="container section-spacer">
+  
+  <!-- Breadcrumbs -->
+  <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 28px; display: flex; align-items: center; gap: 8px;">
+    <a href="{% url 'home' %}">Home</a>
+    <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i>
+    <a href="{% url 'products' %}">Shop</a>
+    {% if product.category %}
+      <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i>
+      <a href="{% url 'products' %}?category={{ product.category.slug }}">{{ product.category.name }}</a>
+    {% endif %}
+    <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i>
+    <span style="color: var(--text-main); font-weight: 600;">{{ product.name }}</span>
+  </div>
+
+  <!-- Product Showcase Grid -->
+  <div class="product-detail-grid">
+    <!-- Left: Gallery Preview -->
+    <div class="product-gallery">
+      <div class="main-image-box">
+        <img src="{{ product.get_image_url }}" alt="{{ product.name }}" class="main-product-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=80';">
+      </div>
+    </div>
+
+    <!-- Right: Product Information & Purchasing -->
+    <div class="product-info-panel">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+        <span class="badge badge-purple">{{ product.brand }}</span>
+        {% if product.category %}
+          <span class="badge" style="background: #F3F4F6; color: #374151;">{{ product.category.name }}</span>
+        {% endif %}
+        {% if product.discount_percent > 0 %}
+          <span class="badge badge-discount">-{{ product.discount_percent }}% OFF</span>
+        {% endif %}
+      </div>
+
+      <h1 class="product-detail-title">{{ product.name }}</h1>
+
+      <div class="product-meta-row">
+        <div class="product-rating">
+          <i class="fa-solid fa-star"></i>
+          <span style="font-weight: 700; color: var(--text-main); font-size: 13px;">{{ product.rating }}</span>
+          <span class="product-rating-count">({{ product.review_count }} Customer Reviews)</span>
+        </div>
+        <span style="color: var(--border-color);">|</span>
+        <span style="font-size: 13px; color: var(--text-muted);">SKU: NEX-{{ product.id|stringformat:"04d" }}</span>
+      </div>
+
+      <!-- Price Box -->
+      <div class="detail-price-box">
+        <span class="detail-current-price">${{ product.current_price }}</span>
+        {% if product.discount_price %}
+          <span class="detail-orig-price">${{ product.price }}</span>
+          <span style="font-size: 12px; font-weight: 700; color: #00B894; background: rgba(0, 184, 148, 0.1); padding: 4px 8px; border-radius: var(--radius-xs);">
+            You Save ${{ product.price|floatformat:2 }} - ${{ product.discount_price|floatformat:2 }}
+          </span>
+        {% endif %}
+      </div>
+
+      <!-- Stock Status -->
+      <div>
+        {% if product.in_stock %}
+          <span class="stock-indicator in-stock">
+            <i class="fa-solid fa-circle-check"></i> In Stock ({{ product.stock }} units available)
+          </span>
+        {% else %}
+          <span class="stock-indicator out-stock">
+            <i class="fa-solid fa-circle-xmark"></i> Currently Out of Stock
+          </span>
+        {% endif %}
+      </div>
+
+      <p style="font-size: 14px; line-height: 1.6; color: #4B5563; margin-bottom: 24px;">
+        {{ product.description }}
+      </p>
+
+      <!-- Purchase Form -->
+      {% if product.in_stock %}
+        <form action="{% url 'add_to_cart' product_id=product.id %}" method="POST" style="margin-bottom: 32px;">
+          {% csrf_token %}
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;">
+            <label style="font-size: 14px; font-weight: 700; color: var(--text-main);">Quantity:</label>
+            <div class="quantity-picker">
+              <button type="button" class="qty-btn qty-dec" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
+              <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" class="qty-input" aria-label="Product quantity">
+              <button type="button" class="qty-btn qty-inc" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+            <button type="submit" class="btn btn-primary btn-lg" style="flex: 1; min-width: 180px;">
+              <i class="fa-solid fa-bag-shopping"></i> Add to Cart
+            </button>
+            <button type="submit" name="buy_now" value="1" class="btn btn-gradient btn-lg" style="flex: 1; min-width: 180px;">
+              <i class="fa-solid fa-bolt"></i> Buy Now
+            </button>
+            <button type="button" class="btn btn-outline btn-lg ajax-wishlist-btn" data-product-id="{{ product.id }}" aria-label="Wishlist">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+          </div>
+        </form>
+      {% else %}
+        <div style="padding: 16px; background: #FEF2F2; border-radius: var(--radius-sm); color: #991B1B; font-weight: 600; font-size: 14px; margin-bottom: 24px;">
+          This item is temporarily out of stock. Check back soon or contact support for backorder inquiries.
+        </div>
+      {% endif %}
+
+      <!-- Trust Guarantees -->
+      <div style="border-top: 1px solid var(--border-light); padding-top: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; font-size: 12px; color: #4B5563;">
+        <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-truck-fast text-green"></i> Free shipping over $100</div>
+        <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-shield-check text-green"></i> 1-Year Official Warranty</div>
+        <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-rotate-left text-green"></i> 30-Day Money Back Guarantee</div>
+        <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-credit-card text-green"></i> 100% Secure Checkout</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Related Products Section -->
+  {% if related_products %}
+    <div style="margin-top: 64px;">
+      <div class="section-header">
+        <h2 class="section-title">Related Products</h2>
+        <a href="{% url 'products' %}?category={{ product.category.slug }}" class="view-all-link">
+          Explore Category <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <div class="product-grid-4">
+        {% for r in related_products %}
+          <div class="product-card">
+            {% if r.discount_percent > 0 %}
+              <span class="badge badge-discount product-card-badge">-{{ r.discount_percent }}%</span>
+            {% endif %}
+
+            <button class="product-wishlist-btn ajax-wishlist-btn" data-product-id="{{ r.id }}" aria-label="Add to Wishlist">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+
+            <a href="{% url 'product_detail' slug=r.slug %}" class="product-img-wrapper">
+              <img src="{{ r.get_image_url }}" alt="{{ r.name }}" class="product-thumb" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=80';">
+            </a>
+
+            <div>
+              <div class="product-category-tag">{{ r.category.name|default:r.brand }}</div>
+              <a href="{% url 'product_detail' slug=r.slug %}">
+                <h3 class="product-title">{{ r.name }}</h3>
+              </a>
+
+              <div class="product-rating">
+                <i class="fa-solid fa-star"></i>
+                <span style="font-weight: 700; color: var(--text-main); font-size: 11px;">{{ r.rating }}</span>
+              </div>
+
+              <div class="product-bottom-row">
+                <div class="product-prices">
+                  <span class="product-price-current">${{ r.current_price }}</span>
+                </div>
+                <button class="product-cart-btn ajax-add-cart-btn" data-product-id="{{ r.id }}" aria-label="Add to Cart">
+                  <i class="fa-solid fa-bag-shopping"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

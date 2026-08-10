@@ -1,72 +1,215 @@
-{% extends 'masterpage.html' %}
+{% extends 'base.html' %}
+{% load static %}
 
-{% block title %}
-Products
-{% endblock %}
+{% block title %}Shop All Products — Nexus Electronics{% endblock %}
 
 {% block content %}
+<div class="container section-spacer">
+  
+  <!-- Breadcrumb -->
+  <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px; display: flex; align-items: center; gap: 8px;">
+    <a href="{% url 'home' %}">Home</a>
+    <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i>
+    <span style="color: var(--text-main); font-weight: 600;">Shop</span>
+    {% if selected_category %}
+      <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i>
+      <span style="color: var(--primary); font-weight: 600;">{{ selected_category|title }}</span>
+    {% endif %}
+  </div>
 
-<div class="container">
+  <div class="catalog-layout">
+    
+    <!-- ==========================================
+         FILTER SIDEBAR
+         ========================================== -->
+    <aside class="filter-sidebar">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+        <h3 style="font-size: 18px; font-weight: 800;"><i class="fa-solid fa-sliders"></i> Filters</h3>
+        <a href="{% url 'products' %}" style="font-size: 12px; color: var(--primary); font-weight: 600;">Reset All</a>
+      </div>
 
-    <h1 align="center">Product List</h1>
+      <form method="GET" action="{% url 'products' %}" id="filterForm">
+        {% if query %}
+          <input type="hidden" name="q" value="{{ query }}">
+        {% endif %}
 
-    <br>
+        <!-- Categories Filter -->
+        <div class="filter-group">
+          <h4 class="filter-title">Categories</h4>
+          <ul class="filter-list">
+            {% for cat in categories %}
+              <li>
+                <label class="filter-checkbox-label">
+                  <span>
+                    <input type="radio" name="category" value="{{ cat.slug }}" {% if selected_category == cat.slug %}checked{% endif %} onchange="this.form.submit()">
+                    {{ cat.name }}
+                  </span>
+                  <span class="filter-count">({{ cat.product_count }})</span>
+                </label>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
 
-    <table border="1" width="100%" cellpadding="10">
+        <!-- Brands Filter -->
+        {% if brands %}
+          <div class="filter-group">
+            <h4 class="filter-title">Brands</h4>
+            <ul class="filter-list">
+              {% for b in brands %}
+                <li>
+                  <label class="filter-checkbox-label">
+                    <span>
+                      <input type="radio" name="brand" value="{{ b }}" {% if selected_brand == b %}checked{% endif %} onchange="this.form.submit()">
+                      {{ b }}
+                    </span>
+                  </label>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
 
-        <tr bgcolor="#343a40" style="color:white;">
+        <!-- Price Range Filter -->
+        <div class="filter-group">
+          <h4 class="filter-title">Price Range</h4>
+          <div class="price-inputs">
+            <input type="number" name="min_price" placeholder="Min $" value="{{ min_price }}" class="price-input" min="0">
+            <span>–</span>
+            <input type="number" name="max_price" placeholder="Max $" value="{{ max_price }}" class="price-input" min="0">
+          </div>
+          <button type="submit" class="btn btn-outline btn-sm w-full" style="margin-top: 10px;">Apply Price</button>
+        </div>
 
-            <th>ID</th>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Description</th>
-            <th>Status</th>
+        <!-- Availability Filter -->
+        <div class="filter-group">
+          <h4 class="filter-title">Availability</h4>
+          <label class="filter-checkbox-label">
+            <span>
+              <input type="checkbox" name="in_stock" value="1" {% if in_stock_only == '1' %}checked{% endif %} onchange="this.form.submit()">
+              In Stock Only
+            </span>
+          </label>
+          <label class="filter-checkbox-label" style="margin-top: 8px;">
+            <span>
+              <input type="checkbox" name="deals" value="1" {% if deals_only == '1' %}checked{% endif %} onchange="this.form.submit()">
+              Special Deals Only
+            </span>
+          </label>
+        </div>
+      </form>
+    </aside>
 
-        </tr>
+    <!-- ==========================================
+         PRODUCT CATALOG GRID & TOOLBAR
+         ========================================== -->
+    <section>
+      <!-- Shop Toolbar -->
+      <div class="shop-toolbar">
+        <div style="font-size: 14px; color: var(--text-muted);">
+          Showing <strong>{{ products|length }}</strong> of <strong>{{ total_count }}</strong> products
+          {% if query %}
+            for <em>"{{ query }}"</em>
+          {% endif %}
+        </div>
 
-        {% for product in products %}
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <label for="sortSelect" style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Sort By:</label>
+          <select id="sortSelect" class="shop-sort-select" onchange="location = this.value;">
+            <option value="?{% if query %}q={{ query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}sort=featured" {% if sort == 'featured' %}selected{% endif %}>Featured</option>
+            <option value="?{% if query %}q={{ query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}sort=newest" {% if sort == 'newest' %}selected{% endif %}>Newest</option>
+            <option value="?{% if query %}q={{ query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}sort=price_low" {% if sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+            <option value="?{% if query %}q={{ query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}sort=price_high" {% if sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+            <option value="?{% if query %}q={{ query }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}sort=rating" {% if sort == 'rating' %}selected{% endif %}>Highest Rated</option>
+          </select>
+        </div>
+      </div>
 
-        <tr>
+      <!-- Products Grid -->
+      {% if products %}
+        <div class="product-grid-3">
+          {% for product in products %}
+            <div class="product-card">
+              {% if product.discount_percent > 0 %}
+                <span class="badge badge-discount product-card-badge">-{{ product.discount_percent }}%</span>
+              {% elif product.featured %}
+                <span class="badge badge-purple product-card-badge">HOT</span>
+              {% endif %}
 
-            <td>{{ product.id }}</td>
+              <button class="product-wishlist-btn ajax-wishlist-btn" data-product-id="{{ product.id }}" aria-label="Add to Wishlist">
+                <i class="fa-regular fa-heart"></i>
+              </button>
 
-            <td>
+              <a href="{% url 'product_detail' slug=product.slug %}" class="product-img-wrapper" style="height: 180px;">
+                <img src="{{ product.get_image_url }}" alt="{{ product.name }}" class="product-thumb" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=80';">
+              </a>
 
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" width="80">
-                {% else %}
-                    No Image
-                {% endif %}
+              <div>
+                <div class="product-category-tag">{{ product.category.name|default:product.brand }}</div>
+                <a href="{% url 'product_detail' slug=product.slug %}">
+                  <h3 class="product-title" style="font-size: 14px; height: 38px;">{{ product.name }}</h3>
+                </a>
 
-            </td>
+                <div class="product-rating">
+                  <i class="fa-solid fa-star"></i>
+                  <span style="font-weight: 700; color: var(--text-main); font-size: 12px;">{{ product.rating }}</span>
+                  <span class="product-rating-count">({{ product.review_count }})</span>
+                </div>
 
-            <td>{{ product.name }}</td>
+                <div class="product-bottom-row">
+                  <div class="product-prices">
+                    <span class="product-price-current" style="font-size: 17px;">${{ product.current_price }}</span>
+                    {% if product.discount_price %}
+                      <span class="product-price-original">${{ product.price }}</span>
+                    {% endif %}
+                  </div>
+                  <button class="product-cart-btn ajax-add-cart-btn" data-product-id="{{ product.id }}" aria-label="Add to Cart">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
 
-            <td>₹ {{ product.price }}</td>
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+          <div class="pagination">
+            {% if page_obj.has_previous %}
+              <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" class="page-btn" aria-label="Previous page">
+                <i class="fa-solid fa-chevron-left"></i>
+              </a>
+            {% endif %}
 
-            <td>{{ product.description }}</td>
+            {% for num in page_obj.paginator.page_range %}
+              {% if page_obj.number == num %}
+                <span class="page-btn active">{{ num }}</span>
+              {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" class="page-btn">{{ num }}</a>
+              {% endif %}
+            {% endfor %}
 
-            <td>{{ product.status }}</td>
+            {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}" class="page-btn" aria-label="Next page">
+                <i class="fa-solid fa-chevron-right"></i>
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
 
-        </tr>
+      {% else %}
+        <!-- Empty State -->
+        <div style="background: #FFFFFF; border-radius: var(--radius-md); padding: 60px 24px; text-align: center; border: 1px solid var(--border-color);">
+          <div style="width: 80px; height: 80px; background: var(--primary-light); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 20px;">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+          <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 8px;">No Products Found</h3>
+          <p style="color: var(--text-muted); max-width: 360px; margin: 0 auto 24px;">We couldn't find any products matching your current filters or search term.</p>
+          <a href="{% url 'products' %}" class="btn btn-primary btn-sm">Clear All Filters</a>
+        </div>
+      {% endif %}
+    </section>
 
-        {% empty %}
-
-        <tr>
-
-            <td colspan="6" align="center">
-
-                No Products Found
-
-            </td>
-
-        </tr>
-
-        {% endfor %}
-
-    </table>
-
+  </div>
 </div>
-
 {% endblock %}

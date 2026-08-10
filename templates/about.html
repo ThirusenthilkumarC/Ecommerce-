@@ -1,41 +1,82 @@
-{% extends 'masterpage.html' %}
+{% extends 'base.html' %}
+{% load static %}
 
-{% block title %}
-About
-{% endblock %}
+{% block title %}About Us — Nexus Electronics{% endblock %}
 
 {% block content %}
-
-<div class="container">
-
-    <h1>About Us</h1>
-
-    <p>
-        Welcome to our E-Commerce website. This project is developed using
-        <strong>Django, HTML, CSS, JavaScript and MySQL.</strong>
+<div class="container section-spacer">
+  
+  <!-- Hero Section -->
+  <div style="background: linear-gradient(135deg, #0B0B14 0%, #1A1A32 100%); border-radius: var(--radius-xl); padding: 70px 40px; color: #FFFFFF; text-align: center; margin-bottom: 56px; position: relative; overflow: hidden;">
+    <span class="badge badge-purple" style="margin-bottom: 16px;">OUR MISSION</span>
+    <h1 style="font-size: 42px; font-weight: 800; line-height: 1.1; margin-bottom: 16px; color: #FFFFFF;">
+      Empowering The World With Next-Gen Technology
+    </h1>
+    <p style="font-size: 16px; color: #9CA3AF; max-width: 600px; margin: 0 auto 32px; line-height: 1.6;">
+      Founded in 2026, Nexus was built with one clear purpose: to bridge the gap between premium cutting-edge electronics and seamless everyday online shopping.
     </p>
+    <div style="display: flex; justify-content: center; gap: 16px;">
+      <a href="{% url 'products' %}" class="btn btn-gradient btn-lg">Explore Catalog</a>
+      <a href="{% url 'contact' %}" class="btn btn-translucent btn-lg">Get in Touch</a>
+    </div>
+  </div>
 
-    <br>
+  <!-- Story & Vision Grid -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 64px;">
+    <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 36px; box-shadow: var(--shadow-sm);">
+      <div style="width: 48px; height: 48px; background: var(--primary-light); color: var(--primary); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 20px;">
+        <i class="fa-solid fa-bullseye"></i>
+      </div>
+      <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 12px;">Our Vision</h3>
+      <p style="color: #4B5563; font-size: 14px; line-height: 1.7;">
+        We envision a future where creators, gamers, engineers, and everyday consumers have instant access to authentic flagship hardware with guaranteed warranty protection and rapid express delivery.
+      </p>
+    </div>
 
-    <h2>Our Mission</h2>
+    <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 36px; box-shadow: var(--shadow-sm);">
+      <div style="width: 48px; height: 48px; background: rgba(0, 184, 148, 0.15); color: #00B894; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 20px;">
+        <i class="fa-solid fa-gem"></i>
+      </div>
+      <h3 style="font-size: 22px; font-weight: 800; margin-bottom: 12px;">The Nexus Standard</h3>
+      <p style="color: #4B5563; font-size: 14px; line-height: 1.7;">
+        Every single product in our catalog passes rigorous authenticity tests. We partner exclusively with world-renowned brands like Apple, Sony, Dell, Samsung, Canon, DJI, and Bose.
+      </p>
+    </div>
+  </div>
 
-    <p>
-        Our mission is to provide an easy and secure online shopping
-        experience for customers.
-    </p>
+  <!-- Why Choose Us -->
+  <div style="text-align: center; margin-bottom: 48px;">
+    <h2 style="font-size: 30px; font-weight: 800; margin-bottom: 12px;">Why Shoppers Trust Nexus</h2>
+    <p style="color: var(--text-muted); font-size: 15px;">Setting new standards for online electronics retail.</p>
+  </div>
 
-    <br>
-
-    <h2>Features</h2>
-
-    <ul>
-        <li>✔ Product Management</li>
-        <li>✔ Image Upload</li>
-        <li>✔ Admin Dashboard</li>
-        <li>✔ Fast & Secure</li>
-        <li>✔ Responsive Design</li>
-    </ul>
+  <div class="trust-grid" style="margin-bottom: 64px;">
+    <div class="trust-card">
+      <div class="trust-icon-box"><i class="fa-solid fa-truck-fast"></i></div>
+      <h4>Fast & Insured Shipping</h4>
+      <p>Real-time tracked delivery with express options worldwide.</p>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon-box"><i class="fa-solid fa-shield-check"></i></div>
+      <h4>100% Genuine Products</h4>
+      <p>Direct manufacturer supply chains with zero refurbished compromises.</p>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon-box"><i class="fa-solid fa-rotate-left"></i></div>
+      <h4>30-Day Easy Returns</h4>
+      <p>No questions asked return window on all sealed hardware.</p>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon-box"><i class="fa-solid fa-credit-card"></i></div>
+      <h4>Secure Transactions</h4>
+      <p>Bank-grade encrypted checkout with Cash on Delivery options.</p>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon-box"><i class="fa-solid fa-headset"></i></div>
+      <h4>24/7 Tech Experts</h4>
+      <p>Dedicated technical support representatives available around the clock.</p>
+    </div>
+  </div>
 
 </div>
-
 {% endblock %}

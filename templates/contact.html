@@ -1,47 +1,106 @@
-{% extends 'masterpage.html' %}
+{% extends 'base.html' %}
+{% load static %}
 
-{% block title %}
-Contact
-{% endblock %}
+{% block title %}Contact Us — Nexus Electronics{% endblock %}
 
 {% block content %}
+<div class="container section-spacer">
+  
+  <div style="text-align: center; margin-bottom: 48px;">
+    <span class="badge badge-purple" style="margin-bottom: 12px;">GET IN TOUCH</span>
+    <h1 style="font-size: 36px; font-weight: 800; margin-bottom: 12px;">We're Here to Help</h1>
+    <p style="color: var(--text-muted); font-size: 15px; max-width: 500px; margin: 0 auto;">
+      Have a question regarding product compatibility, order delivery, or corporate inquiries? Reach out to us.
+    </p>
+  </div>
 
-<div class="container">
+  <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; margin-bottom: 64px;">
+    
+    <!-- Contact Form -->
+    <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-sm);">
+      <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 24px;">Send Us a Message</h3>
 
-    <h1>Contact Us</h1>
+      <form method="POST" action="{% url 'contact' %}">
+        {% csrf_token %}
 
-    <form>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">Your Name *</label>
+            {{ form.name }}
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address *</label>
+            {{ form.email }}
+          </div>
+        </div>
 
-        <label>Name</label>
+        <div class="form-group">
+          <label class="form-label">Subject *</label>
+          {{ form.subject }}
+        </div>
 
-        <input
-            type="text"
-            placeholder="Enter your name">
+        <div class="form-group">
+          <label class="form-label">Message *</label>
+          {{ form.message }}
+        </div>
 
-        <label>Email</label>
-
-        <input
-            type="email"
-            placeholder="Enter your email">
-
-        <label>Subject</label>
-
-        <input
-            type="text"
-            placeholder="Enter subject">
-
-        <label>Message</label>
-
-        <textarea
-            rows="6"
-            placeholder="Enter your message"></textarea>
-
-        <button type="submit">
-            Send Message
+        <button type="submit" class="btn btn-primary btn-lg w-full" style="margin-top: 12px;">
+          <i class="fa-solid fa-paper-plane"></i> Send Message
         </button>
+      </form>
+    </div>
 
-    </form>
+    <!-- Contact Details & Office info -->
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      
+      <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-sm);">
+        <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;">Direct Support Channels</h4>
+        
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 18px;">
+              <i class="fa-solid fa-envelope"></i>
+            </div>
+            <div>
+              <div style="font-size: 12px; color: var(--text-muted);">Email Us</div>
+              <strong style="font-size: 14px;">support@nexuselectronics.com</strong>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(0, 184, 148, 0.15); color: #00B894; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+              <i class="fa-solid fa-phone"></i>
+            </div>
+            <div>
+              <div style="font-size: 12px; color: var(--text-muted);">Call Toll-Free</div>
+              <strong style="font-size: 14px;">+1 (800) 592-TECH (8324)</strong>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(253, 203, 110, 0.2); color: #D69E2E; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+              <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <div>
+              <div style="font-size: 12px; color: var(--text-muted);">Flagship Experience Hub</div>
+              <strong style="font-size: 14px;">742 Innovation Way, Tech District, San Francisco, CA</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: #111827; color: #FFFFFF; border-radius: var(--radius-lg); padding: 32px;">
+        <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Business Hours</h4>
+        <p style="font-size: 13px; color: #9CA3AF; line-height: 1.6;">
+          Monday – Friday: 8:00 AM – 9:00 PM EST<br>
+          Saturday – Sunday: 9:00 AM – 6:00 PM EST<br>
+          Online store operates 24/7 with automated dispatch.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
 
 </div>
-
 {% endblock %}
