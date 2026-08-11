@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}Manage Customers — Nexus Admin{% endblock %}
 
@@ -37,7 +38,7 @@
             <td style="font-size: 13px; color: var(--text-muted);">{{ c.date_joined|date:"M d, Y" }}</td>
             <td style="font-size: 14px; font-weight: 700;">{{ c.order_count }}</td>
             <td style="font-size: 14px; font-weight: 800; color: var(--text-main);">
-              ${{ c.total_spent|default:"0.00" }}
+              {{ c.total_spent|default:0|inr }}
             </td>
             <td>
               <span class="badge badge-green">Active</span>

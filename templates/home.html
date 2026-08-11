@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}Nexus Electronics — Future Technology Today{% endblock %}
 
@@ -24,7 +25,7 @@
             Future Technology <span>Today.</span>
           </h1>
           <p class="hero-description">
-            Explore the latest smart devices, ultrabooks, noise-canceling audio gear, and cutting-edge innovations built for your lifestyle.
+            Explore the latest flagship smartphones, ultrabooks, noise-canceling audio gear, and cutting-edge innovations built for your lifestyle.
           </p>
           <div class="hero-actions">
             <a href="{% url 'products' %}" class="btn btn-gradient btn-lg">
@@ -40,7 +41,7 @@
               <i class="fa-solid fa-truck-fast hero-trust-icon"></i>
               <div class="hero-trust-text">
                 <strong>Free Delivery</strong>
-                <span>On orders over $100</span>
+                <span>On orders over ₹5,000</span>
               </div>
             </div>
             <div class="hero-trust-item">
@@ -84,27 +85,37 @@
 
 
 <!-- ==========================================
-     2. CATEGORY SECTION (HORIZONTAL CARDS)
+     2. CATEGORY SECTION (RESPONSIVE CAROUSEL & CARDS)
      ========================================== -->
-<section class="section-spacer-sm" style="background: #FFFFFF; border-bottom: 1px solid var(--border-color);">
+<section class="section-spacer-sm category-section-wrapper">
   <div class="container">
-    <div class="categories-container">
-      {% for cat in categories %}
-        <a href="{% url 'products' %}?category={{ cat.slug }}" class="category-card">
+    <div class="category-carousel-wrapper">
+      <button class="cat-nav-btn cat-prev-btn" id="catPrevBtn" aria-label="Previous categories">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+      <div class="categories-container" id="categoryScrollContainer">
+        {% for cat in categories %}
+          <a href="{% url 'products' %}?category={{ cat.slug }}" class="category-card">
+            <div class="category-icon-box">
+              <i class="fa-solid {{ cat.icon|default:'fa-laptop' }}"></i>
+            </div>
+            <span class="category-name">{{ cat.name }}</span>
+            <span class="category-count">{{ cat.total_products }} Items</span>
+          </a>
+        {% endfor %}
+        <a href="{% url 'products' %}" class="category-card category-card-all">
           <div class="category-icon-box">
-            <i class="fa-solid {{ cat.icon|default:'fa-laptop' }}"></i>
+            <i class="fa-solid fa-layer-group"></i>
           </div>
-          <span class="category-name">{{ cat.name }}</span>
-          <span class="category-count">{{ cat.total_products }} Items</span>
+          <span class="category-name">View All</span>
+          <span class="category-count">Categories</span>
         </a>
-      {% endfor %}
-      <a href="{% url 'products' %}" class="category-card category-card-all">
-        <div class="category-icon-box">
-          <i class="fa-solid fa-layer-group"></i>
-        </div>
-        <span class="category-name">View All</span>
-        <span class="category-count">Categories</span>
-      </a>
+      </div>
+
+      <button class="cat-nav-btn cat-next-btn" id="catNextBtn" aria-label="Next categories">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
     </div>
   </div>
 </section>
@@ -122,7 +133,7 @@
           <div class="promo-tag">LIMITED TIME OFFER</div>
           <h3 class="promo-title">MacBook Air M2</h3>
           <p class="promo-desc">Supercharged by Apple M2 silicon for peak creative performance.</p>
-          <div class="promo-price">From $1099.00</div>
+          <div class="promo-price">From ₹94,990</div>
           <a href="{% url 'products' %}?category=laptops" class="btn btn-white btn-sm">
             Shop Now <i class="fa-solid fa-arrow-right"></i>
           </a>
@@ -291,9 +302,9 @@
 
             <div class="product-bottom-row">
               <div class="product-prices">
-                <span class="product-price-current">${{ product.current_price }}</span>
+                <span class="product-price-current">{{ product.current_price|inr }}</span>
                 {% if product.discount_price %}
-                  <span class="product-price-original">${{ product.price }}</span>
+                  <span class="product-price-original">{{ product.price|inr }}</span>
                 {% endif %}
               </div>
               <button class="product-cart-btn ajax-add-cart-btn" data-product-id="{{ product.id }}" aria-label="Add to Cart">
@@ -335,7 +346,7 @@
               {{ new_arrival_hero.description|truncatewords:15 }}
             </p>
             <div style="font-size: 24px; font-weight: 800; color: #FFFFFF; margin-bottom: 20px;">
-              ${{ new_arrival_hero.current_price }}
+              {{ new_arrival_hero.current_price|inr }}
             </div>
             <a href="{% url 'product_detail' slug=new_arrival_hero.slug %}" class="btn btn-gradient btn-sm">
               Explore Now <i class="fa-solid fa-arrow-right"></i>
@@ -375,7 +386,7 @@
 
               <div class="product-bottom-row">
                 <div class="product-prices">
-                  <span class="product-price-current">${{ product.current_price }}</span>
+                  <span class="product-price-current">{{ product.current_price|inr }}</span>
                 </div>
                 <button class="product-cart-btn ajax-add-cart-btn" data-product-id="{{ product.id }}" aria-label="Add to Cart">
                   <i class="fa-solid fa-bag-shopping"></i>
@@ -427,9 +438,9 @@
 
             <div class="product-bottom-row" style="border-top: 1px solid var(--dark-border);">
               <div class="product-prices">
-                <span class="product-price-current">${{ product.current_price }}</span>
+                <span class="product-price-current">{{ product.current_price|inr }}</span>
                 {% if product.discount_price %}
-                  <span class="product-price-original" style="color: #6B7280;">${{ product.price }}</span>
+                  <span class="product-price-original" style="color: #6B7280;">{{ product.price|inr }}</span>
                 {% endif %}
               </div>
               <button class="product-cart-btn ajax-add-cart-btn" data-product-id="{{ product.id }}" aria-label="Add to Cart">
@@ -462,7 +473,7 @@
       <div class="trust-card">
         <div class="trust-icon-box"><i class="fa-solid fa-truck-fast"></i></div>
         <h4>Fast & Free Delivery</h4>
-        <p>Free standard shipping on all domestic orders over ${{ free_shipping_threshold|default:100 }}.</p>
+        <p>Free standard shipping on all domestic orders over ₹5,000.</p>
         <a href="{% url 'about' %}" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
       </div>
 

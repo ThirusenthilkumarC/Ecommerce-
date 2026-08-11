@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}Shopping Cart — Nexus Electronics{% endblock %}
 
@@ -43,7 +44,7 @@
                   </div>
                 </td>
                 <td style="font-weight: 600; font-size: 14px;">
-                  ${{ item.product.current_price }}
+                  {{ item.product.current_price|inr }}
                 </td>
                 <td>
                   <div class="quantity-picker" style="border-radius: var(--radius-sm);">
@@ -61,7 +62,7 @@
                   </div>
                 </td>
                 <td style="font-weight: 800; font-size: 15px; color: var(--text-main);">
-                  ${{ item.get_item_subtotal }}
+                  {{ item.get_item_subtotal|inr }}
                 </td>
                 <td>
                   <a href="{% url 'remove_from_cart' item_id=item.id %}" style="color: #EF4444; font-size: 15px; padding: 6px;" title="Remove Item" onclick="return confirmAction('Remove this item from your cart?');">
@@ -90,7 +91,7 @@
         
         <div class="summary-row">
           <span>Items Subtotal</span>
-          <strong>${{ subtotal }}</strong>
+          <strong>{{ subtotal|inr }}</strong>
         </div>
 
         <div class="summary-row">
@@ -98,19 +99,19 @@
           {% if shipping == 0 %}
             <span style="color: #00B894; font-weight: 700;">FREE</span>
           {% else %}
-            <strong>${{ shipping }}</strong>
+            <strong>{{ shipping|inr }}</strong>
           {% endif %}
         </div>
 
-        {% if subtotal < 100 %}
+        {% if subtotal < 5000 %}
           <div style="background: #F0FDF4; border: 1px dashed #86EFAC; padding: 10px; border-radius: var(--radius-sm); font-size: 12px; color: #166534; margin: 12px 0;">
-            Add <strong>${{ 100|add:"-0" }}</strong> more of items to qualify for <strong>FREE Express Shipping</strong>!
+            Add items worth <strong>₹5,000</strong> or more to qualify for <strong>FREE Express Shipping</strong>!
           </div>
         {% endif %}
 
         <div class="summary-row summary-total">
           <span>Total</span>
-          <span>${{ grand_total }}</span>
+          <span>{{ grand_total|inr }}</span>
         </div>
 
         <a href="{% url 'checkout' %}" class="btn btn-gradient btn-lg w-full" style="margin-top: 24px;">

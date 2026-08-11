@@ -223,4 +223,23 @@
   .cart-table th:nth-child(2), .cart-table td:nth-child(2) {
     display: none;
   }
+
+  .cat-nav-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 11px;
+  }
+  .cat-prev-btn { left: -8px; }
+  .cat-next-btn { right: -8px; }
+  .category-card {
+    flex: 0 0 110px;
+    min-width: 110px;
+    max-width: 110px;
+    padding: 12px 6px;
+  }
+  .category-icon-box {
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+  }
 }

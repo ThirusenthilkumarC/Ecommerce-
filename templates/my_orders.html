@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}My Orders — Nexus Electronics{% endblock %}
 
@@ -38,7 +39,7 @@
             </div>
             <div>
               <span style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">TOTAL AMOUNT</span>
-              <div style="font-size: 16px; font-weight: 800; color: var(--primary);">${{ order.total_amount }}</div>
+              <div style="font-size: 16px; font-weight: 800; color: var(--primary);">{{ order.total_amount|inr }}</div>
             </div>
             <div>
               <span style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">STATUS</span>

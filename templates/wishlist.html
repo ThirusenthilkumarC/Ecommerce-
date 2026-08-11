@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}My Wishlist — Nexus Electronics{% endblock %}
 
@@ -44,7 +45,7 @@
 
             <div class="product-bottom-row">
               <div class="product-prices">
-                <span class="product-price-current">${{ item.product.current_price }}</span>
+                <span class="product-price-current">{{ item.product.current_price|inr }}</span>
               </div>
               <button class="product-cart-btn ajax-add-cart-btn" data-product-id="{{ item.product.id }}" aria-label="Add to Cart">
                 <i class="fa-solid fa-bag-shopping"></i>

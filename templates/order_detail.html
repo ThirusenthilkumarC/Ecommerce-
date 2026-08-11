@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}Invoice #{{ order.order_number }} — Nexus Electronics{% endblock %}
 
@@ -58,9 +59,9 @@
         {% for item in order.items.all %}
           <tr>
             <td style="font-weight: 700; font-size: 14px;">{{ item.product_name }}</td>
-            <td style="font-size: 14px;">${{ item.price }}</td>
+            <td style="font-size: 14px;">{{ item.price|inr }}</td>
             <td style="font-size: 14px; font-weight: 600;">{{ item.quantity }}</td>
-            <td style="font-weight: 800; font-size: 14px; color: var(--text-main);">${{ item.subtotal }}</td>
+            <td style="font-weight: 800; font-size: 14px; color: var(--text-main);">{{ item.subtotal|inr }}</td>
           </tr>
         {% endfor %}
       </tbody>
@@ -71,15 +72,15 @@
       <div style="width: 300px;">
         <div class="summary-row">
           <span>Items Subtotal</span>
-          <strong>${{ order.subtotal }}</strong>
+          <strong>{{ order.subtotal|inr }}</strong>
         </div>
         <div class="summary-row">
           <span>Shipping Fee</span>
-          <strong>{% if order.shipping_fee == 0 %}FREE{% else %}${{ order.shipping_fee }}{% endif %}</strong>
+          <strong>{% if order.shipping_fee == 0 %}FREE{% else %}{{ order.shipping_fee|inr }}{% endif %}</strong>
         </div>
         <div class="summary-row summary-total">
           <span>Total Paid</span>
-          <span>${{ order.total_amount }}</span>
+          <span>{{ order.total_amount|inr }}</span>
         </div>
       </div>
     </div>

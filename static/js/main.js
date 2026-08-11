@@ -72,10 +72,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      incBtn.addEventListener('click', () => {
-        let val = parseInt(input.value) || 1;
-        input.value = val + 1;
-      });
-    }
-  });
+  // 6. Category Horizontal Carousel Controls
+  const catScrollContainer = document.getElementById('categoryScrollContainer');
+  const catPrevBtn = document.getElementById('catPrevBtn');
+  const catNextBtn = document.getElementById('catNextBtn');
+
+  if (catScrollContainer && catPrevBtn && catNextBtn) {
+    const scrollAmount = 280;
+
+    catPrevBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      catScrollContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+
+    catNextBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      catScrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+
+    const updateArrows = () => {
+      const { scrollLeft, scrollWidth, clientWidth } = catScrollContainer;
+      // Fade out left arrow if at start
+      catPrevBtn.style.opacity = scrollLeft <= 10 ? '0.35' : '1';
+      catPrevBtn.style.pointerEvents = scrollLeft <= 10 ? 'none' : 'auto';
+      // Fade out right arrow if at end
+      const atEnd = scrollLeft + clientWidth >= scrollWidth - 10;
+      catNextBtn.style.opacity = atEnd ? '0.35' : '1';
+      catNextBtn.style.pointerEvents = atEnd ? 'none' : 'auto';
+    };
+
+    catScrollContainer.addEventListener('scroll', updateArrows, { passive: true });
+    window.addEventListener('resize', updateArrows);
+    // Initial check
+    setTimeout(updateArrows, 100);
+  }
 });

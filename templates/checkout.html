@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
-{% block title %}Checkout — Nexus Electronics{% endblock %}
+{% block title %}Secure Checkout — Nexus Electronics{% endblock %}
 
 {% block content %}
 <div class="container section-spacer">
@@ -14,84 +15,78 @@
     <span style="color: var(--text-main); font-weight: 600;">Checkout</span>
   </div>
 
-  <h1 style="font-size: 28px; font-weight: 800; margin-bottom: 32px;">Secure Checkout</h1>
+  <h1 style="font-size: 28px; font-weight: 800; margin-bottom: 32px;">Complete Your Order</h1>
 
-  <form action="{% url 'place_order' %}" method="POST">
+  <form method="POST" action="{% url 'place_order' %}">
     {% csrf_token %}
-    
-    <div class="cart-layout">
+
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; align-items: start;">
       
-      <!-- Left Column: Shipping & Delivery Information -->
-      <div class="checkout-card">
-        <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-          <i class="fa-solid fa-truck-ramp-box" style="color: var(--primary);"></i> 1. Shipping Address
-        </h3>
+      <!-- Left Column: Shipping & Payment Information -->
+      <div style="display: flex; flex-direction: column; gap: 24px;">
+        
+        <!-- 1. Customer & Shipping Address -->
+        <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 28px; box-shadow: var(--shadow-sm);">
+          <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+            <i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> 1. Delivery Details
+          </h3>
 
-        {% if form.errors %}
-          <div style="padding: 14px; background: #FEF2F2; border-left: 4px solid #EF4444; border-radius: var(--radius-sm); margin-bottom: 20px; font-size: 13px; color: #991B1B;">
-            Please correct the highlighted errors in the form below.
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">First Name *</label>
+              {{ form.first_name }}
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name *</label>
+              {{ form.last_name }}
+            </div>
           </div>
-        {% endif %}
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-          <div class="form-group">
-            <label class="form-label">First Name *</label>
-            {{ form.first_name }}
-            {{ form.first_name.errors }}
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">Email Address *</label>
+              {{ form.email }}
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone Number *</label>
+              {{ form.phone }}
+            </div>
           </div>
+
           <div class="form-group">
-            <label class="form-label">Last Name *</label>
-            {{ form.last_name }}
-            {{ form.last_name.errors }}
+            <label class="form-label">Street Address *</label>
+            {{ form.address }}
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">City *</label>
+              {{ form.city }}
+            </div>
+            <div class="form-group">
+              <label class="form-label">State *</label>
+              {{ form.state }}
+            </div>
+            <div class="form-group">
+              <label class="form-label">PIN / Postal Code *</label>
+              {{ form.postal_code }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Country *</label>
+            {{ form.country }}
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Delivery Instructions (Optional)</label>
+            {{ form.order_notes }}
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-          <div class="form-group">
-            <label class="form-label">Email Address *</label>
-            {{ form.email }}
-            {{ form.email.errors }}
-          </div>
-          <div class="form-group">
-            <label class="form-label">Phone Number *</label>
-            {{ form.phone }}
-            {{ form.phone.errors }}
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Street Address *</label>
-          {{ form.address }}
-          {{ form.address.errors }}
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
-          <div class="form-group">
-            <label class="form-label">City *</label>
-            {{ form.city }}
-          </div>
-          <div class="form-group">
-            <label class="form-label">State / Province *</label>
-            {{ form.state }}
-          </div>
-          <div class="form-group">
-            <label class="form-label">Postal Code *</label>
-            {{ form.postal_code }}
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Country *</label>
-          {{ form.country }}
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Order Delivery Notes (Optional)</label>
-          {{ form.order_notes }}
-        </div>
-
-        <div style="margin-top: 32px; border-top: 1px solid var(--border-light); padding-top: 24px;">
-          <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+        <!-- 2. Payment Method -->
+        <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 28px; box-shadow: var(--shadow-sm);">
+          <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
             <i class="fa-solid fa-credit-card" style="color: var(--primary);"></i> 2. Payment Method
           </h3>
 
@@ -100,14 +95,14 @@
               <input type="radio" name="payment_method" value="Cash on Delivery" checked style="accent-color: var(--primary);">
               <div>
                 <strong>Cash on Delivery (COD)</strong>
-                <div style="font-size: 12px; color: var(--text-muted);">Pay cash when your order arrives at your doorstep.</div>
+                <div style="font-size: 12px; color: var(--text-muted);">Pay cash or via UPI when your order arrives at your doorstep.</div>
               </div>
             </label>
 
             <label style="display: flex; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); cursor: pointer; background: #FAFAFA;">
               <input type="radio" name="payment_method" value="Test Payment" style="accent-color: var(--primary);">
               <div>
-                <strong>Instant Online Test Payment (Card / UPI)</strong>
+                <strong>Instant Online Test Payment (Card / UPI / NetBanking)</strong>
                 <div style="font-size: 12px; color: var(--text-muted);">Simulated sandbox payment - automatically marks order as Paid.</div>
               </div>
             </label>
@@ -127,17 +122,17 @@
                 <img src="{{ item.product.get_image_url }}" alt="{{ item.product.name }}" style="width: 44px; height: 44px; object-fit: contain; border-radius: 4px; border: 1px solid var(--border-light);" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=80';">
                 <div>
                   <div style="font-size: 13px; font-weight: 700; color: var(--text-main); line-height: 1.2;">{{ item.product.name }}</div>
-                  <div style="font-size: 11px; color: var(--text-muted);">Qty: {{ item.quantity }} × ${{ item.product.current_price }}</div>
+                  <div style="font-size: 11px; color: var(--text-muted);">Qty: {{ item.quantity }} × {{ item.product.current_price|inr }}</div>
                 </div>
               </div>
-              <strong style="font-size: 13px;">${{ item.get_item_subtotal }}</strong>
+              <strong style="font-size: 13px;">{{ item.get_item_subtotal|inr }}</strong>
             </div>
           {% endfor %}
         </div>
 
         <div class="summary-row">
           <span>Subtotal</span>
-          <strong>${{ subtotal }}</strong>
+          <strong>{{ subtotal|inr }}</strong>
         </div>
 
         <div class="summary-row">
@@ -145,13 +140,13 @@
           {% if shipping == 0 %}
             <span style="color: #00B894; font-weight: 700;">FREE</span>
           {% else %}
-            <strong>${{ shipping }}</strong>
+            <strong>{{ shipping|inr }}</strong>
           {% endif %}
         </div>
 
         <div class="summary-row summary-total">
           <span>Total to Pay</span>
-          <span>${{ grand_total }}</span>
+          <span>{{ grand_total|inr }}</span>
         </div>
 
         <button type="submit" class="btn btn-gradient btn-lg w-full" style="margin-top: 24px;">

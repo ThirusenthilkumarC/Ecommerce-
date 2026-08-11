@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}{{ product.name }} — Nexus Electronics{% endblock %}
 
@@ -54,11 +55,11 @@
 
       <!-- Price Box -->
       <div class="detail-price-box">
-        <span class="detail-current-price">${{ product.current_price }}</span>
+        <span class="detail-current-price">{{ product.current_price|inr }}</span>
         {% if product.discount_price %}
-          <span class="detail-orig-price">${{ product.price }}</span>
+          <span class="detail-orig-price">{{ product.price|inr }}</span>
           <span style="font-size: 12px; font-weight: 700; color: #00B894; background: rgba(0, 184, 148, 0.1); padding: 4px 8px; border-radius: var(--radius-xs);">
-            You Save ${{ product.price|floatformat:2 }} - ${{ product.discount_price|floatformat:2 }}
+            {{ product.discount_percent }}% Special Discount
           </span>
         {% endif %}
       </div>
@@ -113,7 +114,7 @@
 
       <!-- Trust Guarantees -->
       <div style="border-top: 1px solid var(--border-light); padding-top: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; font-size: 12px; color: #4B5563;">
-        <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-truck-fast text-green"></i> Free shipping over $100</div>
+        <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-truck-fast text-green"></i> Free shipping over ₹5,000</div>
         <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-shield-check text-green"></i> 1-Year Official Warranty</div>
         <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-rotate-left text-green"></i> 30-Day Money Back Guarantee</div>
         <div style="display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-credit-card text-green"></i> 100% Secure Checkout</div>
@@ -160,7 +161,7 @@
 
               <div class="product-bottom-row">
                 <div class="product-prices">
-                  <span class="product-price-current">${{ r.current_price }}</span>
+                  <span class="product-price-current">{{ r.current_price|inr }}</span>
                 </div>
                 <button class="product-cart-btn ajax-add-cart-btn" data-product-id="{{ r.id }}" aria-label="Add to Cart">
                   <i class="fa-solid fa-bag-shopping"></i>

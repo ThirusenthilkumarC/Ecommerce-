@@ -54,5 +54,6 @@ def ecommerce_context(request):
         'cart_count': cart_count,
         'wishlist_count': wishlist_count,
         'store_name': 'Nexus Electronics',
-        'free_shipping_threshold': 100,
+        'free_shipping_threshold': 5000,
+        'currency_symbol': '₹',
     }

@@ -168,9 +168,9 @@ class Cart(models.Model):
         subtotal = self.get_subtotal()
         if subtotal == Decimal("0.00"):
             return Decimal("0.00")
-        if subtotal >= Decimal("100.00"):
+        if subtotal >= Decimal("5000.00"):
             return Decimal("0.00")
-        return Decimal("10.00")
+        return Decimal("99.00")
 
     def get_grand_total(self):
         return self.get_subtotal() + self.get_shipping()

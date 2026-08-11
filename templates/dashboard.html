@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}Admin Dashboard — Nexus Electronics{% endblock %}
 
@@ -19,28 +20,22 @@
       <a href="{% url 'admin_category_add' %}" class="btn btn-outline btn-sm">
         <i class="fa-solid fa-folder-plus"></i> Add Category
       </a>
-      <a href="{% url 'admin_products' %}" class="btn btn-outline btn-sm">
-        <i class="fa-solid fa-boxes-stacked"></i> Manage Catalog
-      </a>
     </div>
   </div>
 
-  <!-- Admin Sub-Navigation Tabs -->
-  <div style="display: flex; gap: 8px; border-bottom: 2px solid var(--border-light); margin-bottom: 32px; overflow-x: auto; padding-bottom: 4px;">
-    <a href="{% url 'admin_dashboard' %}" class="btn btn-sm {% if request.path == '/dashboard/' or request.path == '/admin-dashboard/' %}btn-primary{% else %}btn-outline{% endif %}">
-      <i class="fa-solid fa-chart-line"></i> Overview
+  <!-- Admin Quick Navigation Tabs -->
+  <div style="display: flex; gap: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px; margin-bottom: 32px; overflow-x: auto;">
+    <a href="{% url 'dashboard' %}" class="btn btn-primary btn-sm">
+      <i class="fa-solid fa-chart-line"></i> Dashboard
     </a>
     <a href="{% url 'admin_products' %}" class="btn btn-outline btn-sm">
-      <i class="fa-solid fa-laptop"></i> Products ({{ total_products }})
-    </a>
-    <a href="{% url 'admin_categories' %}" class="btn btn-outline btn-sm">
-      <i class="fa-solid fa-tags"></i> Categories
+      <i class="fa-solid fa-microchip"></i> Products
     </a>
     <a href="{% url 'admin_orders' %}" class="btn btn-outline btn-sm">
-      <i class="fa-solid fa-box"></i> Orders ({{ total_orders }})
+      <i class="fa-solid fa-box"></i> Orders
     </a>
     <a href="{% url 'admin_customers' %}" class="btn btn-outline btn-sm">
-      <i class="fa-solid fa-users"></i> Customers ({{ total_customers }})
+      <i class="fa-solid fa-users"></i> Customers
     </a>
     <a href="{% url 'admin_messages' %}" class="btn btn-outline btn-sm">
       <i class="fa-solid fa-envelope"></i> Inquiries
@@ -53,11 +48,11 @@
     <div class="admin-stat-card">
       <div>
         <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">TOTAL REVENUE</div>
-        <h3>${{ total_sales }}</h3>
+        <h3>{{ total_sales|inr }}</h3>
         <div style="font-size: 11px; color: #00B894; font-weight: 600; margin-top: 4px;">Calculated from paid orders</div>
       </div>
       <div class="admin-stat-icon" style="background: rgba(0, 184, 148, 0.15); color: #00B894;">
-        <i class="fa-solid fa-dollar-sign"></i>
+        <i class="fa-solid fa-indian-rupee-sign"></i>
       </div>
     </div>
 
@@ -130,7 +125,7 @@
                   <div style="font-weight: 600; font-size: 13px;">{{ o.full_name }}</div>
                   <div style="font-size: 11px; color: var(--text-muted);">{{ o.email }}</div>
                 </td>
-                <td style="font-weight: 700; font-size: 14px;">${{ o.total_amount }}</td>
+                <td style="font-weight: 700; font-size: 14px;">{{ o.total_amount|inr }}</td>
                 <td>
                   <span class="badge {% if o.order_status == 'Delivered' %}badge-green{% elif o.order_status == 'Cancelled' %}badge-discount{% else %}badge-purple{% endif %}">
                     {{ o.order_status }}
@@ -165,7 +160,7 @@
               <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 1px solid var(--border-light);">
                 <div>
                   <div style="font-size: 13px; font-weight: 700;">{{ lp.name }}</div>
-                  <div style="font-size: 11px; color: var(--text-muted);">${{ lp.current_price }}</div>
+                  <div style="font-size: 11px; color: var(--text-muted);">{{ lp.current_price|inr }}</div>
                 </div>
                 <span class="badge badge-discount">{{ lp.stock }} left</span>
               </div>

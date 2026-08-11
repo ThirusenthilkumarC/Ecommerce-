@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}Manage Products — Nexus Admin{% endblock %}
 
@@ -57,9 +58,9 @@
             <td style="font-size: 13px;">{{ p.category.name|default:'—' }}</td>
             <td style="font-size: 13px; font-weight: 600;">{{ p.brand }}</td>
             <td style="font-size: 14px; font-weight: 700;">
-              ${{ p.current_price }}
+              {{ p.current_price|inr }}
               {% if p.discount_price %}
-                <span style="font-size: 11px; color: var(--text-muted); text-decoration: line-through;">${{ p.price }}</span>
+                <span style="font-size: 11px; color: var(--text-muted); text-decoration: line-through;">{{ p.price|inr }}</span>
               {% endif %}
             </td>
             <td style="font-size: 13px; font-weight: 700; {% if p.stock <= 5 %}color: #EF4444;{% endif %}">
