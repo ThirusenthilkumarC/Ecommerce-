@@ -68,11 +68,11 @@ document.addEventListener('click', (e) => {
 
     if (data.success) {
       showToast(data.message, 'success');
-      // Update cart count badge
-      const badges = document.querySelectorAll('.cart-badge-count');
+      // Update cart count badge across desktop and mobile
+      const badges = document.querySelectorAll('#navCartBadge, .mobile-nav-badge, .cart-badge-count');
       badges.forEach(b => {
         b.textContent = data.cart_count;
-        b.style.display = data.cart_count > 0 ? 'flex' : 'none';
+        b.style.display = data.cart_count > 0 ? 'inline-flex' : 'none';
       });
     } else {
       showToast(data.message, 'error');
@@ -113,11 +113,11 @@ document.addEventListener('click', (e) => {
       }
       showToast(data.message, 'info');
 
-      // Update wishlist count badge
-      const badges = document.querySelectorAll('.wishlist-badge-count');
-      badges.forEach(b => {
+      // Update wishlist count badges
+      const wBadges = document.querySelectorAll('#navWishlistBadge, .wishlist-badge-count');
+      wBadges.forEach(b => {
         b.textContent = data.wishlist_count;
-        b.style.display = data.wishlist_count > 0 ? 'flex' : 'none';
+        b.style.display = data.wishlist_count > 0 ? 'inline-flex' : 'none';
       });
     }
   })

@@ -7,87 +7,78 @@
 {% block content %}
 
 <!-- ==========================================
-     1. HERO SECTION (DARK & NEON VIOLET GLOW)
+     1. HERO SECTION (INTERACTIVE 3D WEBGL HERO)
      ========================================== -->
-<section class="hero-section">
+<section class="hero-section" id="heroSection">
   <div class="hero-glow hero-glow-right"></div>
   <div class="hero-glow hero-glow-left"></div>
 
   <div class="container">
-    <!-- Hero Slides -->
-    {% for product in hero_products %}
-      <div class="hero-grid hero-slide" id="heroSlide{{ forloop.counter }}" style="{% if not forloop.first %}display: none;{% endif %}">
-        <div class="hero-content">
-          <div class="hero-badge">
-            <i class="fa-solid fa-bolt"></i> NEW LAUNCH 2026
-          </div>
-          <h1 class="hero-title">
-            Future Technology <span>Today.</span>
-          </h1>
-          <p class="hero-description">
-            Explore the latest flagship smartphones, ultrabooks, noise-canceling audio gear, and cutting-edge innovations built for your lifestyle.
-          </p>
-          <div class="hero-actions">
-            <a href="{% url 'products' %}" class="btn btn-gradient btn-lg">
-              Shop Now <i class="fa-solid fa-arrow-right"></i>
-            </a>
-            <a href="{% url 'product_detail' slug=product.slug %}" class="btn btn-translucent btn-lg">
-              <i class="fa-solid fa-circle-play"></i> Explore {{ product.brand }}
-            </a>
-          </div>
+    <div class="hero-grid">
+      <!-- Left Column: Typography & CTAs -->
+      <div class="hero-content">
+        <div class="hero-badge reveal-on-scroll">
+          <i class="fa-solid fa-bolt"></i> NEXT GENERATION TECHNOLOGY
+        </div>
+        
+        <h1 class="hero-title reveal-on-scroll">
+          Technology<br>That Moves<br><span>With You.</span>
+        </h1>
+        
+        <p class="hero-description reveal-on-scroll">
+          Immerse yourself in next-generation flagship smartphones, ultrabooks, audiophile noise-canceling acoustics, and quantum-powered smart gear.
+        </p>
 
-          <div class="hero-trust-bar">
-            <div class="hero-trust-item">
-              <i class="fa-solid fa-truck-fast hero-trust-icon"></i>
-              <div class="hero-trust-text">
-                <strong>Free Delivery</strong>
-                <span>On orders over ₹5,000</span>
-              </div>
+        <div class="hero-actions reveal-on-scroll">
+          <a href="{% url 'products' %}" class="btn btn-gradient btn-lg">
+            Explore Products <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <a href="#exploreFutureSection" class="btn btn-translucent btn-lg">
+            <i class="fa-solid fa-cube"></i> 3D Showroom
+          </a>
+        </div>
+
+        <div class="hero-trust-bar reveal-on-scroll">
+          <div class="hero-trust-item">
+            <i class="fa-solid fa-truck-fast hero-trust-icon"></i>
+            <div class="hero-trust-text">
+              <strong>Free Delivery</strong>
+              <span>On orders over ₹5,000</span>
             </div>
-            <div class="hero-trust-item">
-              <i class="fa-solid fa-shield-check hero-trust-icon"></i>
-              <div class="hero-trust-text">
-                <strong>Secure Payment</strong>
-                <span>100% protected</span>
-              </div>
+          </div>
+          <div class="hero-trust-item">
+            <i class="fa-solid fa-shield-check hero-trust-icon"></i>
+            <div class="hero-trust-text">
+              <strong>100% Authentic</strong>
+              <span>Brand warranty backed</span>
             </div>
-            <div class="hero-trust-item">
-              <i class="fa-solid fa-arrow-rotate-left hero-trust-icon"></i>
-              <div class="hero-trust-text">
-                <strong>Easy Returns</strong>
-                <span>30 day return</span>
-              </div>
+          </div>
+          <div class="hero-trust-item">
+            <i class="fa-solid fa-arrow-rotate-left hero-trust-icon"></i>
+            <div class="hero-trust-text">
+              <strong>Easy Returns</strong>
+              <span>30 day replacement</span>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="hero-visual">
-          <div class="hero-circle-backdrop"></div>
-          <img src="{{ product.get_image_url }}" alt="{{ product.name }}" class="hero-product-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=700&auto=format&fit=crop&q=80';">
+      <!-- Right Column: Interactive Three.js 3D WebGL Canvas -->
+      <div class="hero-visual">
+        <div class="hero-circle-backdrop"></div>
+        <div class="three-canvas-container" id="hero3dContainer" style="min-height: 440px;">
+          <!-- Three.js Canvas injected automatically by three-hero.js -->
         </div>
       </div>
-    {% endfor %}
-
-    <!-- Carousel Controls -->
-    <div class="hero-nav-controls">
-      <button class="hero-arrow-btn" id="heroPrevBtn" aria-label="Previous slide">
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
-      <div class="hero-slide-indicator">
-        <span id="heroCurrentIndex">01</span> / <span id="heroTotalIndex">03</span>
-      </div>
-      <button class="hero-arrow-btn" id="heroNextBtn" aria-label="Next slide">
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
     </div>
   </div>
 </section>
 
 
 <!-- ==========================================
-     2. CATEGORY SECTION (RESPONSIVE CAROUSEL & CARDS)
+     2. CATEGORY SECTION (RESPONSIVE 3D CAROUSEL)
      ========================================== -->
-<section class="section-spacer-sm category-section-wrapper">
+<section class="section-spacer-sm category-section-wrapper reveal-on-scroll">
   <div class="container">
     <div class="category-carousel-wrapper">
       <button class="cat-nav-btn cat-prev-btn" id="catPrevBtn" aria-label="Previous categories">
@@ -96,7 +87,7 @@
 
       <div class="categories-container" id="categoryScrollContainer">
         {% for cat in categories %}
-          <a href="{% url 'products' %}?category={{ cat.slug }}" class="category-card">
+          <a href="{% url 'products' %}?category={{ cat.slug }}" class="category-card card-3d-tilt">
             <div class="category-icon-box">
               <i class="fa-solid {{ cat.icon|default:'fa-laptop' }}"></i>
             </div>
@@ -104,7 +95,7 @@
             <span class="category-count">{{ cat.total_products }} Items</span>
           </a>
         {% endfor %}
-        <a href="{% url 'products' %}" class="category-card category-card-all">
+        <a href="{% url 'products' %}" class="category-card category-card-all card-3d-tilt">
           <div class="category-icon-box">
             <i class="fa-solid fa-layer-group"></i>
           </div>
@@ -122,13 +113,88 @@
 
 
 <!-- ==========================================
-     3. PROMOTIONAL BENTO GRID
+     3. "EXPLORE THE FUTURE" — 3D PRODUCT SHOWROOM
+     ========================================== -->
+<section class="section-spacer showroom-section" id="exploreFutureSection">
+  <div class="showroom-glow showroom-glow-left"></div>
+  <div class="showroom-glow showroom-glow-right"></div>
+
+  <div class="container">
+    <div class="section-header" style="text-align: center; margin-bottom: 48px;">
+      <span class="badge badge-purple" style="margin-bottom: 12px;"><i class="fa-solid fa-cube"></i> INTERACTIVE 3D SHOWROOM</span>
+      <h2 class="section-title" style="color: #FFFFFF; font-size: 38px;">Explore The Future.</h2>
+      <p style="color: #9CA3AF; max-width: 580px; margin: 0 auto; font-size: 15px;">
+        Drag to rotate in full 360° space and click the interactive hotspots to inspect cutting-edge engineering specifications.
+      </p>
+    </div>
+
+    <div class="showroom-grid">
+      <!-- Left: Interactive 3D Orbit Viewport -->
+      <div class="showroom-interactive-viewport" id="showroomCanvasContainer">
+        <div id="showroomHotspotsOverlay"></div>
+        <div class="showroom-controls-hint">
+          <i class="fa-solid fa-arrows-rotate"></i> Drag 360° to rotate • Click hotspots for specs
+        </div>
+      </div>
+
+      <!-- Right: Technical Specification Highlights -->
+      <div>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          
+          <div class="glass-card" style="background: rgba(18, 18, 28, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); padding: 24px; border-radius: var(--radius-md);">
+            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+              <div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(139, 92, 246, 0.15); color: var(--neon-violet); display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                <i class="fa-solid fa-microchip"></i>
+              </div>
+              <div>
+                <h4 style="color: #FFFFFF; font-size: 16px; font-weight: 700;">3nm Neural Silicon Architecture</h4>
+                <div style="font-size: 12px; color: var(--electric-cyan);">35 Trillion Ops/Sec Processing</div>
+              </div>
+            </div>
+            <p style="font-size: 13px; color: #9CA3AF; line-height: 1.5;">
+              Next-gen unified neural engine running generative on-device intelligence with unprecedented battery efficiency.
+            </p>
+          </div>
+
+          <div class="glass-card" style="background: rgba(18, 18, 28, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); padding: 24px; border-radius: var(--radius-md);">
+            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
+              <div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(6, 182, 212, 0.15); color: var(--electric-cyan); display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                <i class="fa-solid fa-camera"></i>
+              </div>
+              <div>
+                <h4 style="color: #FFFFFF; font-size: 16px; font-weight: 700;">200MP Quad-Lens Optical Matrix</h4>
+                <div style="font-size: 12px; color: var(--neon-violet);">5x Periscope Optical Zoom</div>
+              </div>
+            </div>
+            <p style="font-size: 13px; color: #9CA3AF; line-height: 1.5;">
+              Zero shutter lag with multi-spectrum LiDAR depth detection and cinematic 8K ProRes video recording.
+            </p>
+          </div>
+
+          <div style="display: flex; gap: 14px; margin-top: 10px; flex-wrap: wrap;">
+            <a href="{% url 'products' %}?category=smartphones" class="btn btn-gradient btn-lg" style="flex: 1; min-width: 180px;">
+              Explore Smartphones <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <a href="{% url 'products' %}" class="btn btn-outline btn-lg" style="color: #FFFFFF; border-color: rgba(255, 255, 255, 0.2); flex: 1; min-width: 180px;">
+              View Catalog
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==========================================
+     4. PROMOTIONAL BENTO GRID
      ========================================== -->
 <section class="section-spacer">
   <div class="container">
     <div class="promo-grid">
       <!-- Card 1: Large MacBook Pro/Air Card -->
-      <div class="promo-card promo-card-large">
+      <div class="promo-card promo-card-large card-3d-tilt">
         <div>
           <div class="promo-tag">LIMITED TIME OFFER</div>
           <h3 class="promo-title">MacBook Air M2</h3>
@@ -144,7 +210,7 @@
       </div>
 
       <!-- Card 2: Vibrant Solid Purple Card (Mega Deal) -->
-      <div class="promo-card promo-card-purple">
+      <div class="promo-card promo-card-purple card-3d-tilt">
         <div>
           <div class="promo-tag">MEGA DEAL</div>
           <h3 class="promo-title">Grab Up to<br>40% Off</h3>
@@ -159,7 +225,7 @@
       </div>
 
       <!-- Card 3: Soft Blue Audio Card -->
-      <div class="promo-card promo-card-blue">
+      <div class="promo-card promo-card-blue card-3d-tilt">
         <div>
           <div class="promo-tag">AUDIO ESSENTIALS</div>
           <h3 class="promo-title" style="font-size: 22px;">Sound That Moves You.</h3>
@@ -174,7 +240,7 @@
       </div>
 
       <!-- Card 4: Soft Lime Green Camera Card -->
-      <div class="promo-card promo-card-lime">
+      <div class="promo-card promo-card-lime card-3d-tilt">
         <div>
           <div class="promo-tag">CREATOR GEAR</div>
           <h3 class="promo-title" style="font-size: 22px;">Capture Every Detail.</h3>
@@ -187,63 +253,6 @@
           <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=240&auto=format&fit=crop&q=80" alt="Camera" style="width: 100px; height: 100px; object-fit: contain;" loading="lazy">
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ==========================================
-     4. FEATURED COLLECTIONS
-     ========================================== -->
-<section class="section-spacer-sm">
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">Featured Collections</h2>
-      <a href="{% url 'products' %}" class="view-all-link">
-        View All <i class="fa-solid fa-arrow-right"></i>
-      </a>
-    </div>
-
-    <div class="collections-grid">
-      <!-- Collection 1: Apple -->
-      <a href="{% url 'products' %}?brand=Apple" class="collection-card">
-        <div class="collection-info">
-          <h4>Apple Collection</h4>
-          <p>Explore Ecosystem</p>
-          <span class="collection-link">Explore Now <i class="fa-solid fa-arrow-right"></i></span>
-        </div>
-        <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=200&auto=format&fit=crop&q=80" alt="Apple Collection" class="collection-img" loading="lazy">
-      </a>
-
-      <!-- Collection 2: Gaming -->
-      <a href="{% url 'products' %}?category=gaming" class="collection-card">
-        <div class="collection-info">
-          <h4>Gaming Zone</h4>
-          <p>Level Up Your Game</p>
-          <span class="collection-link">Explore Now <i class="fa-solid fa-arrow-right"></i></span>
-        </div>
-        <img src="https://images.unsplash.com/photo-1606318801954-d46d46d3360a?w=200&auto=format&fit=crop&q=80" alt="Gaming Gear" class="collection-img" loading="lazy">
-      </a>
-
-      <!-- Collection 3: Smart Living -->
-      <a href="{% url 'products' %}?category=smartwatches" class="collection-card">
-        <div class="collection-info">
-          <h4>Smart Living</h4>
-          <p>Innovate Your Life</p>
-          <span class="collection-link">Explore Now <i class="fa-solid fa-arrow-right"></i></span>
-        </div>
-        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&auto=format&fit=crop&q=80" alt="Smartwatch" class="collection-img" loading="lazy">
-      </a>
-
-      <!-- Collection 4: Work From Home -->
-      <a href="{% url 'products' %}?category=laptops" class="collection-card">
-        <div class="collection-info">
-          <h4>Work From Home</h4>
-          <p>Productivity Gear</p>
-          <span class="collection-link">Explore Now <i class="fa-solid fa-arrow-right"></i></span>
-        </div>
-        <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=200&auto=format&fit=crop&q=80" alt="Laptop" class="collection-img" loading="lazy">
-      </a>
     </div>
   </div>
 </section>
@@ -272,7 +281,7 @@
 
     <div class="product-grid-6">
       {% for product in flash_deals %}
-        <div class="product-card">
+        <div class="product-card card-3d-tilt">
           <!-- Discount Badge -->
           {% if product.discount_percent > 0 %}
             <span class="badge badge-discount product-card-badge">-{{ product.discount_percent }}%</span>
@@ -334,7 +343,7 @@
     <div class="new-arrivals-layout">
       <!-- Spotlight Product (Left Banner) -->
       {% if new_arrival_hero %}
-        <div class="new-arrival-feature-card">
+        <div class="new-arrival-feature-card card-3d-tilt">
           <div>
             <span class="badge" style="background: rgba(255, 255, 255, 0.15); color: #FFFFFF; margin-bottom: 12px;">
               JUST LAUNCHED
@@ -362,7 +371,7 @@
       <!-- Right Sub-grid Products -->
       <div class="product-grid-4" style="grid-template-columns: repeat(2, 1fr);">
         {% for product in new_arrival_sub %}
-          <div class="product-card">
+          <div class="product-card card-3d-tilt">
             <span class="badge badge-new product-card-badge">NEW</span>
             <button class="product-wishlist-btn ajax-wishlist-btn" data-product-id="{{ product.id }}" aria-label="Add to Wishlist">
               <i class="fa-regular fa-heart"></i>
@@ -415,7 +424,7 @@
 
     <div class="best-sellers-grid">
       {% for product in best_sellers %}
-        <div class="best-seller-card">
+        <div class="best-seller-card card-3d-tilt">
           <div style="display: flex; align-items: center; justify-content: space-between;">
             <span class="best-seller-rank">0{{ forloop.counter }}</span>
             <span class="best-seller-tag">BEST SELLER</span>
@@ -462,7 +471,7 @@
   <div class="container">
     <div class="trust-grid">
       <!-- Card 1 -->
-      <div class="trust-card">
+      <div class="trust-card card-3d-tilt">
         <div class="trust-icon-box"><i class="fa-solid fa-shield-halved"></i></div>
         <h4>100% Secure Payment</h4>
         <p>Your transactions are safe, encrypted, and backed by PCI DSS standard.</p>
@@ -470,7 +479,7 @@
       </div>
 
       <!-- Card 2 -->
-      <div class="trust-card">
+      <div class="trust-card card-3d-tilt">
         <div class="trust-icon-box"><i class="fa-solid fa-truck-fast"></i></div>
         <h4>Fast & Free Delivery</h4>
         <p>Free standard shipping on all domestic orders over ₹5,000.</p>
@@ -478,7 +487,7 @@
       </div>
 
       <!-- Card 3 -->
-      <div class="trust-card">
+      <div class="trust-card card-3d-tilt">
         <div class="trust-icon-box"><i class="fa-solid fa-arrow-rotate-left"></i></div>
         <h4>30-Day Easy Returns</h4>
         <p>Hassle-free returns and instant replacement within 30 days of receipt.</p>
@@ -486,7 +495,7 @@
       </div>
 
       <!-- Card 4 -->
-      <div class="trust-card">
+      <div class="trust-card card-3d-tilt">
         <div class="trust-icon-box"><i class="fa-solid fa-headset"></i></div>
         <h4>24/7 Customer Support</h4>
         <p>Our dedicated technical specialists are available around the clock.</p>
@@ -494,7 +503,7 @@
       </div>
 
       <!-- Card 5 -->
-      <div class="trust-card">
+      <div class="trust-card card-3d-tilt">
         <div class="trust-icon-box"><i class="fa-solid fa-award"></i></div>
         <h4>Official Warranty</h4>
         <p>100% genuine brand new products covered with authentic warranties.</p>
@@ -553,7 +562,7 @@
   <div class="container">
     <div class="bottom-triad-grid">
       <!-- Triad 1: Testimonials -->
-      <div class="triad-card triad-testimonial">
+      <div class="triad-card triad-testimonial card-3d-tilt">
         <div>
           <div style="font-size: 12px; font-weight: 700; color: var(--primary); text-transform: uppercase; margin-bottom: 8px;">
             WHAT OUR CUSTOMERS SAY
@@ -576,7 +585,7 @@
       </div>
 
       <!-- Triad 2: Join Nexus Club Newsletter -->
-      <div class="triad-card triad-newsletter">
+      <div class="triad-card triad-newsletter card-3d-tilt">
         <div>
           <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
             <h3>Join Nexus Club</h3>
@@ -593,7 +602,7 @@
       </div>
 
       <!-- Triad 3: Trust Statistics -->
-      <div class="triad-card triad-stats">
+      <div class="triad-card triad-stats card-3d-tilt">
         <div class="stat-item">
           <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
           <div>
@@ -625,6 +634,7 @@
 {% endblock %}
 
 {% block extra_scripts %}
-  <script src="{% static 'js/slider.js' %}"></script>
+  <script src="{% static 'js/three-hero.js' %}"></script>
+  <script src="{% static 'js/three-showroom.js' %}"></script>
   <script src="{% static 'js/countdown.js' %}"></script>
 {% endblock %}

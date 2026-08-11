@@ -25,22 +25,52 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 4500);
   });
 
-  // 3. Mobile Menu Drawer Toggle
+  // 3. Mobile Navigation Drawer Controller (Modal Pattern)
   const mobileToggle = document.getElementById('mobileMenuToggle');
   const mobileDrawer = document.getElementById('mobileDrawer');
+  const drawerOverlay = document.getElementById('mobileDrawerOverlay');
   const drawerClose = document.getElementById('drawerClose');
 
-  if (mobileToggle && mobileDrawer) {
-    mobileToggle.addEventListener('click', () => {
-      mobileDrawer.classList.toggle('active');
+  const openDrawer = () => {
+    if (mobileDrawer) mobileDrawer.classList.add('active');
+    if (drawerOverlay) drawerOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Lock scroll
+  };
+
+  const closeDrawer = () => {
+    if (mobileDrawer) mobileDrawer.classList.remove('active');
+    if (drawerOverlay) drawerOverlay.classList.remove('active');
+    document.body.style.overflow = ''; // Unlock scroll
+  };
+
+  if (mobileToggle) {
+    mobileToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openDrawer();
     });
   }
 
-  if (drawerClose && mobileDrawer) {
-    drawerClose.addEventListener('click', () => {
-      mobileDrawer.classList.remove('active');
-    });
+  if (drawerClose) {
+    drawerClose.addEventListener('click', closeDrawer);
   }
+
+  if (drawerOverlay) {
+    drawerOverlay.addEventListener('click', closeDrawer);
+  }
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeDrawer();
+    }
+  });
+
+  // Automatically close drawer if resized to desktop (>= 1024px)
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 1024) {
+      closeDrawer();
+    }
+  });
 
   // 4. User Account Dropdown Click Toggle
   const userAccountBtn = document.getElementById('userAccountBtn');
@@ -71,6 +101,16 @@ document.addEventListener('DOMContentLoaded', () => {
           input.value = val - 1;
         }
       });
+
+      incBtn.addEventListener('click', () => {
+        let val = parseInt(input.value) || 1;
+        let max = parseInt(input.getAttribute('max')) || 999;
+        if (val < max) {
+          input.value = val + 1;
+        }
+      });
+    }
+  });
 
   // 6. Category Horizontal Carousel Controls
   const catScrollContainer = document.getElementById('categoryScrollContainer');

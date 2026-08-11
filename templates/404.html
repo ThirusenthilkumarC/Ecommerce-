@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}404 — Page Not Found — Nexus Electronics{% endblock %}
+
+{% block content %}
+<div class="container section-spacer" style="text-align: center; max-width: 600px; margin: 40px auto;">
+  <div style="width: 90px; height: 90px; background: rgba(139, 92, 246, 0.15); color: var(--neon-violet); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 38px; margin: 0 auto 24px;">
+    <i class="fa-solid fa-satellite-dish"></i>
+  </div>
+  <span class="badge badge-purple" style="margin-bottom: 12px;">ERROR 404</span>
+  <h1 style="font-size: 32px; font-weight: 800; margin-bottom: 12px;">Signal Lost in Orbit</h1>
+  <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 28px;">
+    The tech gear or page you're searching for seems to have drifted into deep space. Let's get you back on track.
+  </p>
+  <div style="display: flex; gap: 14px; justify-content: center;">
+    <a href="{% url 'home' %}" class="btn btn-primary btn-md">
+      <i class="fa-solid fa-house"></i> Return Home
+    </a>
+    <a href="{% url 'products' %}" class="btn btn-outline btn-md">
+      <i class="fa-solid fa-bag-shopping"></i> Browse Catalog
+    </a>
+  </div>
+</div>
+{% endblock %}

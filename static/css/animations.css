@@ -1,0 +1,127 @@
+/* ==========================================================================
+   NEXUS ELECTRONICS — ADVANCED ANIMATIONS & MICRO-INTERACTIONS
+   ========================================================================== */
+
+/* Top Scroll Progress Indicator */
+.scroll-progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: transparent;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #6C5CE7, #8B5CF6, #06B6D4);
+  box-shadow: 0 0 10px rgba(108, 92, 231, 0.8), 0 0 16px rgba(6, 182, 212, 0.6);
+  transition: width 0.05s linear;
+}
+
+/* Custom Desktop Micro-Cursor */
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s ease-out, opacity 0.2s ease, width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
+  box-shadow: 0 0 8px #FFFFFF;
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid rgba(139, 92, 246, 0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+              height 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.2s ease, 
+              background-color 0.2s ease, 
+              opacity 0.2s ease;
+}
+
+/* Cursor Hover States */
+.cursor-hover .custom-cursor-ring {
+  width: 48px;
+  height: 48px;
+  border-color: #06B6D4;
+  background-color: rgba(6, 182, 212, 0.08);
+}
+
+.cursor-hover .custom-cursor-dot {
+  transform: translate(-50%, -50%) scale(1.5);
+  background: #06B6D4;
+}
+
+/* Hide Cursor on Touch/Mobile */
+@media (hover: none) and (pointer: coarse), (max-width: 1024px) {
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    display: none !important;
+  }
+}
+
+/* Fly-to-Cart Floating Clone */
+.flying-cart-item {
+  position: fixed;
+  z-index: 99999;
+  pointer-events: none;
+  border-radius: 50%;
+  object-fit: contain;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35), 0 0 20px var(--neon-violet-glow);
+  transition: transform 0.85s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.85s ease;
+}
+
+/* Navbar Cart Badge Pulse on Add */
+@keyframes cartBadgeBounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.45); }
+  70% { transform: scale(0.85); }
+  100% { transform: scale(1); }
+}
+
+.cart-badge-pulse {
+  animation: cartBadgeBounce 0.5s ease-out;
+}
+
+/* Scroll Reveal Classes (GSAP Compatible) */
+.reveal-on-scroll {
+  opacity: 1; /* Fallback */
+}
+
+.js-ready .reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    display: none !important;
+  }
+}

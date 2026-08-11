@@ -93,6 +93,30 @@
     </div>
   </div>
 
+  <!-- Live Chart.js Visualizers -->
+  <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 24px;">
+    <!-- Revenue Trend Chart -->
+    <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm);">
+      <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
+        <span><i class="fa-solid fa-chart-line" style="color: var(--primary);"></i> Revenue Performance (₹ INR)</span>
+        <span class="badge badge-green">+18.4% Growth</span>
+      </h3>
+      <div style="height: 220px; position: relative;">
+        <canvas id="adminRevenueChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Fulfillment Distribution Chart -->
+    <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm);">
+      <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
+        <span><i class="fa-solid fa-chart-pie" style="color: var(--primary);"></i> Order Status</span>
+      </h3>
+      <div style="height: 220px; position: relative;">
+        <canvas id="adminOrderStatusChart"></canvas>
+      </div>
+    </div>
+  </div>
+
   <!-- Operational Sections: Recent Orders & Inventory Alerts -->
   <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 32px; margin-top: 32px;">
     
@@ -195,4 +219,8 @@
   </div>
 
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+  <script src="{% static 'js/admin-charts.js' %}"></script>
 {% endblock %}
