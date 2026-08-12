@@ -18,40 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateScrollProgress();
   }
 
-  // 2. Custom Desktop Micro-Cursor
-  const cursorDot = document.getElementById('cursorDot');
-  const cursorRing = document.getElementById('cursorRing');
-
-  if (cursorDot && cursorRing && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let ringX = mouseX;
-    let ringY = mouseY;
-
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursorDot.style.left = `${mouseX}px`;
-      cursorDot.style.top = `${mouseY}px`;
-    }, { passive: true });
-
-    // Smooth Lerp loop for outer cursor ring
-    const renderCursorRing = () => {
-      ringX += (mouseX - ringX) * 0.18;
-      ringY += (mouseY - ringY) * 0.18;
-      cursorRing.style.left = `${ringX}px`;
-      cursorRing.style.top = `${ringY}px`;
-      requestAnimationFrame(renderCursorRing);
-    };
-    renderCursorRing();
-
-    // Hover state expansion on interactive elements
-    const interactiveSelectors = 'a, button, input, select, textarea, .product-card, .category-card, .hotspot-point, .promo-card';
-    document.querySelectorAll(interactiveSelectors).forEach(el => {
-      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-    });
-  }
 
   // 3. 3D Card Tilt Engine with Specular Light Glare
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;

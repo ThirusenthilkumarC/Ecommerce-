@@ -24,9 +24,6 @@
     <div class="scroll-progress-bar" id="scrollProgressBar"></div>
   </div>
 
-  <!-- Custom Desktop Micro-Cursor -->
-  <div class="custom-cursor-dot" id="cursorDot"></div>
-  <div class="custom-cursor-ring" id="cursorRing"></div>
 
   <!-- ==========================================
        TOP ANNOUNCEMENT BAR
@@ -60,21 +57,20 @@
   <header class="main-navbar">
     <div class="container">
       <div class="nav-wrapper">
-        <!-- Logo -->
-        <a href="{% url 'home' %}" class="brand-logo">
-          <div class="brand-icon">
-            <i class="fa-solid fa-bolt"></i>
-          </div>
-          <span>Nexus</span>
-        </a>
+        <!-- Left: Logo -->
+        <div class="nav-left">
+          <a href="{% url 'home' %}" class="brand-logo">
+            <div class="brand-icon">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+            <span>Nexus</span>
+          </a>
+        </div>
 
-        <!-- Desktop Navigation Links -->
+        <!-- Center: Navigation Links -->
         <ul class="nav-links">
           <li class="nav-item">
-            <a href="{% url 'home' %}" class="nav-link {% if request.path == '/' %}active{% endif %}">Home</a>
-          </li>
-          <li class="nav-item">
-            <a href="{% url 'products' %}" class="nav-link {% if 'products' in request.path %}active{% endif %}">
+            <a href="{% url 'products' %}" class="nav-link {% if 'products' in request.path and not request.GET.deals and not request.GET.sort and not request.GET.category and not request.GET.brand %}active{% endif %}">
               Shop <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
             </a>
             <div class="nav-dropdown">
@@ -97,76 +93,94 @@
             </div>
           </li>
           <li class="nav-item">
-            <a href="{% url 'products' %}?deals=1" class="nav-link">Deals</a>
+            <a href="{% url 'products' %}?deals=1" class="nav-link {% if request.GET.deals %}active{% endif %}">Deals</a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'products' %}?sort=newest" class="nav-link">New Arrivals</a>
+            <a href="{% url 'products' %}?sort=newest" class="nav-link {% if request.GET.sort == 'newest' %}active{% endif %}">New Arrivals</a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'about' %}" class="nav-link">About</a>
+            <a href="{% url 'products' %}" class="nav-link">
+              Brands <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+            </a>
+            <div class="nav-dropdown">
+              <a href="{% url 'products' %}?brand=Apple" class="nav-dropdown-item"><i class="fa-brands fa-apple"></i> Apple</a>
+              <a href="{% url 'products' %}?brand=Samsung" class="nav-dropdown-item"><i class="fa-solid fa-mobile"></i> Samsung</a>
+              <a href="{% url 'products' %}?brand=Sony" class="nav-dropdown-item"><i class="fa-solid fa-headphones"></i> Sony</a>
+              <a href="{% url 'products' %}?brand=Dell" class="nav-dropdown-item"><i class="fa-solid fa-laptop"></i> Dell</a>
+              <a href="{% url 'products' %}?brand=Razer" class="nav-dropdown-item"><i class="fa-solid fa-gamepad"></i> Razer</a>
+              <a href="{% url 'products' %}?brand=Logitech" class="nav-dropdown-item"><i class="fa-solid fa-keyboard"></i> Logitech</a>
+            </div>
           </li>
           <li class="nav-item">
-            <a href="{% url 'contact' %}" class="nav-link">Contact</a>
+            <a href="{% url 'about' %}" class="nav-link {% if 'about' in request.path %}active{% endif %}">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'contact' %}" class="nav-link {% if 'contact' in request.path %}active{% endif %}">Contact</a>
           </li>
         </ul>
 
-        <!-- Live Search Bar -->
-        <form action="{% url 'products' %}" method="GET" class="nav-search-form">
-          <i class="fa-solid fa-magnifying-glass search-icon"></i>
-          <input type="text" name="q" placeholder="Search gadgets, ultrabooks, audio..." class="nav-search-input" value="{{ request.GET.q|default:'' }}" autocomplete="off">
-        </form>
+        <!-- Right: Search & Actions -->
+        <div class="nav-right">
+          <!-- Live Search Bar -->
+          <form action="{% url 'products' %}" method="GET" class="nav-search-form">
+            <input type="text" name="q" placeholder="Search products..." class="nav-search-input" value="{{ request.GET.q|default:'' }}" autocomplete="off" aria-label="Search products">
+            <button type="submit" class="nav-search-btn" aria-label="Submit search">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </form>
 
-        <!-- Right User Actions -->
-        <div class="nav-actions">
-          <!-- Wishlist -->
-          <a href="{% url 'wishlist' %}" class="nav-icon-btn" title="Saved Items" aria-label="Wishlist">
-            <i class="fa-regular fa-heart"></i>
-            {% if wishlist_count > 0 %}
-              <span class="nav-badge" id="navWishlistBadge">{{ wishlist_count }}</span>
-            {% endif %}
-          </a>
+          <!-- User Actions -->
+          <div class="nav-actions">
+            <!-- Wishlist -->
+            <a href="{% url 'wishlist' %}" class="nav-icon-btn" title="Saved Items" aria-label="Wishlist">
+              <i class="fa-regular fa-heart"></i>
+              {% if wishlist_count > 0 %}
+                <span class="nav-badge" id="navWishlistBadge">{{ wishlist_count }}</span>
+              {% endif %}
+            </a>
 
-          <!-- Cart -->
-          <a href="{% url 'cart' %}" class="nav-icon-btn" id="navCartBtn" title="Shopping Cart" aria-label="Shopping Cart">
-            <i class="fa-solid fa-bag-shopping"></i>
-            <span class="nav-badge" id="navCartBadge">{{ cart_count|default:0 }}</span>
-          </a>
+            <!-- Cart -->
+            <a href="{% url 'cart' %}" class="nav-icon-btn" id="navCartBtn" title="Shopping Cart" aria-label="Shopping Cart">
+              <i class="fa-solid fa-bag-shopping"></i>
+              <span class="nav-badge" id="navCartBadge">{{ cart_count|default:0 }}</span>
+            </a>
 
-          <!-- User Account Dropdown -->
-          {% if user.is_authenticated %}
-            <div class="nav-user-menu" style="position: relative;">
-              <button class="nav-user-btn" id="userAccountBtn" aria-label="User Account">
-                <i class="fa-solid fa-circle-user"></i>
-                <span class="user-name-text">{{ user.first_name|default:user.username }}</span>
-                <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 4px;"></i>
-              </button>
-              <div class="nav-dropdown" id="userDropdown" style="right: 0; left: auto; min-width: 200px;">
-                <div style="padding: 10px 16px; border-bottom: 1px solid var(--border-light);">
-                  <div style="font-weight: 700; font-size: 13px;">{{ user.get_full_name|default:user.username }}</div>
-                  <div style="font-size: 11px; color: var(--text-muted);">{{ user.email }}</div>
+            <!-- User Account Dropdown -->
+            {% if user.is_authenticated %}
+              <div class="nav-user-menu" style="position: relative;">
+                <button class="nav-user-btn" id="userAccountBtn" aria-label="User Account">
+                  <i class="fa-solid fa-circle-user"></i>
+                  <span class="user-name-text">{{ user.first_name|default:user.username }}</span>
+                  <i class="fa-solid fa-chevron-down" style="font-size: 10px; margin-left: 4px;"></i>
+                </button>
+                <div class="nav-dropdown" id="userDropdown" style="right: 0; left: auto; min-width: 200px;">
+                  <div style="padding: 10px 16px; border-bottom: 1px solid var(--border-light);">
+                    <div style="font-weight: 700; font-size: 13px;">{{ user.get_full_name|default:user.username }}</div>
+                    <div style="font-size: 11px; color: var(--text-muted);">{{ user.email }}</div>
+                  </div>
+                  <a href="{% url 'profile' %}" class="nav-dropdown-item"><i class="fa-solid fa-id-card"></i> My Profile</a>
+                  <a href="{% url 'my_orders' %}" class="nav-dropdown-item"><i class="fa-solid fa-box-open"></i> Order History</a>
+                  {% if user.is_staff or user.is_superuser %}
+                    <a href="{% url 'admin_dashboard' %}" class="nav-dropdown-item" style="color: var(--primary); font-weight: 700;"><i class="fa-solid fa-chart-pie"></i> Store Admin</a>
+                  {% endif %}
+                  <div style="border-top: 1px solid var(--border-light); margin: 4px 0;"></div>
+                  <a href="{% url 'logout' %}" class="nav-dropdown-item text-red"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</a>
                 </div>
-                <a href="{% url 'profile' %}" class="nav-dropdown-item"><i class="fa-solid fa-id-card"></i> My Profile</a>
-                <a href="{% url 'my_orders' %}" class="nav-dropdown-item"><i class="fa-solid fa-box-open"></i> Order History</a>
-                {% if user.is_staff or user.is_superuser %}
-                  <a href="{% url 'admin_dashboard' %}" class="nav-dropdown-item" style="color: var(--primary); font-weight: 700;"><i class="fa-solid fa-chart-pie"></i> Store Admin</a>
-                {% endif %}
-                <div style="border-top: 1px solid var(--border-light); margin: 4px 0;"></div>
-                <a href="{% url 'logout' %}" class="nav-dropdown-item text-red"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</a>
               </div>
-            </div>
-          {% else %}
-            <a href="{% url 'login' %}" class="btn btn-outline btn-sm">
-              <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
-            </a>
-            <a href="{% url 'register' %}" class="btn btn-primary btn-sm">
-              Register
-            </a>
-          {% endif %}
+            {% else %}
+              <a href="{% url 'login' %}" class="btn btn-outline btn-sm">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
+              </a>
+              <a href="{% url 'register' %}" class="btn btn-primary btn-sm">
+                Register
+              </a>
+            {% endif %}
 
-          <!-- Mobile Hamburger Toggle -->
-          <button class="mobile-toggle-btn" id="mobileMenuToggle" aria-label="Toggle navigation menu">
-            <i class="fa-solid fa-bars"></i>
-          </button>
+            <!-- Mobile Hamburger Toggle -->
+            <button class="mobile-toggle-btn" id="mobileMenuToggle" aria-label="Toggle navigation menu">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -199,14 +213,15 @@
 
     <ul class="mobile-nav-list">
       <li><a href="{% url 'home' %}"><i class="fa-solid fa-house"></i> Home</a></li>
-      <li><a href="{% url 'products' %}"><i class="fa-solid fa-laptop"></i> All Products</a></li>
-      <li><a href="{% url 'products' %}?deals=1"><i class="fa-solid fa-fire text-red"></i> Flash Deals</a></li>
+      <li><a href="{% url 'products' %}"><i class="fa-solid fa-layer-group"></i> Shop All</a></li>
+      <li><a href="{% url 'products' %}#categories"><i class="fa-solid fa-grid-2"></i> Categories</a></li>
+      <li><a href="{% url 'products' %}?deals=1"><i class="fa-solid fa-fire text-red"></i> Deals</a></li>
       <li><a href="{% url 'products' %}?sort=newest"><i class="fa-solid fa-sparkles"></i> New Arrivals</a></li>
-      <li><a href="{% url 'cart' %}"><i class="fa-solid fa-bag-shopping"></i> My Cart ({{ cart_count|default:0 }})</a></li>
-      <li><a href="{% url 'wishlist' %}"><i class="fa-regular fa-heart"></i> Saved Items ({{ wishlist_count|default:0 }})</a></li>
-      <li><a href="{% url 'track_order' %}"><i class="fa-solid fa-truck-fast"></i> Track Order</a></li>
-      <li><a href="{% url 'about' %}"><i class="fa-solid fa-circle-info"></i> About Nexus</a></li>
-      <li><a href="{% url 'contact' %}"><i class="fa-solid fa-headset"></i> Contact & Support</a></li>
+      <li><a href="{% url 'products' %}?brand=Apple"><i class="fa-solid fa-award"></i> Brands</a></li>
+      <li><a href="{% url 'about' %}"><i class="fa-solid fa-circle-info"></i> About</a></li>
+      <li><a href="{% url 'contact' %}"><i class="fa-solid fa-headset"></i> Contact</a></li>
+      <li><a href="{% url 'wishlist' %}"><i class="fa-regular fa-heart"></i> Wishlist ({{ wishlist_count|default:0 }})</a></li>
+      <li><a href="{% url 'cart' %}"><i class="fa-solid fa-bag-shopping"></i> Cart ({{ cart_count|default:0 }})</a></li>
       {% if user.is_authenticated %}
         <li><a href="{% url 'profile' %}"><i class="fa-solid fa-user"></i> My Account</a></li>
         <li><a href="{% url 'my_orders' %}"><i class="fa-solid fa-box"></i> My Orders</a></li>

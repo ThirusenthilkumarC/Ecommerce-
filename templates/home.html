@@ -5,40 +5,42 @@
 {% block title %}Nexus Electronics — Future Technology Today{% endblock %}
 
 {% block content %}
-
 <!-- ==========================================
-     1. HERO SECTION (INTERACTIVE 3D WEBGL HERO)
+     1. HERO SECTION (REFERENCE DESIGN MATCH)
      ========================================== -->
-<section class="hero-section" id="heroSection">
+<section class="hero-section">
   <div class="hero-glow hero-glow-right"></div>
   <div class="hero-glow hero-glow-left"></div>
 
   <div class="container">
     <div class="hero-grid">
-      <!-- Left Column: Typography & CTAs -->
+      <!-- Left Column: Hero Content & CTAs -->
       <div class="hero-content">
-        <div class="hero-badge reveal-on-scroll">
-          <i class="fa-solid fa-bolt"></i> NEXT GENERATION TECHNOLOGY
+        <div class="hero-badge">
+          <i class="fa-solid fa-bolt"></i> NEW LAUNCH &bull; NEXUS ELECTRONICS
         </div>
-        
-        <h1 class="hero-title reveal-on-scroll">
-          Technology<br>That Moves<br><span>With You.</span>
+
+        <h1 class="hero-title">
+          Future<br>
+          Technology<br>
+          <span>Today.</span>
         </h1>
-        
-        <p class="hero-description reveal-on-scroll">
-          Immerse yourself in next-generation flagship smartphones, ultrabooks, audiophile noise-canceling acoustics, and quantum-powered smart gear.
+
+        <p class="hero-description">
+          Explore the latest smart devices and innovations. Discover smartphones, laptops, audio devices, gaming gear and smart gadgets at great prices.
         </p>
 
-        <div class="hero-actions reveal-on-scroll">
-          <a href="{% url 'products' %}" class="btn btn-gradient btn-lg">
-            Explore Products <i class="fa-solid fa-arrow-right"></i>
+        <div class="hero-actions">
+          <a href="{% url 'products' %}" class="btn btn-primary btn-lg">
+            Shop Now <i class="fa-solid fa-arrow-right" style="font-size: 12px; margin-left: 4px;"></i>
           </a>
-          <a href="#exploreFutureSection" class="btn btn-translucent btn-lg">
-            <i class="fa-solid fa-cube"></i> 3D Showroom
+          <a href="{% url 'products' %}?deals=1" class="btn btn-translucent btn-lg">
+            <i class="fa-solid fa-fire text-red"></i> Explore Deals
           </a>
         </div>
 
-        <div class="hero-trust-bar reveal-on-scroll">
+        <!-- Trust Badges Bar (Matching Reference) -->
+        <div class="hero-trust-bar">
           <div class="hero-trust-item">
             <i class="fa-solid fa-truck-fast hero-trust-icon"></i>
             <div class="hero-trust-text">
@@ -47,39 +49,73 @@
             </div>
           </div>
           <div class="hero-trust-item">
-            <i class="fa-solid fa-shield-check hero-trust-icon"></i>
+            <i class="fa-solid fa-shield-halved hero-trust-icon"></i>
             <div class="hero-trust-text">
-              <strong>100% Authentic</strong>
-              <span>Brand warranty backed</span>
+              <strong>Secure Payment</strong>
+              <span>100% protected</span>
             </div>
           </div>
           <div class="hero-trust-item">
             <i class="fa-solid fa-arrow-rotate-left hero-trust-icon"></i>
             <div class="hero-trust-text">
               <strong>Easy Returns</strong>
-              <span>30 day replacement</span>
+              <span>30-day return</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Right Column: Interactive Three.js 3D WebGL Canvas -->
+      <!-- Right Column: Real High-Quality Electronics Product Showcase -->
       <div class="hero-visual">
-        <div class="hero-circle-backdrop"></div>
-        <div class="three-canvas-container" id="hero3dContainer" style="min-height: 440px;">
-          <!-- Three.js Canvas injected automatically by three-hero.js -->
+        <div class="hero-image-wrapper">
+          <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=700&auto=format&fit=crop&q=80" 
+               alt="Flagship Titanium Smartphone" 
+               class="hero-main-img"
+               loading="eager"
+               onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=700&auto=format&fit=crop&q=80';">
+          
+          <!-- Floating Spec Pill 1 -->
+          <div class="hero-float-card hero-float-card-top">
+            <div class="hero-float-icon" style="background: var(--primary);">
+              <i class="fa-solid fa-truck-fast"></i>
+            </div>
+            <div>
+              <div style="font-size: 12px; font-weight: 800;">Free Shipping</div>
+              <div style="font-size: 10px; color: #9CA3AF;">Orders over ₹5,000</div>
+            </div>
+          </div>
+
+          <!-- Floating Spec Pill 2 -->
+          <div class="hero-float-card hero-float-card-bottom">
+            <div class="hero-float-icon" style="background: var(--emerald-green);">
+              <i class="fa-solid fa-tag"></i>
+            </div>
+            <div>
+              <div style="font-size: 12px; font-weight: 800;">Up to 40% Off</div>
+              <div style="font-size: 10px; color: var(--emerald-green); font-weight: 700;">Limited Flash Deals</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-
 <!-- ==========================================
-     2. CATEGORY SECTION (RESPONSIVE 3D CAROUSEL)
+     2. CATEGORY HORIZONTAL CAROUSEL (8 ITEMS + VIEW ALL)
      ========================================== -->
-<section class="section-spacer-sm category-section-wrapper reveal-on-scroll">
+<section class="section-spacer">
   <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Shop by Category</h2>
+        <p style="color: var(--text-muted); font-size: 14px;">Explore our comprehensive range of consumer electronics.</p>
+      </div>
+      <a href="{% url 'products' %}" class="view-all-link">
+        Explore All Products <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+
     <div class="category-carousel-wrapper">
       <button class="cat-nav-btn cat-prev-btn" id="catPrevBtn" aria-label="Previous categories">
         <i class="fa-solid fa-chevron-left"></i>
@@ -87,20 +123,22 @@
 
       <div class="categories-container" id="categoryScrollContainer">
         {% for cat in categories %}
-          <a href="{% url 'products' %}?category={{ cat.slug }}" class="category-card card-3d-tilt">
+          <a href="{% url 'products' %}?category={{ cat.slug }}" class="category-card">
             <div class="category-icon-box">
               <i class="fa-solid {{ cat.icon|default:'fa-laptop' }}"></i>
             </div>
-            <span class="category-name">{{ cat.name }}</span>
-            <span class="category-count">{{ cat.total_products }} Items</span>
+            <div class="category-name">{{ cat.name }}</div>
+            <div class="category-count">{{ cat.total_products|default:12 }} Items</div>
           </a>
         {% endfor %}
-        <a href="{% url 'products' %}" class="category-card category-card-all card-3d-tilt">
-          <div class="category-icon-box">
-            <i class="fa-solid fa-layer-group"></i>
+
+        <!-- View All Categories Card (Matching Reference Design) -->
+        <a href="{% url 'products' %}" class="category-card category-card-all">
+          <div class="category-icon-box" style="background: #0A0A14; color: #FFFFFF;">
+            <i class="fa-solid fa-grid-2"></i>
           </div>
-          <span class="category-name">View All</span>
-          <span class="category-count">Categories</span>
+          <div class="category-name" style="color: var(--text-main);">View All Categories</div>
+          <div class="category-count">70+ Products</div>
         </a>
       </div>
 
@@ -111,215 +149,235 @@
   </div>
 </section>
 
-
 <!-- ==========================================
-     3. "EXPLORE THE FUTURE" — 3D PRODUCT SHOWROOM
+     3. PROMOTIONAL BENTO GRID (MATCHING 4 REFERENCE CARDS)
      ========================================== -->
-<section class="section-spacer showroom-section" id="exploreFutureSection">
-  <div class="showroom-glow showroom-glow-left"></div>
-  <div class="showroom-glow showroom-glow-right"></div>
-
-  <div class="container">
-    <div class="section-header" style="text-align: center; margin-bottom: 48px;">
-      <span class="badge badge-purple" style="margin-bottom: 12px;"><i class="fa-solid fa-cube"></i> INTERACTIVE 3D SHOWROOM</span>
-      <h2 class="section-title" style="color: #FFFFFF; font-size: 38px;">Explore The Future.</h2>
-      <p style="color: #9CA3AF; max-width: 580px; margin: 0 auto; font-size: 15px;">
-        Drag to rotate in full 360° space and click the interactive hotspots to inspect cutting-edge engineering specifications.
-      </p>
-    </div>
-
-    <div class="showroom-grid">
-      <!-- Left: Interactive 3D Orbit Viewport -->
-      <div class="showroom-interactive-viewport" id="showroomCanvasContainer">
-        <div id="showroomHotspotsOverlay"></div>
-        <div class="showroom-controls-hint">
-          <i class="fa-solid fa-arrows-rotate"></i> Drag 360° to rotate • Click hotspots for specs
-        </div>
-      </div>
-
-      <!-- Right: Technical Specification Highlights -->
-      <div>
-        <div style="display: flex; flex-direction: column; gap: 20px;">
-          
-          <div class="glass-card" style="background: rgba(18, 18, 28, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); padding: 24px; border-radius: var(--radius-md);">
-            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
-              <div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(139, 92, 246, 0.15); color: var(--neon-violet); display: flex; align-items: center; justify-content: center; font-size: 18px;">
-                <i class="fa-solid fa-microchip"></i>
-              </div>
-              <div>
-                <h4 style="color: #FFFFFF; font-size: 16px; font-weight: 700;">3nm Neural Silicon Architecture</h4>
-                <div style="font-size: 12px; color: var(--electric-cyan);">35 Trillion Ops/Sec Processing</div>
-              </div>
-            </div>
-            <p style="font-size: 13px; color: #9CA3AF; line-height: 1.5;">
-              Next-gen unified neural engine running generative on-device intelligence with unprecedented battery efficiency.
-            </p>
-          </div>
-
-          <div class="glass-card" style="background: rgba(18, 18, 28, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); padding: 24px; border-radius: var(--radius-md);">
-            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 8px;">
-              <div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(6, 182, 212, 0.15); color: var(--electric-cyan); display: flex; align-items: center; justify-content: center; font-size: 18px;">
-                <i class="fa-solid fa-camera"></i>
-              </div>
-              <div>
-                <h4 style="color: #FFFFFF; font-size: 16px; font-weight: 700;">200MP Quad-Lens Optical Matrix</h4>
-                <div style="font-size: 12px; color: var(--neon-violet);">5x Periscope Optical Zoom</div>
-              </div>
-            </div>
-            <p style="font-size: 13px; color: #9CA3AF; line-height: 1.5;">
-              Zero shutter lag with multi-spectrum LiDAR depth detection and cinematic 8K ProRes video recording.
-            </p>
-          </div>
-
-          <div style="display: flex; gap: 14px; margin-top: 10px; flex-wrap: wrap;">
-            <a href="{% url 'products' %}?category=smartphones" class="btn btn-gradient btn-lg" style="flex: 1; min-width: 180px;">
-              Explore Smartphones <i class="fa-solid fa-arrow-right"></i>
-            </a>
-            <a href="{% url 'products' %}" class="btn btn-outline btn-lg" style="color: #FFFFFF; border-color: rgba(255, 255, 255, 0.2); flex: 1; min-width: 180px;">
-              View Catalog
-            </a>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ==========================================
-     4. PROMOTIONAL BENTO GRID
-     ========================================== -->
-<section class="section-spacer">
+<section class="section-spacer-sm">
   <div class="container">
     <div class="promo-grid">
-      <!-- Card 1: Large MacBook Pro/Air Card -->
-      <div class="promo-card promo-card-large card-3d-tilt">
+      <!-- Card 1: MacBook Air M2 (Dark Obsidian Large Card) -->
+      <div class="promo-card promo-card-large">
         <div>
           <div class="promo-tag">LIMITED TIME OFFER</div>
-          <h3 class="promo-title">MacBook Air M2</h3>
-          <p class="promo-desc">Supercharged by Apple M2 silicon for peak creative performance.</p>
-          <div class="promo-price">From ₹94,990</div>
-          <a href="{% url 'products' %}?category=laptops" class="btn btn-white btn-sm">
+          <h3 class="promo-title">MacBook Air M2<br><span style="font-size: 16px; font-weight: 500; opacity: 0.85;">Supercharged by M2.</span></h3>
+          <div class="promo-price" style="margin-top: 8px;">From ₹1,09,990</div>
+          <a href="{% url 'products' %}?brand=Apple" class="btn btn-white btn-sm" style="margin-top: 14px;">
             Shop Now <i class="fa-solid fa-arrow-right"></i>
           </a>
         </div>
-        <div style="text-align: center; margin-top: 20px;">
-          <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&auto=format&fit=crop&q=80" alt="MacBook Air" class="promo-image" style="border-radius: var(--radius-md);" loading="lazy">
-        </div>
+        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&auto=format&fit=crop&q=80" 
+             alt="MacBook Air M2" 
+             class="promo-image"
+             loading="lazy"
+             style="max-height: 210px; align-self: flex-end;">
       </div>
 
-      <!-- Card 2: Vibrant Solid Purple Card (Mega Deal) -->
-      <div class="promo-card promo-card-purple card-3d-tilt">
+      <!-- Card 2: Grab Up to 40% Off (Vibrant Purple Mega Deal) -->
+      <div class="promo-card promo-card-purple">
         <div>
           <div class="promo-tag">MEGA DEAL</div>
-          <h3 class="promo-title">Grab Up to<br>40% Off</h3>
-          <p class="promo-desc">On selected premium audio and smart wearables.</p>
+          <h3 class="promo-title">Grab Up to 40% Off</h3>
+          <p class="promo-desc" style="font-size: 13px;">On selected premium audio & smart gear.</p>
           <a href="{% url 'products' %}?deals=1" class="btn btn-white btn-sm">
             Shop Deals <i class="fa-solid fa-arrow-right"></i>
           </a>
         </div>
-        <div style="text-align: center; margin-top: 20px;">
-          <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=80" alt="Studio Headphones" class="promo-image" style="border-radius: var(--radius-md);" loading="lazy">
-        </div>
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&auto=format&fit=crop&q=80" 
+             alt="Premium Audio Deals" 
+             class="promo-image"
+             loading="lazy"
+             style="max-height: 140px; align-self: flex-end;">
       </div>
 
-      <!-- Card 3: Soft Blue Audio Card -->
-      <div class="promo-card promo-card-blue card-3d-tilt">
+      <!-- Card 3: Sound That Moves You (Soft Light Blue Card) -->
+      <div class="promo-card promo-card-blue">
         <div>
-          <div class="promo-tag">AUDIO ESSENTIALS</div>
-          <h3 class="promo-title" style="font-size: 22px;">Sound That Moves You.</h3>
-          <p class="promo-desc" style="font-size: 13px;">Premium audio experience for every moment.</p>
-          <a href="{% url 'products' %}?category=audio" class="view-all-link">
+          <h3 class="promo-title" style="font-size: 20px;">Sound That Moves You.</h3>
+          <p class="promo-desc" style="font-size: 12px; margin-bottom: 12px;">Premium audio experience for every moment.</p>
+          <a href="{% url 'products' %}?category=audio" class="btn btn-primary btn-sm">
             Shop Audio <i class="fa-solid fa-arrow-right"></i>
           </a>
         </div>
-        <div style="align-self: flex-end; margin-top: -20px;">
-          <img src="https://images.unsplash.com/photo-1545454675-3531b543be5d?w=240&auto=format&fit=crop&q=80" alt="Speaker" style="width: 100px; height: 100px; object-fit: contain;" loading="lazy">
-        </div>
+        <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300&auto=format&fit=crop&q=80" 
+             alt="Audio Experience" 
+             class="promo-image"
+             loading="lazy"
+             style="max-height: 110px; align-self: flex-end;">
       </div>
 
-      <!-- Card 4: Soft Lime Green Camera Card -->
-      <div class="promo-card promo-card-lime card-3d-tilt">
+      <!-- Card 4: Capture Every Detail (Soft Lime/Mint Card) -->
+      <div class="promo-card promo-card-lime">
         <div>
-          <div class="promo-tag">CREATOR GEAR</div>
-          <h3 class="promo-title" style="font-size: 22px;">Capture Every Detail.</h3>
-          <p class="promo-desc" style="font-size: 13px;">Professional mirrorless cameras for creators.</p>
-          <a href="{% url 'products' %}?category=cameras" class="view-all-link" style="color: #00B894;">
+          <h3 class="promo-title" style="font-size: 20px;">Capture Every Detail.</h3>
+          <p class="promo-desc" style="font-size: 12px; margin-bottom: 12px;">Professional cameras for professionals.</p>
+          <a href="{% url 'products' %}?category=cameras" class="btn btn-primary btn-sm">
             Shop Cameras <i class="fa-solid fa-arrow-right"></i>
           </a>
         </div>
-        <div style="align-self: flex-end; margin-top: -20px;">
-          <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=240&auto=format&fit=crop&q=80" alt="Camera" style="width: 100px; height: 100px; object-fit: contain;" loading="lazy">
-        </div>
+        <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=300&auto=format&fit=crop&q=80" 
+             alt="Professional Cameras" 
+             class="promo-image"
+             loading="lazy"
+             style="max-height: 110px; align-self: flex-end;">
       </div>
     </div>
   </div>
 </section>
 
+<!-- ==========================================
+     4. FEATURED COLLECTIONS (MATCHING REFERENCE DESIGN)
+     ========================================== -->
+<section class="section-spacer">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Featured Collections</h2>
+        <p style="color: var(--text-muted); font-size: 14px;">Curated setups designed for creators, gamers, and modern workspaces.</p>
+      </div>
+      <a href="{% url 'products' %}" class="view-all-link">
+        View All <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+
+    <div class="collections-grid">
+      <!-- Collection 1: Apple Collection -->
+      <a href="{% url 'products' %}?brand=Apple" class="collection-card">
+        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&auto=format&fit=crop&q=80" 
+             alt="Apple Collection" 
+             class="collection-bg-img"
+             loading="lazy">
+        <div class="collection-overlay"></div>
+        <div class="collection-content">
+          <h3 class="collection-title">Apple Collection</h3>
+          <p class="collection-desc">MacBook Pro, iPhone 15 Pro, Watch & AirPods.</p>
+          <span class="collection-link">Explore Now <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+      </a>
+
+      <!-- Collection 2: Gaming Zone -->
+      <a href="{% url 'products' %}?category=gaming" class="collection-card">
+        <img src="https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?w=600&auto=format&fit=crop&q=80" 
+             alt="Gaming Zone" 
+             class="collection-bg-img"
+             loading="lazy">
+        <div class="collection-overlay"></div>
+        <div class="collection-content">
+          <h3 class="collection-title">Gaming Zone</h3>
+          <p class="collection-desc">Level Up Your Game with PS5 & RTX hardware.</p>
+          <span class="collection-link">Explore Now <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+      </a>
+
+      <!-- Collection 3: Smart Living -->
+      <a href="{% url 'products' %}?category=smartwatches" class="collection-card">
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80" 
+             alt="Smart Living" 
+             class="collection-bg-img"
+             loading="lazy">
+        <div class="collection-overlay"></div>
+        <div class="collection-content">
+          <h3 class="collection-title">Smart Living</h3>
+          <p class="collection-desc">Innovate Your Home with intelligent wearables.</p>
+          <span class="collection-link">Explore Now <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+      </a>
+
+      <!-- Collection 4: Work From Home -->
+      <a href="{% url 'products' %}?category=accessories" class="collection-card">
+        <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&auto=format&fit=crop&q=80" 
+             alt="Work From Home" 
+             class="collection-bg-img"
+             loading="lazy">
+        <div class="collection-overlay"></div>
+        <div class="collection-content">
+          <h3 class="collection-title">Work From Home</h3>
+          <p class="collection-desc">Essentials For Productivity & ergonomic setups.</p>
+          <span class="collection-link">Explore Now <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
 
 <!-- ==========================================
-     5. FLASH DEALS SECTION (WITH LIVE COUNTDOWN)
+     5. FLASH DEALS (WITH LIVE COUNTDOWN TIMER & 6-COL / 4-COL ROW)
      ========================================== -->
 <section class="section-spacer">
   <div class="container">
     <div class="flash-deals-header">
-      <div style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap;">
-        <h2 class="section-title">Flash Deals</h2>
-        <div class="countdown-box">
-          <span class="countdown-unit" id="dealHours">07</span>
-          <span class="countdown-colon">:</span>
-          <span class="countdown-unit" id="dealMinutes">45</span>
-          <span class="countdown-colon">:</span>
-          <span class="countdown-unit" id="dealSeconds">32</span>
-        </div>
+      <div>
+        <h2 class="section-title" style="margin-bottom: 4px;">Flash Deals</h2>
       </div>
+
+      <!-- Live Working Countdown Timer -->
+      <div class="countdown-box">
+        <i class="fa-regular fa-clock" style="color: var(--electric-cyan); margin-right: 4px;"></i>
+        <span>Ends in:</span>
+        <span class="countdown-unit" id="dealHours">07</span>
+        <span class="countdown-colon">:</span>
+        <span class="countdown-unit" id="dealMins">45</span>
+        <span class="countdown-colon">:</span>
+        <span class="countdown-unit" id="dealSecs">32</span>
+      </div>
+
       <a href="{% url 'products' %}?deals=1" class="view-all-link">
         View All Deals <i class="fa-solid fa-arrow-right"></i>
       </a>
     </div>
 
-    <div class="product-grid-6">
+    <!-- Product Cards Grid -->
+    <div class="product-grid-4">
       {% for product in flash_deals %}
-        <div class="product-card card-3d-tilt">
+        <div class="product-card">
           <!-- Discount Badge -->
-          {% if product.discount_percent > 0 %}
-            <span class="badge badge-discount product-card-badge">-{{ product.discount_percent }}%</span>
-          {% endif %}
+          <span class="badge badge-discount product-card-badge">
+            -{{ product.discount_percent|default:20 }}%
+          </span>
 
-          <!-- Wishlist Toggle -->
-          <button class="product-wishlist-btn ajax-wishlist-btn" data-product-id="{{ product.id }}" aria-label="Add to Wishlist">
+          <!-- Wishlist Floating Button -->
+          <button class="product-wishlist-btn wishlist-toggle-btn" 
+                  data-product-id="{{ product.id }}" 
+                  aria-label="Save to Wishlist" 
+                  title="Save to Wishlist">
             <i class="fa-regular fa-heart"></i>
           </button>
 
-          <!-- Product Image Link -->
-          <a href="{% url 'product_detail' slug=product.slug %}" class="product-img-wrapper">
-            <img src="{{ product.get_image_url }}" alt="{{ product.name }}" class="product-thumb" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=80';">
+          <!-- Product Image -->
+          <a href="{{ product.get_absolute_url }}" class="product-img-wrapper">
+            <img src="{{ product.get_image_url }}" 
+                 alt="{{ product.name }}" 
+                 class="product-thumb" 
+                 loading="lazy"
+                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=80';">
           </a>
 
           <div>
-            <div class="product-category-tag">{{ product.category.name|default:product.brand }}</div>
-            <a href="{% url 'product_detail' slug=product.slug %}">
-              <h3 class="product-title" title="{{ product.name }}">{{ product.name }}</h3>
+            <div class="product-category-tag">{{ product.brand|default:product.category.name }}</div>
+            <a href="{{ product.get_absolute_url }}">
+              <h3 class="product-title">{{ product.name }}</h3>
             </a>
-
+            
             <div class="product-rating">
               <i class="fa-solid fa-star"></i>
-              <span style="font-weight: 700; color: var(--text-main); font-size: 11px;">{{ product.rating }}</span>
-              <span class="product-rating-count">({{ product.review_count }})</span>
+              <span>{{ product.rating|default:"4.8" }}</span>
+              <span class="product-rating-count">({{ product.review_count|default:120 }})</span>
+            </div>
+          </div>
+
+          <div class="product-bottom-row">
+            <div class="product-prices">
+              <span class="product-price-current">{{ product.current_price|inr }}</span>
+              {% if product.discount_price and product.price > product.discount_price %}
+                <span class="product-price-original">{{ product.price|inr }}</span>
+              {% endif %}
             </div>
 
-            <div class="product-bottom-row">
-              <div class="product-prices">
-                <span class="product-price-current">{{ product.current_price|inr }}</span>
-                {% if product.discount_price %}
-                  <span class="product-price-original">{{ product.price|inr }}</span>
-                {% endif %}
-              </div>
-              <button class="product-cart-btn ajax-add-cart-btn" data-product-id="{{ product.id }}" aria-label="Add to Cart">
-                <i class="fa-solid fa-bag-shopping"></i>
-              </button>
-            </div>
+            <button class="product-cart-btn add-to-cart-btn" 
+                    data-product-id="{{ product.id }}" 
+                    aria-label="Add to cart" 
+                    title="Add to Cart">
+              <i class="fa-solid fa-cart-plus"></i>
+            </button>
           </div>
         </div>
       {% endfor %}
@@ -327,80 +385,85 @@
   </div>
 </section>
 
-
 <!-- ==========================================
-     6. NEW ARRIVALS SECTION
+     6. NEW ARRIVALS (SPLIT SPOTLIGHT LAYOUT)
      ========================================== -->
 <section class="section-spacer">
   <div class="container">
     <div class="section-header">
-      <h2 class="section-title">New Arrivals</h2>
+      <div>
+        <h2 class="section-title">New Arrivals</h2>
+        <p style="color: var(--text-muted); font-size: 14px;">The newest releases straight from world-class tech labs.</p>
+      </div>
       <a href="{% url 'products' %}?sort=newest" class="view-all-link">
         View All <i class="fa-solid fa-arrow-right"></i>
       </a>
     </div>
 
     <div class="new-arrivals-layout">
-      <!-- Spotlight Product (Left Banner) -->
+      <!-- Big Feature Card: AirPods Pro / Flagship -->
       {% if new_arrival_hero %}
-        <div class="new-arrival-feature-card card-3d-tilt">
+        <div class="new-arrival-feature-card">
           <div>
-            <span class="badge" style="background: rgba(255, 255, 255, 0.15); color: #FFFFFF; margin-bottom: 12px;">
-              JUST LAUNCHED
-            </span>
-            <h3 style="font-size: 30px; font-weight: 800; line-height: 1.1; margin-bottom: 10px;">
+            <span class="badge badge-purple" style="margin-bottom: 14px; background: rgba(124, 58, 237, 0.2); color: #C4B5FD;">JUST LAUNCHED</span>
+            <h3 style="font-family: var(--font-heading); font-size: 28px; font-weight: 800; margin-bottom: 10px; color: #FFFFFF;">
               {{ new_arrival_hero.name }}
             </h3>
-            <p style="font-size: 14px; color: #9CA3AF; max-width: 320px; line-height: 1.5; margin-bottom: 20px;">
-              {{ new_arrival_hero.description|truncatewords:15 }}
+            <p style="color: #9CA3AF; font-size: 14px; margin-bottom: 20px; max-width: 340px; line-height: 1.5;">
+              {{ new_arrival_hero.description|truncatewords:16 }}
             </p>
-            <div style="font-size: 24px; font-weight: 800; color: #FFFFFF; margin-bottom: 20px;">
+            <div style="font-size: 24px; font-weight: 800; color: var(--electric-cyan); margin-bottom: 20px;">
               {{ new_arrival_hero.current_price|inr }}
             </div>
-            <a href="{% url 'product_detail' slug=new_arrival_hero.slug %}" class="btn btn-gradient btn-sm">
+            <a href="{{ new_arrival_hero.get_absolute_url }}" class="btn btn-primary btn-sm">
               Explore Now <i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
 
-          <div style="text-align: center; margin: 20px 0;">
-            <img src="{{ new_arrival_hero.get_image_url }}" alt="{{ new_arrival_hero.name }}" class="new-arrival-feature-img" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=500&auto=format&fit=crop&q=80';">
-          </div>
+          <img src="{{ new_arrival_hero.get_image_url }}" 
+               alt="{{ new_arrival_hero.name }}" 
+               class="new-arrival-feature-img"
+               loading="lazy"
+               style="align-self: center; margin-top: 20px; max-height: 200px;"
+               onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=80';">
         </div>
       {% endif %}
 
-      <!-- Right Sub-grid Products -->
+      <!-- 4 Grid Sub-Products -->
       <div class="product-grid-4" style="grid-template-columns: repeat(2, 1fr);">
         {% for product in new_arrival_sub %}
-          <div class="product-card card-3d-tilt">
-            <span class="badge badge-new product-card-badge">NEW</span>
-            <button class="product-wishlist-btn ajax-wishlist-btn" data-product-id="{{ product.id }}" aria-label="Add to Wishlist">
+          <div class="product-card">
+            <span class="badge badge-purple product-card-badge">NEW</span>
+
+            <button class="product-wishlist-btn wishlist-toggle-btn" data-product-id="{{ product.id }}" aria-label="Save to Wishlist">
               <i class="fa-regular fa-heart"></i>
             </button>
 
-            <a href="{% url 'product_detail' slug=product.slug %}" class="product-img-wrapper">
-              <img src="{{ product.get_image_url }}" alt="{{ product.name }}" class="product-thumb" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=80';">
+            <a href="{{ product.get_absolute_url }}" class="product-img-wrapper">
+              <img src="{{ product.get_image_url }}" 
+                   alt="{{ product.name }}" 
+                   class="product-thumb" 
+                   loading="lazy"
+                   onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=80';">
             </a>
 
             <div>
-              <div class="product-category-tag">{{ product.category.name|default:product.brand }}</div>
-              <a href="{% url 'product_detail' slug=product.slug %}">
-                <h3 class="product-title">{{ product.name }}</h3>
-              </a>
-
+              <div class="product-category-tag">{{ product.brand|default:product.category.name }}</div>
+              <a href="{{ product.get_absolute_url }}"><h3 class="product-title">{{ product.name }}</h3></a>
               <div class="product-rating">
                 <i class="fa-solid fa-star"></i>
-                <span style="font-weight: 700; color: var(--text-main); font-size: 11px;">{{ product.rating }}</span>
-                <span class="product-rating-count">({{ product.review_count }})</span>
+                <span>{{ product.rating|default:"4.8" }}</span>
+                <span class="product-rating-count">({{ product.review_count|default:40 }})</span>
               </div>
+            </div>
 
-              <div class="product-bottom-row">
-                <div class="product-prices">
-                  <span class="product-price-current">{{ product.current_price|inr }}</span>
-                </div>
-                <button class="product-cart-btn ajax-add-cart-btn" data-product-id="{{ product.id }}" aria-label="Add to Cart">
-                  <i class="fa-solid fa-bag-shopping"></i>
-                </button>
+            <div class="product-bottom-row">
+              <div class="product-prices">
+                <span class="product-price-current">{{ product.current_price|inr }}</span>
               </div>
+              <button class="product-cart-btn add-to-cart-btn" data-product-id="{{ product.id }}" aria-label="Add to cart">
+                <i class="fa-solid fa-cart-plus"></i>
+              </button>
             </div>
           </div>
         {% endfor %}
@@ -409,53 +472,54 @@
   </div>
 </section>
 
-
 <!-- ==========================================
-     7. BEST SELLERS (DARK OBSIDIAN THEME)
+     7. BEST SELLERS (DARK OBSIDIAN RANKED 01–05)
      ========================================== -->
-<section class="section-spacer best-sellers-section">
+<section class="best-sellers-section">
   <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">Best Sellers</h2>
-      <a href="{% url 'products' %}?sort=rating" class="view-all-link" style="color: #A29BFE;">
+    <div class="section-header" style="border-bottom: 1px solid var(--dark-border); padding-bottom: 18px; margin-bottom: 32px;">
+      <div>
+        <h2 class="section-title">Best Sellers</h2>
+      </div>
+      <a href="{% url 'products' %}?sort=rating" class="view-all-link" style="color: var(--electric-cyan);">
         View All <i class="fa-solid fa-arrow-right"></i>
       </a>
     </div>
 
     <div class="best-sellers-grid">
       {% for product in best_sellers %}
-        <div class="best-seller-card card-3d-tilt">
-          <div style="display: flex; align-items: center; justify-content: space-between;">
-            <span class="best-seller-rank">0{{ forloop.counter }}</span>
-            <span class="best-seller-tag">BEST SELLER</span>
+        <div class="best-seller-card">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="best-seller-rank">0{{ forloop.counter }}</div>
+            <div class="best-seller-tag">BEST SELLER</div>
           </div>
 
-          <a href="{% url 'product_detail' slug=product.slug %}" style="text-align: center;">
-            <img src="{{ product.get_image_url }}" alt="{{ product.name }}" class="best-seller-img" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=80';">
+          <a href="{{ product.get_absolute_url }}">
+            <img src="{{ product.get_image_url }}" 
+                 alt="{{ product.name }}" 
+                 class="best-seller-img" 
+                 loading="lazy"
+                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=80';">
           </a>
 
           <div>
-            <a href="{% url 'product_detail' slug=product.slug %}">
-              <h3 class="product-title" style="color: #FFFFFF;">{{ product.name }}</h3>
+            <div style="font-size: 11px; color: var(--electric-cyan); font-weight: 700; margin-bottom: 4px;">
+              {{ product.brand|default:product.category.name }}
+            </div>
+            <a href="{{ product.get_absolute_url }}">
+              <h3 style="font-size: 13px; font-weight: 700; color: #FFFFFF; line-height: 1.35; height: 36px; overflow: hidden; margin-bottom: 10px;">
+                {{ product.name }}
+              </h3>
             </a>
+          </div>
 
-            <div class="product-rating" style="margin-bottom: 12px;">
-              <i class="fa-solid fa-star"></i>
-              <span style="font-weight: 700; color: #FFFFFF; font-size: 11px;">{{ product.rating }}</span>
-              <span style="font-size: 11px; color: #9CA3AF;">({{ product.review_count }})</span>
+          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 12px;">
+            <div style="font-family: var(--font-heading); font-size: 15px; font-weight: 800; color: #FFFFFF;">
+              {{ product.current_price|inr }}
             </div>
-
-            <div class="product-bottom-row" style="border-top: 1px solid var(--dark-border);">
-              <div class="product-prices">
-                <span class="product-price-current">{{ product.current_price|inr }}</span>
-                {% if product.discount_price %}
-                  <span class="product-price-original" style="color: #6B7280;">{{ product.price|inr }}</span>
-                {% endif %}
-              </div>
-              <button class="product-cart-btn ajax-add-cart-btn" data-product-id="{{ product.id }}" aria-label="Add to Cart">
-                <i class="fa-solid fa-bag-shopping"></i>
-              </button>
-            </div>
+            <button class="product-cart-btn add-to-cart-btn" data-product-id="{{ product.id }}" aria-label="Add to cart" style="background: var(--primary); color: #FFFFFF;">
+              <i class="fa-solid fa-cart-plus"></i>
+            </button>
           </div>
         </div>
       {% endfor %}
@@ -463,167 +527,183 @@
   </div>
 </section>
 
-
 <!-- ==========================================
-     8. TRUST & SERVICE CARDS (5-COL ROW)
+     8. SERVICES & TRUST SECTION (5-COLUMN ROW)
      ========================================== -->
 <section class="section-spacer">
   <div class="container">
     <div class="trust-grid">
-      <!-- Card 1 -->
-      <div class="trust-card card-3d-tilt">
+      <div class="trust-card">
         <div class="trust-icon-box"><i class="fa-solid fa-shield-halved"></i></div>
         <h4>100% Secure Payment</h4>
-        <p>Your transactions are safe, encrypted, and backed by PCI DSS standard.</p>
-        <a href="{% url 'about' %}" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+        <p>Your transactions are safe and encrypted.</p>
+        <a href="{% url 'about' %}" style="font-size: 11px; color: var(--primary); font-weight: 700; margin-top: 6px; display: inline-block;">Learn More &rarr;</a>
       </div>
 
-      <!-- Card 2 -->
-      <div class="trust-card card-3d-tilt">
+      <div class="trust-card">
         <div class="trust-icon-box"><i class="fa-solid fa-truck-fast"></i></div>
         <h4>Fast & Free Delivery</h4>
-        <p>Free standard shipping on all domestic orders over ₹5,000.</p>
-        <a href="{% url 'about' %}" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+        <p>Free shipping on all orders over ₹5,000.</p>
+        <a href="{% url 'about' %}" style="font-size: 11px; color: var(--primary); font-weight: 700; margin-top: 6px; display: inline-block;">Learn More &rarr;</a>
       </div>
 
-      <!-- Card 3 -->
-      <div class="trust-card card-3d-tilt">
+      <div class="trust-card">
         <div class="trust-icon-box"><i class="fa-solid fa-arrow-rotate-left"></i></div>
         <h4>30-Day Easy Returns</h4>
-        <p>Hassle-free returns and instant replacement within 30 days of receipt.</p>
-        <a href="{% url 'about' %}" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+        <p>Hassle-free returns and full refunds.</p>
+        <a href="{% url 'about' %}" style="font-size: 11px; color: var(--primary); font-weight: 700; margin-top: 6px; display: inline-block;">Learn More &rarr;</a>
       </div>
 
-      <!-- Card 4 -->
-      <div class="trust-card card-3d-tilt">
+      <div class="trust-card">
         <div class="trust-icon-box"><i class="fa-solid fa-headset"></i></div>
         <h4>24/7 Customer Support</h4>
-        <p>Our dedicated technical specialists are available around the clock.</p>
-        <a href="{% url 'contact' %}" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+        <p>We're here to help anytime you need.</p>
+        <a href="{% url 'contact' %}" style="font-size: 11px; color: var(--primary); font-weight: 700; margin-top: 6px; display: inline-block;">Learn More &rarr;</a>
       </div>
 
-      <!-- Card 5 -->
-      <div class="trust-card card-3d-tilt">
-        <div class="trust-icon-box"><i class="fa-solid fa-award"></i></div>
+      <div class="trust-card">
+        <div class="trust-icon-box"><i class="fa-solid fa-certificate"></i></div>
         <h4>Official Warranty</h4>
-        <p>100% genuine brand new products covered with authentic warranties.</p>
-        <a href="{% url 'about' %}" class="learn-more">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+        <p>Genuine products with official manufacturer warranty.</p>
+        <a href="{% url 'about' %}" style="font-size: 11px; color: var(--primary); font-weight: 700; margin-top: 6px; display: inline-block;">Learn More &rarr;</a>
       </div>
     </div>
   </div>
 </section>
 
-
 <!-- ==========================================
-     9. APP PROMOTION BANNER
+     9. APP PROMOTION BANNER (MATCHING REFERENCE)
      ========================================== -->
 <section class="section-spacer-sm">
   <div class="container">
     <div class="app-promo-card">
-      <!-- Left: Mockup Visual -->
-      <div style="text-align: center;">
-        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&auto=format&fit=crop&q=80" alt="Mobile App Mockup" class="app-mockup-img" style="border-radius: var(--radius-md);" loading="lazy">
-      </div>
-
-      <!-- Center: App Pitch -->
-      <div class="app-promo-info">
-        <h3>Shop Smarter with Nexus App</h3>
-        <p>Unlock exclusive mobile-only discounts, real-time live GPS order tracking, and 1-click biometric checkout.</p>
-        <div class="app-store-btns">
-          <a href="#" class="app-store-btn"><i class="fa-brands fa-apple" style="font-size: 18px;"></i> App Store</a>
-          <a href="#" class="app-store-btn"><i class="fa-brands fa-google-play" style="font-size: 16px;"></i> Google Play</a>
+      <div style="display: grid; grid-template-columns: 0.8fr 1.2fr 1fr 0.6fr; gap: 28px; align-items: center;">
+        <!-- Left: Phone App Mockup Image -->
+        <div style="display: flex; justify-content: center;">
+          <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=350&auto=format&fit=crop&q=80" 
+               alt="Nexus Mobile App" 
+               style="max-height: 180px; border-radius: 14px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); object-fit: cover;">
         </div>
-      </div>
 
-      <!-- Right: Feature List & QR Code -->
-      <div>
-        <div class="app-features-list">
-          <div class="app-feature-item"><i class="fa-solid fa-bolt"></i> Exclusive App Deals</div>
-          <div class="app-feature-item"><i class="fa-solid fa-shield-check"></i> Faster & Secure Checkout</div>
-          <div class="app-feature-item"><i class="fa-solid fa-location-crosshairs"></i> Real-Time Order Tracking</div>
-          <div class="app-feature-item"><i class="fa-solid fa-headset"></i> Instant Support Chat</div>
-        </div>
-        <div class="qr-box">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://nexuselectronics.com/app" alt="Download QR" class="qr-code-img" loading="lazy">
-          <div style="font-size: 12px; color: var(--text-muted);">
-            Scan to Download<br><strong>Nexus App</strong>
+        <!-- Center 1: Title & App Store Badges -->
+        <div>
+          <h3 style="font-family: var(--font-heading); font-size: 24px; font-weight: 800; margin-bottom: 8px; color: #FFFFFF;">
+            Shop Smarter with Nexus App
+          </h3>
+          <p style="color: #9CA3AF; font-size: 13px; margin-bottom: 20px; line-height: 1.5;">
+            Exclusive app-only offers, faster checkout, and real-time order tracking.
+          </p>
+          <div class="app-store-btns" style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <a href="#" class="btn btn-white btn-sm" style="display: flex; align-items: center; gap: 6px; padding: 7px 14px; font-size: 12px;">
+              <i class="fa-brands fa-apple" style="font-size: 16px;"></i> App Store
+            </a>
+            <a href="#" class="btn btn-translucent btn-sm" style="display: flex; align-items: center; gap: 6px; padding: 7px 14px; font-size: 12px;">
+              <i class="fa-brands fa-google-play" style="font-size: 14px;"></i> Google Play
+            </a>
           </div>
+        </div>
+
+        <!-- Center 2: App Feature Bullet Points -->
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px; color: #D1D5DB;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-tags" style="color: var(--primary);"></i> Exclusive App Deals
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-lock" style="color: var(--primary);"></i> Faster & Secure Checkout
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> Real-time Order Tracking
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-headset" style="color: var(--primary);"></i> Easy Returns & Support
+          </div>
+        </div>
+
+        <!-- Right: QR Code Visual -->
+        <div style="text-align: center;">
+          <div style="width: 80px; height: 80px; background: #FFFFFF; border-radius: 10px; padding: 6px; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-qrcode" style="font-size: 64px; color: #0A0A14;"></i>
+          </div>
+          <span style="font-size: 10px; color: #9CA3AF; display: block; font-weight: 600;">Scan to Download</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-
 <!-- ==========================================
-     10. BOTTOM TRIAD (TESTIMONIAL, NEWSLETTER, STATS)
+     10. BOTTOM TRIAD (TESTIMONIALS, NEWSLETTER, STATS)
      ========================================== -->
-<section class="section-spacer">
+<section class="section-spacer-sm">
   <div class="container">
     <div class="bottom-triad-grid">
-      <!-- Triad 1: Testimonials -->
-      <div class="triad-card triad-testimonial card-3d-tilt">
+      <!-- Card 1: What Our Customers Say -->
+      <div class="triad-card">
         <div>
-          <div style="font-size: 12px; font-weight: 700; color: var(--primary); text-transform: uppercase; margin-bottom: 8px;">
-            WHAT OUR CUSTOMERS SAY
+          <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
+            What Our Customers Say
           </div>
-          {% if testimonials %}
-            {% with t=testimonials.0 %}
-              <div class="testimonial-quote">
-                "{{ t.content }}"
-              </div>
-              <div class="testimonial-author">
-                <img src="{{ t.get_avatar_url }}" alt="{{ t.name }}" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;" loading="lazy">
+          <div style="display: flex; gap: 4px; color: var(--amber-gold); margin-bottom: 12px; font-size: 13px;">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          {% with t=testimonials.0 %}
+            {% if t %}
+              <p class="testimonial-quote">"{{ t.content }}"</p>
+              <div class="testimonial-author" style="margin-top: 14px;">
+                <img src="{{ t.avatar_url|default:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80' }}" 
+                     alt="{{ t.name }}" 
+                     style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                 <div class="testimonial-meta">
-                  <strong>{{ t.name }}</strong>
-                  <span><i class="fa-solid fa-circle-check"></i> {{ t.role_or_title }}</span>
+                  <strong style="font-size: 13px;">{{ t.name }}</strong>
+                  <span style="font-size: 11px; color: var(--emerald-green);"><i class="fa-solid fa-circle-check"></i> {{ t.role_or_title|default:'Verified Buyer' }}</span>
                 </div>
               </div>
-            {% endwith %}
-          {% endif %}
+            {% endif %}
+          {% endwith %}
         </div>
       </div>
 
-      <!-- Triad 2: Join Nexus Club Newsletter -->
-      <div class="triad-card triad-newsletter card-3d-tilt">
+      <!-- Card 2: Join Nexus Club Newsletter -->
+      <div class="triad-card triad-newsletter">
         <div>
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-            <h3>Join Nexus Club</h3>
-            <i class="fa-regular fa-envelope" style="font-size: 28px; color: #A29BFE;"></i>
-          </div>
-          <p>Get exclusive flash offers, VIP new arrival alerts, and insider discounts delivered directly to your inbox.</p>
+          <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 6px;">Join Nexus Club</h3>
+          <p style="font-size: 13px; color: #9CA3AF; margin-bottom: 16px;">
+            Get exclusive app-only offers, new arrivals and discounts straight to your inbox.
+          </p>
+          
+          <form action="{% url 'newsletter_subscribe' %}" method="POST" class="newsletter-form">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="Enter your email..." required class="newsletter-input">
+            <button type="submit" class="btn btn-primary btn-sm">Subscribe</button>
+          </form>
         </div>
-
-        <form action="{% url 'newsletter_subscribe' %}" method="POST" class="newsletter-form">
-          {% csrf_token %}
-          <input type="email" name="email" placeholder="Enter your email address" class="newsletter-input" required>
-          <button type="submit" class="btn btn-primary btn-sm">Subscribe</button>
-        </form>
       </div>
 
-      <!-- Triad 3: Trust Statistics -->
-      <div class="triad-card triad-stats card-3d-tilt">
-        <div class="stat-item">
-          <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
-          <div>
-            <div class="stat-number">10K+</div>
-            <div class="stat-label">Happy Customers</div>
+      <!-- Card 3: Live Store Statistics -->
+      <div class="triad-card">
+        <div>
+          <div class="stat-item">
+            <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+            <div>
+              <div class="stat-number">10K+</div>
+              <div class="stat-label">Happy Customers</div>
+            </div>
           </div>
-        </div>
 
-        <div class="stat-item">
-          <div class="stat-icon"><i class="fa-solid fa-certificate"></i></div>
-          <div>
-            <div class="stat-number">{{ total_brands_count }}+</div>
-            <div class="stat-label">Top Tech Brands</div>
+          <div class="stat-item">
+            <div class="stat-icon"><i class="fa-solid fa-award"></i></div>
+            <div>
+              <div class="stat-number">{{ total_brands_count|default:17 }}+</div>
+              <div class="stat-label">Top Authorized Brands</div>
+            </div>
           </div>
-        </div>
 
-        <div class="stat-item">
-          <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
-          <div>
-            <div class="stat-number">99.8%</div>
-            <div class="stat-label">Satisfaction Rate</div>
+          <div class="stat-item">
+            <div class="stat-icon"><i class="fa-solid fa-face-smile"></i></div>
+            <div>
+              <div class="stat-number">99%</div>
+              <div class="stat-label">Customer Satisfaction Rate</div>
+            </div>
           </div>
         </div>
       </div>
@@ -634,7 +714,31 @@
 {% endblock %}
 
 {% block extra_scripts %}
-  <script src="{% static 'js/three-hero.js' %}"></script>
-  <script src="{% static 'js/three-showroom.js' %}"></script>
-  <script src="{% static 'js/countdown.js' %}"></script>
+<!-- Working Flash Deals Live Countdown Timer -->
+<script>
+  (function() {
+    const hoursEl = document.getElementById('dealHours');
+    const minsEl = document.getElementById('dealMins');
+    const secsEl = document.getElementById('dealSecs');
+
+    if (!hoursEl || !minsEl || !secsEl) return;
+
+    let totalSecs = 7 * 3600 + 45 * 60 + 32;
+
+    const timer = setInterval(() => {
+      if (totalSecs <= 0) {
+        totalSecs = 8 * 3600;
+      }
+      totalSecs--;
+
+      const h = Math.floor(totalSecs / 3600);
+      const m = Math.floor((totalSecs % 3600) / 60);
+      const s = totalSecs % 60;
+
+      hoursEl.textContent = String(h).padStart(2, '0');
+      minsEl.textContent = String(m).padStart(2, '0');
+      secsEl.textContent = String(s).padStart(2, '0');
+    }, 1000);
+  })();
+</script>
 {% endblock %}

@@ -29,18 +29,20 @@ from .context_processors import get_or_create_cart
 
 def home(request):
     """
-    Renders the modern electronics homepage with hero carousel, category cards,
-    promotional bento grid, featured collections, flash deals with live timer,
-    new arrivals, best sellers, trust badges, app promo, testimonials, and newsletter.
+    Renders the modern electronics homepage with hero 3D showcase, category carousel,
+    promotional bento grid, 4 featured collections, 8+ flash deals with live countdown,
+    new arrivals spotlight, best sellers, 3D showroom, trust badges, testimonials, and newsletter.
     """
     categories = Category.objects.filter(is_active=True).annotate(
         total_products=Count('products')
     ).order_by('name')
 
-    # Hero spotlight / carousel products
-    hero_products = Product.objects.filter(is_active=True, featured=True)[:3]
-    if not hero_products.exists():
-        hero_products = Product.objects.filter(is_active=True)[:3]
+    # Hero spotlight flagship product
+    hero_product = Product.objects.filter(is_active=True, featured=True, category__slug="smartphones").first()
+    if not hero_product:
+        hero_product = Product.objects.filter(is_active=True).first()
+
+    hero_products = Product.objects.filter(is_active=True, featured=True)[:4]
 
     # Promotional Grid Items
     promo_macbook = Product.objects.filter(name__icontains="MacBook", is_active=True).first()
@@ -48,21 +50,27 @@ def home(request):
     promo_camera = Product.objects.filter(category__slug="cameras", is_active=True).first()
     promo_deal = Product.objects.filter(is_deal=True, is_active=True).first()
 
-    # Flash Deals with discounts
-    flash_deals = Product.objects.filter(is_active=True, is_deal=True).order_by('-discount_price')[:6]
-    if not flash_deals.exists():
-        flash_deals = Product.objects.filter(is_active=True)[:6]
+    # Flash Deals: 8+ top discounted products
+    flash_deals = Product.objects.filter(is_active=True, is_deal=True).order_by('-deal_discount_percent', '-discount_price')[:8]
+    if flash_deals.count() < 8:
+        flash_deals = Product.objects.filter(is_active=True)[:8]
 
     # New Arrivals
-    new_arrivals = Product.objects.filter(is_active=True).order_by('-created_at')[:6]
+    new_arrivals = Product.objects.filter(is_active=True).order_by('-created_at')[:8]
     new_arrival_hero = new_arrivals.first() if new_arrivals.exists() else None
     new_arrival_sub = new_arrivals[1:5] if new_arrivals.count() > 1 else Product.objects.filter(is_active=True)[1:5]
 
-    # Best Sellers: Top ordered products or highest rated
+    # Best Sellers: 5 Top rated/reviewed flagship products
     best_sellers = Product.objects.filter(is_active=True).order_by('-rating', '-review_count')[:5]
 
-    # Testimonials
-    testimonials = Testimonial.objects.filter(is_active=True)[:3]
+    # 4 Featured Collections
+    apple_collection = Product.objects.filter(brand="Apple", is_active=True)[:4]
+    gaming_collection = Product.objects.filter(category__slug="gaming", is_active=True)[:4]
+    audio_collection = Product.objects.filter(category__slug="audio", is_active=True)[:4]
+    work_collection = Product.objects.filter(category__slug="laptops", is_active=True)[:4]
+
+    # Testimonials (5 verified reviews)
+    testimonials = Testimonial.objects.filter(is_active=True)[:5]
 
     # Live Store Statistics
     total_products_count = Product.objects.filter(is_active=True).count()
@@ -70,6 +78,7 @@ def home(request):
 
     context = {
         'categories': categories,
+        'hero_product': hero_product,
         'hero_products': hero_products,
         'promo_macbook': promo_macbook,
         'promo_audio': promo_audio,
@@ -79,9 +88,13 @@ def home(request):
         'new_arrival_hero': new_arrival_hero,
         'new_arrival_sub': new_arrival_sub,
         'best_sellers': best_sellers,
+        'apple_collection': apple_collection,
+        'gaming_collection': gaming_collection,
+        'audio_collection': audio_collection,
+        'work_collection': work_collection,
         'testimonials': testimonials,
         'total_products_count': total_products_count,
-        'total_brands_count': max(total_brands_count, 12),
+        'total_brands_count': max(total_brands_count, 17),
     }
     return render(request, 'home.html', context)
 
@@ -971,3 +984,13 @@ def admin_message_mark_read(request, message_id):
     msg.save()
     messages.success(request, "Message marked as read.")
     return redirect('admin_messages')
+
+
+def custom_404_view(request, exception=None):
+    """Custom 404 Error Handler"""
+    return render(request, '404.html', status=404)
+
+
+def custom_500_view(request):
+    """Custom 500 Error Handler"""
+    return render(request, '500.html', status=500)

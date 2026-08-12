@@ -43,7 +43,7 @@ function showToast(message, type = 'success') {
 
 // Quick Add to Cart via AJAX
 document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.ajax-add-cart-btn');
+  const btn = e.target.closest('.ajax-add-cart-btn, .add-to-cart-btn, .product-cart-btn');
   if (!btn) return;
 
   e.preventDefault();
@@ -87,7 +87,7 @@ document.addEventListener('click', (e) => {
 
 // Toggle Wishlist via AJAX
 document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.ajax-wishlist-btn');
+  const btn = e.target.closest('.ajax-wishlist-btn, .wishlist-toggle-btn, .product-wishlist-btn');
   if (!btn) return;
 
   e.preventDefault();
