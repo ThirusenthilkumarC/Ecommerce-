@@ -69,6 +69,10 @@ def home(request):
     audio_collection = Product.objects.filter(category__slug="audio", is_active=True)[:4]
     work_collection = Product.objects.filter(category__slug="laptops", is_active=True)[:4]
 
+    # Trending Now & Featured Picks
+    trending_products = Product.objects.filter(is_active=True).order_by('-review_count')[:8]
+    featured_products = Product.objects.filter(is_active=True, featured=True)[:8]
+
     # Testimonials (5 verified reviews)
     testimonials = Testimonial.objects.filter(is_active=True)[:5]
 
@@ -85,6 +89,8 @@ def home(request):
         'promo_camera': promo_camera,
         'promo_deal': promo_deal,
         'flash_deals': flash_deals,
+        'trending_products': trending_products,
+        'featured_products': featured_products,
         'new_arrival_hero': new_arrival_hero,
         'new_arrival_sub': new_arrival_sub,
         'best_sellers': best_sellers,
@@ -218,9 +224,15 @@ def product_detail(request, slug=None, id=None):
         category=product.category, is_active=True
     ).exclude(id=product.id)[:4]
 
+    frequently_bought = Product.objects.filter(
+        category__slug__in=["accessories", "audio", "storage"],
+        is_active=True
+    ).exclude(id=product.id)[:3]
+
     context = {
         'product': product,
         'related_products': related_products,
+        'frequently_bought': frequently_bought,
     }
     return render(request, 'product_detail.html', context)
 

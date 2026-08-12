@@ -129,6 +129,33 @@ def run_seed():
                 "description": "Pro digital drawing tablets, lightweight reading slates, and productivity pads."
             }
         )[0],
+        "smart-home": Category.objects.get_or_create(
+            slug="smart-home",
+            defaults={
+                "name": "Smart Home",
+                "icon": "fa-house-signal",
+                "image_url": "https://images.unsplash.com/photo-1558002038-1055907df827?w=600&auto=format&fit=crop&q=80",
+                "description": "Intelligent voice assistants, smart lighting hubs, and connected security cameras."
+            }
+        )[0],
+        "monitors": Category.objects.get_or_create(
+            slug="monitors",
+            defaults={
+                "name": "Monitors",
+                "icon": "fa-desktop",
+                "image_url": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&auto=format&fit=crop&q=80",
+                "description": "4K UHD creator monitors, ultra-wide curved OLED panels, and high-refresh esports displays."
+            }
+        )[0],
+        "storage": Category.objects.get_or_create(
+            slug="storage",
+            defaults={
+                "name": "Storage & Networking",
+                "icon": "fa-hard-drive",
+                "image_url": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=600&auto=format&fit=crop&q=80",
+                "description": "Blazing fast PCIe 4.0 NVMe SSDs, rugged external drives, and WiFi 6E mesh routers."
+            }
+        )[0],
     }
 
     # 3. 52 Realistic Electronics Products
@@ -1091,6 +1118,234 @@ def run_seed():
             "is_deal": True,
             "deal_discount_percent": 15,
             "image_url": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80"
+        },
+        # Smart Home (4)
+        {
+            "name": "Amazon Echo Show 10 (3rd Gen) with Motion",
+            "slug": "amazon-echo-show-10",
+            "brand": "Amazon",
+            "category": categories["smart-home"],
+            "description": "10.1-inch HD smart display designed to move with you during video calls, premium directional sound, built-in Zigbee smart home hub, and 13MP auto-framing camera.",
+            "price": Decimal("24999.00"),
+            "discount_price": Decimal("21999.00"),
+            "stock": 18,
+            "rating": Decimal("4.7"),
+            "review_count": 78,
+            "featured": True,
+            "is_deal": True,
+            "deal_discount_percent": 12,
+            "image_url": "https://images.unsplash.com/photo-1543512214-318c7553f230?w=600&auto=format&fit=crop&q=80"
+        },
+        {
+            "name": "Apple HomePod (2nd Gen) Midnight",
+            "slug": "apple-homepod-2nd-gen",
+            "brand": "Apple",
+            "category": categories["smart-home"],
+            "description": "High-fidelity computational audio with room sensing, Spatial Audio with Dolby Atmos, Siri intelligence, Matter smart home connectivity, and built-in temperature sensor.",
+            "price": Decimal("32900.00"),
+            "discount_price": Decimal("29990.00"),
+            "stock": 15,
+            "rating": Decimal("4.8"),
+            "review_count": 56,
+            "featured": False,
+            "is_deal": False,
+            "deal_discount_percent": 0,
+            "image_url": "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=600&auto=format&fit=crop&q=80"
+        },
+        {
+            "name": "Google Nest Cam Outdoor/Indoor (Battery)",
+            "slug": "google-nest-cam-battery",
+            "brand": "Google",
+            "category": categories["smart-home"],
+            "description": "Wire-free HDR smart security camera with intelligent vehicle, person, and animal alerts, 3 hours of free event video history, and weather-resistant magnetic mount.",
+            "price": Decimal("17999.00"),
+            "discount_price": Decimal("15499.00"),
+            "stock": 22,
+            "rating": Decimal("4.6"),
+            "review_count": 42,
+            "featured": False,
+            "is_deal": True,
+            "deal_discount_percent": 14,
+            "image_url": "https://images.unsplash.com/photo-1558002038-1055907df827?w=600&auto=format&fit=crop&q=80"
+        },
+        {
+            "name": "Philips Hue White & Color Ambiance Starter Kit",
+            "slug": "philips-hue-starter-kit",
+            "brand": "Philips",
+            "category": categories["smart-home"],
+            "description": "Includes 3 E27 smart LED bulbs with 16 million colors, Hue Bridge controller, and smart dimmer switch with seamless Alexa, Apple HomeKit and Google Assistant integration.",
+            "price": Decimal("14999.00"),
+            "discount_price": Decimal("12999.00"),
+            "stock": 30,
+            "rating": Decimal("4.9"),
+            "review_count": 110,
+            "featured": True,
+            "is_deal": True,
+            "deal_discount_percent": 13,
+            "image_url": "https://images.unsplash.com/photo-1550985543-f47f38aeee65?w=600&auto=format&fit=crop&q=80"
+        },
+        # Monitors & Displays (3)
+        {
+            "name": "LG UltraGear 34-inch Curved OLED 240Hz Monitor",
+            "slug": "lg-ultragear-34-curved-oled",
+            "brand": "LG",
+            "category": categories["monitors"],
+            "description": "WQHD (3440 x 1440) 800R curved OLED gaming monitor featuring 0.03ms response time, 240Hz refresh rate, 98.5% DCI-P3 color gamut, and NVIDIA G-SYNC compatibility.",
+            "price": Decimal("129999.00"),
+            "discount_price": Decimal("114999.00"),
+            "stock": 10,
+            "rating": Decimal("4.9"),
+            "review_count": 64,
+            "featured": True,
+            "is_deal": True,
+            "deal_discount_percent": 11,
+            "image_url": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&auto=format&fit=crop&q=80"
+        },
+        {
+            "name": "Dell UltraSharp 32-inch 4K USB-C Hub Monitor (U3223QE)",
+            "slug": "dell-ultrasharp-32-4k-u3223qe",
+            "brand": "Dell",
+            "category": categories["monitors"],
+            "description": "IPS Black technology with 2000:1 contrast ratio, 4K UHD 3840x2160 clarity, 90W USB-C power delivery, integrated RJ45 ethernet, and built-in KVM switch.",
+            "price": Decimal("84999.00"),
+            "discount_price": Decimal("74999.00"),
+            "stock": 14,
+            "rating": Decimal("4.8"),
+            "review_count": 52,
+            "featured": False,
+            "is_deal": True,
+            "deal_discount_percent": 12,
+            "image_url": "https://images.unsplash.com/photo-1585792180666-f7347c490ee2?w=600&auto=format&fit=crop&q=80"
+        },
+        {
+            "name": "Samsung Odyssey OLED G8 34-inch Curved Gaming Monitor",
+            "slug": "samsung-odyssey-oled-g8-34",
+            "brand": "Samsung",
+            "category": categories["monitors"],
+            "description": "Neo Quantum Processor with vibrant OLED color, 175Hz refresh rate, 0.03ms response time, CoreSync ambient lighting, and Gaming Hub cloud gaming built-in.",
+            "price": Decimal("119999.00"),
+            "discount_price": Decimal("104999.00"),
+            "stock": 8,
+            "rating": Decimal("4.8"),
+            "review_count": 39,
+            "featured": False,
+            "is_deal": True,
+            "deal_discount_percent": 13,
+            "image_url": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80"
+        },
+        # Storage & Networking (3)
+        {
+            "name": "Samsung 990 PRO 2TB PCIe 4.0 NVMe SSD with Heatsink",
+            "slug": "samsung-990-pro-2tb-heatsink",
+            "brand": "Samsung",
+            "category": categories["storage"],
+            "description": "Blazing read/write speeds up to 7,450/6,900 MB/s, built-in futuristic heatsink optimized for PlayStation 5 and high-end desktop gaming rigs.",
+            "price": Decimal("22999.00"),
+            "discount_price": Decimal("18999.00"),
+            "stock": 40,
+            "rating": Decimal("5.0"),
+            "review_count": 130,
+            "featured": True,
+            "is_deal": True,
+            "deal_discount_percent": 17,
+            "image_url": "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=600&auto=format&fit=crop&q=80"
+        },
+        {
+            "name": "SanDisk Extreme PRO 2TB Portable NVMe External SSD",
+            "slug": "sandisk-extreme-pro-2tb-ssd",
+            "brand": "SanDisk",
+            "category": categories["storage"],
+            "description": "Rugged IP65 water and dust resistant forged aluminum chassis delivering up to 2000MB/s NVMe transfer speeds for 8K video editors and outdoor photographers.",
+            "price": Decimal("24999.00"),
+            "discount_price": Decimal("21499.00"),
+            "stock": 35,
+            "rating": Decimal("4.9"),
+            "review_count": 92,
+            "featured": False,
+            "is_deal": True,
+            "deal_discount_percent": 14,
+            "image_url": "https://images.unsplash.com/photo-1531492746076-161ca9bcad58?w=600&auto=format&fit=crop&q=80"
+        },
+        {
+            "name": "Netgear Nighthawk AXE7800 Tri-Band WiFi 6E Router",
+            "slug": "netgear-nighthawk-axe7800-router",
+            "brand": "Netgear",
+            "category": categories["storage"],
+            "description": "Next-gen 6GHz band delivering combined WiFi speeds up to 7.8Gbps across 8 simultaneous streams, 2.5G Multi-Gig ethernet port, and NETGEAR Armor cybersecurity.",
+            "price": Decimal("38999.00"),
+            "discount_price": Decimal("32999.00"),
+            "stock": 12,
+            "rating": Decimal("4.7"),
+            "review_count": 34,
+            "featured": False,
+            "is_deal": True,
+            "deal_discount_percent": 15,
+            "image_url": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&auto=format&fit=crop&q=80"
+        },
+        # Audio & Creator Peripherals (4)
+        {
+            "name": "Sennheiser Momentum 4 Wireless ANC Headphones",
+            "slug": "sennheiser-momentum-4-wireless",
+            "brand": "Sennheiser",
+            "category": categories["audio"],
+            "description": "Audiophile-inspired 42mm transducer system, adaptive noise cancellation, crystal-clear voice pick-up, and an astounding 60-hour battery life with fast charging.",
+            "price": Decimal("34990.00"),
+            "discount_price": Decimal("28990.00"),
+            "stock": 20,
+            "rating": Decimal("4.8"),
+            "review_count": 68,
+            "featured": True,
+            "is_deal": True,
+            "deal_discount_percent": 17,
+            "image_url": "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600&auto=format&fit=crop&q=80"
+        },
+        {
+            "name": "Nothing Ear (2) True Wireless Hi-Res Earbuds",
+            "slug": "nothing-ear-2-wireless-earbuds",
+            "brand": "Nothing",
+            "category": categories["audio"],
+            "description": "Iconic transparent dual-chamber design with LHDC 5.0 Hi-Res Audio certification, personalized active noise cancellation, and dual connection device pairing.",
+            "price": Decimal("9999.00"),
+            "discount_price": Decimal("8499.00"),
+            "stock": 30,
+            "rating": Decimal("4.7"),
+            "review_count": 115,
+            "featured": False,
+            "is_deal": True,
+            "deal_discount_percent": 15,
+            "image_url": "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600&auto=format&fit=crop&q=80"
+        },
+        {
+            "name": "SteelSeries Apex Pro TKL Mechanical Gaming Keyboard",
+            "slug": "steelseries-apex-pro-tkl-keyboard",
+            "brand": "SteelSeries",
+            "category": categories["gaming"],
+            "description": "World's fastest OmniPoint 2.0 adjustable hypermagnetic switches with 0.2mm to 3.8mm actuation, OLED Smart Display command center, and aircraft-grade aluminum frame.",
+            "price": Decimal("23999.00"),
+            "discount_price": Decimal("19999.00"),
+            "stock": 16,
+            "rating": Decimal("4.9"),
+            "review_count": 48,
+            "featured": False,
+            "is_deal": True,
+            "deal_discount_percent": 17,
+            "image_url": "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=600&auto=format&fit=crop&q=80"
+        },
+        {
+            "name": "Belkin BoostCharge Pro 3-in-1 MagSafe Wireless Stand",
+            "slug": "belkin-boostcharge-pro-3in1-stand",
+            "brand": "Belkin",
+            "category": categories["accessories"],
+            "description": "Official 15W MagSafe fast charging stand engineered for iPhone, Apple Watch Ultra fast charging, and dedicated wireless tray for AirPods Pro.",
+            "price": Decimal("13999.00"),
+            "discount_price": Decimal("11999.00"),
+            "stock": 25,
+            "rating": Decimal("4.8"),
+            "review_count": 62,
+            "featured": False,
+            "is_deal": True,
+            "deal_discount_percent": 14,
+            "image_url": "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=600&auto=format&fit=crop&q=80"
         }
     ]
 

@@ -473,6 +473,81 @@
 </section>
 
 <!-- ==========================================
+     6.5 TRENDING PRODUCTS
+     ========================================== -->
+<section class="section-spacer">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Trending Now</h2>
+        <p style="color: var(--text-muted); font-size: 14px;">Most popular electronic devices loved by tech enthusiasts this week.</p>
+      </div>
+      <a href="{% url 'products' %}?sort=rating" class="view-all-link">
+        Explore Trending <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+
+    <div class="product-grid-4">
+      {% for product in trending_products|slice:":8" %}
+        <div class="product-card">
+          {% if product.discount_price and product.price > product.discount_price %}
+            <span class="badge badge-discount product-card-badge">
+              -{{ product.discount_percent|default:15 }}%
+            </span>
+          {% else %}
+            <span class="badge badge-purple product-card-badge">HOT</span>
+          {% endif %}
+
+          <button class="product-wishlist-btn wishlist-toggle-btn" 
+                  data-product-id="{{ product.id }}" 
+                  aria-label="Save to Wishlist" 
+                  title="Save to Wishlist">
+            <i class="fa-regular fa-heart"></i>
+          </button>
+
+          <a href="{{ product.get_absolute_url }}" class="product-img-wrapper">
+            <img src="{{ product.get_image_url }}" 
+                 alt="{{ product.name }}" 
+                 class="product-thumb" 
+                 loading="lazy"
+                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=500&auto=format&fit=crop&q=80';">
+          </a>
+
+          <div>
+            <div class="product-category-tag">{{ product.brand|default:product.category.name }}</div>
+            <a href="{{ product.get_absolute_url }}">
+              <h3 class="product-title">{{ product.name }}</h3>
+            </a>
+            
+            <div class="product-rating">
+              <i class="fa-solid fa-star"></i>
+              <span>{{ product.rating|default:"4.8" }}</span>
+              <span class="product-rating-count">({{ product.review_count|default:80 }})</span>
+            </div>
+          </div>
+
+          <div class="product-bottom-row">
+            <div class="product-prices">
+              <span class="product-price-current">{{ product.current_price|inr }}</span>
+              {% if product.discount_price and product.price > product.discount_price %}
+                <span class="product-price-original">{{ product.price|inr }}</span>
+              {% endif %}
+            </div>
+
+            <button class="product-cart-btn add-to-cart-btn" 
+                    data-product-id="{{ product.id }}" 
+                    aria-label="Add to cart" 
+                    title="Add to Cart">
+              <i class="fa-solid fa-cart-plus"></i>
+            </button>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
      7. BEST SELLERS (DARK OBSIDIAN RANKED 01–05)
      ========================================== -->
 <section class="best-sellers-section">

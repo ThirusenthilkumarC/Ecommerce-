@@ -175,11 +175,39 @@
         </div>
       </div>
     </div>
-  </div>
+  <!-- Frequently Bought Together Bundle -->
+  {% if frequently_bought %}
+    <div style="margin-top: 48px; background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-sm);">
+      <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">Frequently Bought Together</h3>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Pair this device with compatible power, audio, and protective accessories.</p>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+        {% for fb in frequently_bought %}
+          <div style="display: flex; gap: 12px; align-items: center; background: #F9FAFB; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
+            <img src="{{ fb.get_image_url }}" alt="{{ fb.name }}" style="width: 56px; height: 56px; object-fit: contain; background: #FFFFFF; border-radius: 6px; padding: 4px;">
+            <div style="flex: 1; min-width: 0;">
+              <a href="{% url 'product_detail' slug=fb.slug %}" style="font-size: 12px; font-weight: 700; color: var(--text-main); display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                {{ fb.name }}
+              </a>
+              <div style="font-size: 13px; font-weight: 800; color: var(--primary); margin: 3px 0;">
+                {{ fb.current_price|inr }}
+              </div>
+              <form action="{% url 'add_to_cart' product_id=fb.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline btn-xs" style="padding: 3px 8px; font-size: 11px;">
+                  + Add to Cart
+                </button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
 
   <!-- Related Products Section -->
   {% if related_products %}
-    <div style="margin-top: 64px;">
+    <div style="margin-top: 56px;">
       <div class="section-header">
         <h2 class="section-title">Related Products</h2>
         <a href="{% url 'products' %}?category={{ product.category.slug }}" class="view-all-link">
