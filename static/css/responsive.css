@@ -127,6 +127,10 @@
     grid-template-columns: 1fr;
   }
 
+  .profile-layout-grid {
+    grid-template-columns: 1fr !important;
+  }
+
   .app-promo-card > div {
     grid-template-columns: 1fr 1fr !important;
     gap: 20px !important;

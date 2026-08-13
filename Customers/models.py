@@ -142,6 +142,10 @@ class CustomerProfile(models.Model):
     profile_picture = models.ImageField(upload_to="profiles/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def avatar(self):
+        return self.profile_picture
+
     def __str__(self):
         return f"Profile for {self.user.username}"
 

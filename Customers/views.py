@@ -210,6 +210,21 @@ def category_detail(request, slug):
     return redirect(f"/products/?category={category.slug}")
 
 
+def deals_view(request):
+    """Direct route for Flash Deals"""
+    return redirect("/products/?deals=1")
+
+
+def new_arrivals_view(request):
+    """Direct route for New Arrivals"""
+    return redirect("/products/?sort=newest")
+
+
+def brands_view(request):
+    """Direct route for Brands showcase"""
+    return redirect("/products/")
+
+
 def product_detail(request, slug=None, id=None):
     """
     Detailed product showcase with gallery, price comparisons, stock status,
@@ -602,9 +617,11 @@ def track_order_lookup(request):
 # ==========================================
 
 def register_view(request):
-    """Handles new customer account registration with validation and auto-login"""
+    """Handles new customer account registration with validation, auto-login, and next redirect"""
+    next_url = request.POST.get('next') or request.GET.get('next') or ''
+
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect(next_url or 'profile')
 
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -627,23 +644,25 @@ def register_view(request):
                     guest_cart.save()
 
             messages.success(request, f"Welcome to Nexus, {user.first_name or user.username}! Your account was created successfully.")
-            return redirect('home')
+            return redirect(next_url or 'profile')
     else:
         form = UserRegisterForm()
 
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'register.html', {'form': form, 'next': next_url})
 
 
 def login_view(request):
-    """Standard authentication login view"""
+    """Standard authentication login view with username or email support and next redirect"""
+    next_url = request.POST.get('next') or request.GET.get('next') or ''
+
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect(next_url or 'profile')
 
     error = None
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
+            username = form.cleaned_data['username'].strip()
             password = form.cleaned_data['password']
 
             # Allow login with either username or email
@@ -654,36 +673,40 @@ def login_view(request):
                     user = authenticate(request, username=user_obj.username, password=password)
 
             if user is not None:
-                auth_login(request, user)
+                if not user.is_active:
+                    error = "This account has been disabled. Please contact customer support."
+                else:
+                    auth_login(request, user)
 
-                # Sync guest cart
-                if request.session.session_key:
-                    guest_cart = Cart.objects.filter(session_key=request.session.session_key).first()
-                    if guest_cart:
-                        user_cart = Cart.objects.filter(user=user).first()
-                        if user_cart and user_cart != guest_cart:
-                            for item in guest_cart.items.all():
-                                existing_item = user_cart.items.filter(product=item.product).first()
-                                if existing_item:
-                                    existing_item.quantity += item.quantity
-                                    existing_item.save()
-                                else:
-                                    item.cart = user_cart
-                                    item.save()
-                            guest_cart.delete()
-                        else:
-                            guest_cart.user = user
-                            guest_cart.save()
+                    # Sync guest cart
+                    if request.session.session_key:
+                        guest_cart = Cart.objects.filter(session_key=request.session.session_key).first()
+                        if guest_cart:
+                            user_cart = Cart.objects.filter(user=user).first()
+                            if user_cart and user_cart != guest_cart:
+                                for item in guest_cart.items.all():
+                                    existing_item = user_cart.items.filter(product=item.product).first()
+                                    if existing_item:
+                                        existing_item.quantity += item.quantity
+                                        existing_item.save()
+                                    else:
+                                        item.cart = user_cart
+                                        item.save()
+                                guest_cart.delete()
+                            else:
+                                guest_cart.user = user
+                                guest_cart.save()
 
-                messages.success(request, f"Welcome back, {user.first_name or user.username}!")
-                next_url = request.GET.get('next') or 'home'
-                return redirect(next_url)
+                    messages.success(request, f"Welcome back, {user.first_name or user.username}!")
+                    return redirect(next_url or 'profile')
             else:
-                error = "Invalid username/email or password. Please try again."
+                error = "Invalid username or password. Please check your credentials."
+        else:
+            error = "Please enter both your username/email and password."
     else:
         form = UserLoginForm()
 
-    return render(request, 'login.html', {'form': form, 'error': error})
+    return render(request, 'login.html', {'form': form, 'error': error, 'next': next_url})
 
 
 def logout_view(request):
@@ -695,7 +718,7 @@ def logout_view(request):
 
 @login_required
 def profile_view(request):
-    """Customer profile and shipping details management"""
+    """Customer profile, dashboard metrics, and shipping details management"""
     profile, _ = CustomerProfile.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
@@ -718,7 +741,27 @@ def profile_view(request):
             'email': request.user.email,
         })
 
-    return render(request, 'profile.html', {'form': form, 'profile': profile})
+    # User metrics & statistics
+    user_orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    total_orders_count = user_orders.count()
+    pending_orders_count = user_orders.filter(order_status__in=['Pending', 'Confirmed', 'Processing', 'Shipped']).count()
+    wishlist_items_count = Wishlist.objects.filter(user=request.user).count()
+    
+    cart = Cart.objects.filter(user=request.user).first()
+    cart_items_count = cart.get_total_items() if cart else 0
+    saved_addresses_count = 1 if profile.address else 0
+
+    context = {
+        'form': form,
+        'profile': profile,
+        'recent_orders': user_orders[:4],
+        'total_orders_count': total_orders_count,
+        'pending_orders_count': pending_orders_count,
+        'wishlist_items_count': wishlist_items_count,
+        'cart_items_count': cart_items_count,
+        'saved_addresses_count': saved_addresses_count,
+    }
+    return render(request, 'profile.html', context)
 
 
 # ==========================================
@@ -996,6 +1039,26 @@ def admin_message_mark_read(request, message_id):
     msg.save()
     messages.success(request, "Message marked as read.")
     return redirect('admin_messages')
+
+
+def set_currency(request):
+    """Updates selected display currency in session"""
+    if request.method == 'POST':
+        curr = request.POST.get('currency', 'INR').upper()
+        if curr in ['INR', 'USD', 'EUR', 'GBP', 'AED', 'SGD', 'AUD']:
+            request.session['currency'] = curr
+            messages.success(request, f"Currency updated to {curr}.")
+    return redirect(request.META.get('HTTP_REFERER', 'home'))
+
+
+def set_language(request):
+    """Updates selected display language in session"""
+    if request.method == 'POST':
+        lang = request.POST.get('language', 'en').lower()
+        if lang in ['en', 'ta', 'hi', 'ml', 'te', 'kn']:
+            request.session['language'] = lang
+            messages.success(request, "Language preference updated.")
+    return redirect(request.META.get('HTTP_REFERER', 'home'))
 
 
 def custom_404_view(request, exception=None):

@@ -1,96 +1,230 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}My Profile — Nexus Electronics{% endblock %}
 
 {% block content %}
-<div class="container section-spacer" style="max-width: 860px;">
+<div class="container section-spacer">
   
+  <!-- Breadcrumbs -->
   <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px; display: flex; align-items: center; gap: 8px;">
     <a href="{% url 'home' %}">Home</a>
     <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i>
-    <span style="color: var(--text-main); font-weight: 600;">My Profile</span>
+    <span style="color: var(--text-main); font-weight: 600;">My Account</span>
   </div>
 
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
-    <div>
-      <h1 style="font-size: 28px; font-weight: 800;">Account Settings</h1>
-      <p style="color: var(--text-muted); font-size: 14px;">Manage your personal details, default delivery addresses, and contact info.</p>
+  <!-- Profile Header Card -->
+  <div style="background: linear-gradient(135deg, #0A0A14 0%, #1E1B4B 100%); border-radius: var(--radius-lg); padding: 32px; color: #FFFFFF; margin-bottom: 32px; box-shadow: var(--shadow-md); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <div style="width: 72px; height: 72px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; color: #FFFFFF; border: 3px solid rgba(255, 255, 255, 0.2); overflow: hidden;">
+        {% if profile.avatar %}
+          <img src="{{ profile.avatar.url }}" alt="{{ user.username }}" style="width: 100%; height: 100%; object-fit: cover;">
+        {% else %}
+          {{ user.first_name|default:user.username|slice:":1"|upper }}
+        {% endif %}
+      </div>
+      <div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <h1 style="font-size: 24px; font-weight: 800; margin: 0; color: #FFFFFF;">
+            {{ user.first_name|default:user.username }} {{ user.last_name|default:"" }}
+          </h1>
+          <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34D399; font-size: 11px; border: 1px solid rgba(16, 185, 129, 0.3);">
+            <i class="fa-solid fa-circle-check"></i> Verified Member
+          </span>
+        </div>
+        <p style="color: #9CA3AF; font-size: 14px; margin: 4px 0 0;">{{ user.email }} &bull; Member since {{ user.date_joined|date:"M Y" }}</p>
+      </div>
     </div>
-    <a href="{% url 'my_orders' %}" class="btn btn-outline btn-sm">
-      <i class="fa-solid fa-box"></i> View Orders
-    </a>
+
+    <div style="display: flex; gap: 12px;">
+      <a href="{% url 'my_orders' %}" class="btn btn-white btn-sm">
+        <i class="fa-solid fa-box"></i> Order History
+      </a>
+      <a href="{% url 'logout' %}" class="btn btn-translucent btn-sm">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+      </a>
+    </div>
   </div>
 
-  <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; box-shadow: var(--shadow-sm);">
+  <!-- Dashboard Metrics Cards (5 Chips) -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 36px;">
+    <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; box-shadow: var(--shadow-xs);">
+      <div style="font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Total Orders</div>
+      <div style="font-size: 26px; font-weight: 800; color: var(--text-main); margin-top: 4px;">{{ total_orders_count }}</div>
+    </div>
+    <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; box-shadow: var(--shadow-xs);">
+      <div style="font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Active / Shipped</div>
+      <div style="font-size: 26px; font-weight: 800; color: var(--primary); margin-top: 4px;">{{ pending_orders_count }}</div>
+    </div>
+    <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; box-shadow: var(--shadow-xs);">
+      <div style="font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Wishlist Items</div>
+      <div style="font-size: 26px; font-weight: 800; color: #EC4899; margin-top: 4px;">{{ wishlist_items_count }}</div>
+    </div>
+    <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; box-shadow: var(--shadow-xs);">
+      <div style="font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Cart Items</div>
+      <div style="font-size: 26px; font-weight: 800; color: #F59E0B; margin-top: 4px;">{{ cart_items_count }}</div>
+    </div>
+    <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; box-shadow: var(--shadow-xs);">
+      <div style="font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Saved Addresses</div>
+      <div style="font-size: 26px; font-weight: 800; color: var(--emerald-green); margin-top: 4px;">{{ saved_addresses_count }}</div>
+    </div>
+  </div>
+
+  <!-- Profile Layout: Left Sidebar + Right Content Area -->
+  <div class="profile-layout-grid">
     
-    <form method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
+    <!-- Left Profile Navigation Menu -->
+    <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-xs);">
+      <div style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding-left: 12px;">
+        Account Menu
+      </div>
+      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px;">
+        <li>
+          <a href="{% url 'profile' %}" style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 700; background: rgba(124, 58, 237, 0.08); color: var(--primary);">
+            <i class="fa-solid fa-user" style="width: 16px;"></i> My Profile
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'my_orders' %}" style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; color: var(--text-main); transition: all 0.2s;">
+            <i class="fa-solid fa-box" style="width: 16px;"></i> My Orders
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'track_order' %}" style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; color: var(--text-main); transition: all 0.2s;">
+            <i class="fa-solid fa-truck-fast" style="width: 16px;"></i> Track Orders
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'wishlist' %}" style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; color: var(--text-main); transition: all 0.2s;">
+            <i class="fa-solid fa-heart" style="width: 16px;"></i> Wishlist
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'cart' %}" style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; color: var(--text-main); transition: all 0.2s;">
+            <i class="fa-solid fa-cart-shopping" style="width: 16px;"></i> Shopping Cart
+          </a>
+        </li>
+        <li style="border-top: 1px solid var(--border-light); margin: 8px 0;"></li>
+        <li>
+          <a href="{% url 'contact' %}" style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; color: var(--text-muted); transition: all 0.2s;">
+            <i class="fa-solid fa-headset" style="width: 16px;"></i> Support & Help
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'logout' %}" style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; color: #EF4444; transition: all 0.2s;">
+            <i class="fa-solid fa-arrow-right-from-bracket" style="width: 16px;"></i> Logout
+          </a>
+        </li>
+      </ul>
+    </div>
 
-      <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 20px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px;">
-        1. Personal Information
-      </h3>
+    <!-- Right Profile Details & Edit Forms -->
+    <div style="display: flex; flex-direction: column; gap: 28px;">
+      
+      <!-- Recent Orders Preview -->
+      {% if recent_orders %}
+        <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-sm);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px;">
+            <h3 style="font-size: 18px; font-weight: 800; margin: 0;">Recent Orders</h3>
+            <a href="{% url 'my_orders' %}" class="view-all-link" style="font-size: 12px;">View All Orders &rarr;</a>
+          </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-        <div class="form-group">
-          <label class="form-label">First Name</label>
-          <input type="text" name="first_name" value="{{ form.first_name.value|default:'' }}" class="form-input" required>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            {% for o in recent_orders %}
+              <div style="display: flex; justify-content: space-between; align-items: center; background: #F9FAFB; padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); flex-wrap: wrap; gap: 12px;">
+                <div>
+                  <div style="font-weight: 800; font-size: 14px; color: var(--text-main);">Order #{{ o.order_number }}</div>
+                  <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">{{ o.created_at|date:"M d, Y" }} &bull; {{ o.items.count }} item{{ o.items.count|pluralize }}</div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-size: 15px; font-weight: 800; color: var(--text-main);">{{ o.total_amount|inr }}</div>
+                  <span class="badge" style="font-size: 11px; margin-top: 4px; background: {% if o.order_status == 'Delivered' %}#D1FAE5; color: #065F46;{% elif o.order_status == 'Shipped' %}#DBEAFE; color: #1E40AF;{% else %}#FEF3C7; color: #92400E;{% endif %}">
+                    {{ o.order_status }}
+                  </span>
+                </div>
+                <a href="{% url 'order_detail' order_number=o.order_number %}" class="btn btn-outline btn-xs">
+                  View Invoice
+                </a>
+              </div>
+            {% endfor %}
+          </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Last Name</label>
-          <input type="text" name="last_name" value="{{ form.last_name.value|default:'' }}" class="form-input" required>
-        </div>
+      {% endif %}
+
+      <!-- Edit Profile Form -->
+      <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-sm);">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 20px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px;">
+            1. Personal Information
+          </h3>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">First Name *</label>
+              <input type="text" name="first_name" value="{{ form.first_name.value|default:user.first_name }}" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name *</label>
+              <input type="text" name="last_name" value="{{ form.last_name.value|default:user.last_name }}" class="form-input" required>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">Email Address *</label>
+              <input type="email" name="email" value="{{ form.email.value|default:user.email }}" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              {{ form.phone }}
+            </div>
+          </div>
+
+          <h3 style="font-size: 18px; font-weight: 800; margin: 28px 0 20px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px;">
+            2. Default Shipping Address
+          </h3>
+
+          <div class="form-group">
+            <label class="form-label">Street Address</label>
+            {{ form.address }}
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">City</label>
+              {{ form.city }}
+            </div>
+            <div class="form-group">
+              <label class="form-label">State / Province</label>
+              {{ form.state }}
+            </div>
+            <div class="form-group">
+              <label class="form-label">Postal Code</label>
+              {{ form.postal_code }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Country</label>
+            {{ form.country }}
+          </div>
+
+          <div style="margin-top: 32px; display: flex; justify-content: flex-end;">
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="fa-solid fa-floppy-disk"></i> Save Profile Changes
+            </button>
+          </div>
+
+        </form>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-        <div class="form-group">
-          <label class="form-label">Email Address</label>
-          <input type="email" name="email" value="{{ form.email.value|default:'' }}" class="form-input" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Phone Number</label>
-          {{ form.phone }}
-        </div>
-      </div>
-
-      <h3 style="font-size: 18px; font-weight: 800; margin: 28px 0 20px; border-bottom: 1px solid var(--border-light); padding-bottom: 12px;">
-        2. Default Shipping Address
-      </h3>
-
-      <div class="form-group">
-        <label class="form-label">Street Address</label>
-        {{ form.address }}
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
-        <div class="form-group">
-          <label class="form-label">City</label>
-          {{ form.city }}
-        </div>
-        <div class="form-group">
-          <label class="form-label">State / Province</label>
-          {{ form.state }}
-        </div>
-        <div class="form-group">
-          <label class="form-label">Postal Code</label>
-          {{ form.postal_code }}
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Country</label>
-        {{ form.country }}
-      </div>
-
-      <div style="margin-top: 32px; display: flex; justify-content: flex-end;">
-        <button type="submit" class="btn btn-primary btn-lg">
-          <i class="fa-solid fa-floppy-disk"></i> Save Profile Changes
-        </button>
-      </div>
-
-    </form>
+    </div>
 
   </div>
 
 </div>
 {% endblock %}
+

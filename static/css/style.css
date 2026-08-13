@@ -2171,3 +2171,11 @@ img {
   padding: 1px 5px;
   border-radius: 8px;
 }
+
+/* Profile Page Layout */
+.profile-layout-grid {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 32px;
+  align-items: flex-start;
+}

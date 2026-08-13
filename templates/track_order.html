@@ -32,24 +32,80 @@
 
   {% if order %}
     <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 36px; box-shadow: var(--shadow-sm);">
-      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 16px; margin-bottom: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light); padding-bottom: 16px; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
         <div>
-          <h3 style="font-size: 18px; font-weight: 800;">Order #{{ order.order_number }}</h3>
-          <span style="font-size: 13px; color: var(--text-muted);">Recipient: {{ order.full_name }}</span>
+          <h3 style="font-size: 20px; font-weight: 800; margin: 0;">Order #{{ order.order_number }}</h3>
+          <span style="font-size: 13px; color: var(--text-muted);">Recipient: {{ order.full_name }} &bull; Placed: {{ order.created_at|date:"M d, Y" }}</span>
         </div>
-        <span class="badge {% if order.order_status == 'Delivered' %}badge-green{% else %}badge-purple{% endif %}">
+        <span class="badge {% if order.order_status == 'Delivered' %}badge-green{% elif order.order_status == 'Cancelled' %}badge-discount{% else %}badge-purple{% endif %}" style="font-size: 13px; padding: 6px 14px;">
           {{ order.order_status }}
         </span>
       </div>
 
-      <div style="font-size: 14px; color: #4B5563; line-height: 1.6; margin-bottom: 20px;">
-        <div><strong>Delivery Address:</strong> {{ order.address }}, {{ order.city }}, {{ order.state }}</div>
-        <div><strong>Total Paid:</strong> {{ order.total_amount|inr }} ({{ order.payment_method }})</div>
+      <!-- 5-Step Visual Progress Stepper -->
+      <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 32px; text-align: center;">
+        <div>
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary); color: #FFFFFF; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px; font-size: 14px;">
+            <i class="fa-solid fa-receipt"></i>
+          </div>
+          <div style="font-size: 11px; font-weight: 700; color: var(--text-main);">Confirmed</div>
+        </div>
+        <div>
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: {% if order.order_status in 'Packed,Shipped,Out for Delivery,Delivered' %}var(--primary){% else %}#E5E7EB{% endif %}; color: {% if order.order_status in 'Packed,Shipped,Out for Delivery,Delivered' %}#FFFFFF{% else %}#9CA3AF{% endif %}; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px; font-size: 14px;">
+            <i class="fa-solid fa-box"></i>
+          </div>
+          <div style="font-size: 11px; font-weight: 700; color: {% if order.order_status in 'Packed,Shipped,Out for Delivery,Delivered' %}var(--text-main){% else %}var(--text-muted){% endif %};">Packed</div>
+        </div>
+        <div>
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: {% if order.order_status in 'Shipped,Out for Delivery,Delivered' %}var(--primary){% else %}#E5E7EB{% endif %}; color: {% if order.order_status in 'Shipped,Out for Delivery,Delivered' %}#FFFFFF{% else %}#9CA3AF{% endif %}; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px; font-size: 14px;">
+            <i class="fa-solid fa-truck-fast"></i>
+          </div>
+          <div style="font-size: 11px; font-weight: 700; color: {% if order.order_status in 'Shipped,Out for Delivery,Delivered' %}var(--text-main){% else %}var(--text-muted){% endif %};">Shipped</div>
+        </div>
+        <div>
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: {% if order.order_status in 'Out for Delivery,Delivered' %}var(--primary){% else %}#E5E7EB{% endif %}; color: {% if order.order_status in 'Out for Delivery,Delivered' %}#FFFFFF{% else %}#9CA3AF{% endif %}; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px; font-size: 14px;">
+            <i class="fa-solid fa-motorcycle"></i>
+          </div>
+          <div style="font-size: 11px; font-weight: 700; color: {% if order.order_status in 'Out for Delivery,Delivered' %}var(--text-main){% else %}var(--text-muted){% endif %};">Out for Delivery</div>
+        </div>
+        <div>
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: {% if order.order_status == 'Delivered' %}var(--emerald-green){% else %}#E5E7EB{% endif %}; color: {% if order.order_status == 'Delivered' %}#FFFFFF{% else %}#9CA3AF{% endif %}; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px; font-size: 14px;">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <div style="font-size: 11px; font-weight: 700; color: {% if order.order_status == 'Delivered' %}var(--emerald-green){% else %}var(--text-muted){% endif %};">Delivered</div>
+        </div>
       </div>
 
-      <a href="{% url 'order_detail' order_number=order.order_number %}" class="btn btn-outline btn-sm">
-        View Full Invoice <i class="fa-solid fa-arrow-right"></i>
-      </a>
+      <div style="font-size: 14px; color: #4B5563; line-height: 1.6; background: #F9FAFB; padding: 18px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); margin-bottom: 24px;">
+        <div><strong>Shipping To:</strong> {{ order.address }}, {{ order.city }}, {{ order.state }} - {{ order.postal_code }}</div>
+        <div><strong>Total Paid:</strong> <span style="font-weight: 800; color: var(--primary);">{{ order.total_amount|inr }}</span> ({{ order.payment_method }})</div>
+      </div>
+
+      <!-- Items in Order -->
+      <div style="margin-bottom: 24px;">
+        <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 12px;">Package Contents:</h4>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          {% for item in order.items.all %}
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #FFFFFF; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-box" style="color: var(--primary);"></i>
+                <span style="font-size: 13px; font-weight: 700;">{{ item.product_name }}</span>
+                <span style="font-size: 12px; color: var(--text-muted);">&times; {{ item.quantity }}</span>
+              </div>
+              <span style="font-size: 13px; font-weight: 800;">{{ item.subtotal|inr }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-light); padding-top: 16px;">
+        <a href="{% url 'order_detail' order_number=order.order_number %}" class="btn btn-outline btn-sm">
+          View Invoice <i class="fa-solid fa-file-invoice"></i>
+        </a>
+        <a href="{% url 'products' %}" class="btn btn-primary btn-sm">
+          Continue Shopping <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
     </div>
   {% endif %}
 

@@ -8,6 +8,9 @@ urlpatterns = [
     path("products/<int:id>/", views.product_detail, name="product_detail_by_id"),
     path("products/<slug:slug>/", views.product_detail, name="product_detail"),
     path("category/<slug:slug>/", views.category_detail, name="category_detail"),
+    path("deals/", views.deals_view, name="deals"),
+    path("new-arrivals/", views.new_arrivals_view, name="new_arrivals"),
+    path("brands/", views.brands_view, name="brands"),
 
     # Cart & Wishlist
     path("cart/", views.cart_view, name="cart"),
@@ -32,10 +35,12 @@ urlpatterns = [
     path("logout/", views.logout_view, name="logout"),
     path("profile/", views.profile_view, name="profile"),
 
-    # Information & Engagement
+    # Information, Currency & Language
     path("about/", views.about_view, name="about"),
     path("contact/", views.contact_view, name="contact"),
     path("newsletter/subscribe/", views.newsletter_subscribe, name="newsletter_subscribe"),
+    path("set-currency/", views.set_currency, name="set_currency"),
+    path("set-language/", views.set_language, name="set_language"),
 
     # Custom Admin Management Dashboard
     path("dashboard/", views.admin_dashboard, name="dashboard"),

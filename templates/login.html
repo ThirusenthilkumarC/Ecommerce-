@@ -22,16 +22,20 @@
       </div>
     {% endif %}
 
-    <form method="POST" action="{% url 'login' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">
+    <form method="POST" action="{% url 'login' %}">
       {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}">
 
       <div class="form-group">
-        <label class="form-label">Username or Email</label>
+        <label class="form-label" for="id_username">Username or Email *</label>
         {{ form.username }}
       </div>
 
       <div class="form-group">
-        <label class="form-label">Password</label>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <label class="form-label" for="id_password" style="margin-bottom: 0;">Password *</label>
+          <a href="{% url 'contact' %}?subject=Password+Reset" style="font-size: 12px; color: var(--primary); font-weight: 600;">Forgot Password?</a>
+        </div>
         {{ form.password }}
       </div>
 
@@ -42,7 +46,7 @@
 
     <div style="text-align: center; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-light); font-size: 13px; color: var(--text-muted);">
       Don't have an account yet? 
-      <a href="{% url 'register' %}" style="color: var(--primary); font-weight: 700;">Create Account</a>
+      <a href="{% url 'register' %}{% if next %}?next={{ next }}{% endif %}" style="color: var(--primary); font-weight: 700;">Create Account</a>
     </div>
 
   </div>

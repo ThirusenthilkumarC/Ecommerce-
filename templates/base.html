@@ -31,12 +31,26 @@
   <div class="top-bar">
     <div class="container">
       <div class="top-bar-left">
-        <span style="display: flex; align-items: center; gap: 6px;">
-          <i class="fa-solid fa-globe"></i> English
-        </span>
-        <span style="display: flex; align-items: center; gap: 6px; font-weight: 600; color: #FFFFFF;">
-          🇮🇳 INR ₹
-        </span>
+        <!-- Language Selector -->
+        <form action="{% url 'set_language' %}" method="POST" style="margin: 0; display: inline-flex; align-items: center;">
+          {% csrf_token %}
+          <i class="fa-solid fa-globe" style="margin-right: 6px; font-size: 11px;"></i>
+          <select name="language" onchange="this.form.submit()" style="background: transparent; color: #FFFFFF; border: none; font-size: 12px; font-weight: 600; cursor: pointer; outline: none; padding-right: 8px;" aria-label="Select Language">
+            {% for code, name in available_languages.items %}
+              <option value="{{ code }}" {% if language_code == code %}selected{% endif %} style="background: #0A0A14; color: #FFFFFF;">{{ name }}</option>
+            {% endfor %}
+          </select>
+        </form>
+
+        <!-- Currency Selector -->
+        <form action="{% url 'set_currency' %}" method="POST" style="margin: 0; display: inline-flex; align-items: center;">
+          {% csrf_token %}
+          <select name="currency" onchange="this.form.submit()" style="background: transparent; color: #FFFFFF; border: none; font-size: 12px; font-weight: 700; cursor: pointer; outline: none; padding-right: 8px;" aria-label="Select Currency">
+            {% for code, info in available_currencies.items %}
+              <option value="{{ code }}" {% if currency_code == code %}selected{% endif %} style="background: #0A0A14; color: #FFFFFF;">{{ info.flag }} {{ code }} {{ info.symbol }}</option>
+            {% endfor %}
+          </select>
+        </form>
       </div>
 
       <div class="top-bar-center">
@@ -300,23 +314,47 @@
   <!-- ==========================================
        FOOTER
        ========================================== -->
+  <!-- ==========================================
+       FOOTER
+       ========================================== -->
   <footer class="main-footer">
     <div class="container">
+      
+      <!-- Newsletter Banner in Footer -->
+      <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-lg); padding: 32px; margin-bottom: 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px;">
+        <div style="max-width: 480px;">
+          <div style="font-size: 11px; font-weight: 800; color: var(--primary); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px;">NEXUS INSIDER</div>
+          <h3 style="font-size: 22px; font-weight: 800; color: #FFFFFF; margin-bottom: 4px;">Get the latest tech deals</h3>
+          <p style="font-size: 13px; color: #9CA3AF; margin: 0;">Subscribe to get exclusive early access to flash sales, new launches, and discount coupons.</p>
+        </div>
+        <form action="{% url 'newsletter_subscribe' %}" method="POST" style="display: flex; gap: 10px; width: 100%; max-width: 420px;">
+          {% csrf_token %}
+          <input type="email" name="email" placeholder="Enter your email address" class="form-input" style="background: #111122; border-color: rgba(255, 255, 255, 0.15); color: #FFFFFF;" required>
+          <button type="submit" class="btn btn-primary btn-md" style="white-space: nowrap;">
+            Subscribe <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+
       <div class="footer-grid">
-        <!-- Col 1: Brand Pitch -->
+        <!-- Col 1: Brand & About -->
         <div class="footer-col footer-col-brand">
-          <a href="{% url 'home' %}" class="brand-logo" style="margin-bottom: 16px;">
+          <a href="{% url 'home' %}" class="brand-logo" style="margin-bottom: 12px;">
             <div class="brand-icon"><i class="fa-solid fa-bolt"></i></div>
             <span>Nexus</span>
           </a>
-          <p>
+          <div style="font-size: 12px; font-weight: 700; color: var(--electric-cyan); margin-bottom: 8px; letter-spacing: 0.5px;">
+            Smart technology. Better living.
+          </div>
+          <p style="font-size: 13px; line-height: 1.6; color: #9CA3AF; margin-bottom: 20px;">
             Nexus Electronics is your premier destination for next-generation consumer tech, ultrabooks, audiophile gear, and cutting-edge digital accessories.
           </p>
           <div class="footer-social-links">
-            <a href="#" class="social-icon" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="#" class="social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#" class="social-icon" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-            <a href="#" class="social-icon" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a href="#" class="social-icon" aria-label="Instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="social-icon" aria-label="Facebook" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="social-icon" aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#" class="social-icon" aria-label="X (Twitter)" title="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" class="social-icon" aria-label="LinkedIn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
           </div>
         </div>
 
@@ -324,12 +362,14 @@
         <div class="footer-col">
           <h4>Shop Catalog</h4>
           <ul>
-            <li><a href="{% url 'products' %}">All Products</a></li>
-            <li><a href="{% url 'products' %}?deals=1">Flash Deals</a></li>
-            <li><a href="{% url 'products' %}?sort=newest">New Arrivals</a></li>
-            <li><a href="{% url 'products' %}?sort=rating">Best Sellers</a></li>
             <li><a href="{% url 'products' %}?category=smartphones">Smartphones</a></li>
             <li><a href="{% url 'products' %}?category=laptops">Laptops</a></li>
+            <li><a href="{% url 'products' %}?category=audio">Audio & Headphones</a></li>
+            <li><a href="{% url 'products' %}?category=gaming">Gaming & Consoles</a></li>
+            <li><a href="{% url 'products' %}?category=cameras">Cameras & Drones</a></li>
+            <li><a href="{% url 'products' %}?category=smartwatches">Smartwatches</a></li>
+            <li><a href="{% url 'products' %}?category=tablets">Tablets</a></li>
+            <li><a href="{% url 'products' %}?category=accessories">Accessories & Power</a></li>
           </ul>
         </div>
 
@@ -337,53 +377,72 @@
         <div class="footer-col">
           <h4>Customer Service</h4>
           <ul>
-            <li><a href="{% url 'contact' %}">Help Center & FAQ</a></li>
-            <li><a href="{% url 'track_order' %}">Track Your Order</a></li>
-            <li><a href="{% url 'cart' %}">View Shopping Cart</a></li>
-            <li><a href="{% url 'about' %}">Shipping & Delivery</a></li>
-            <li><a href="{% url 'about' %}">Returns & Warranty</a></li>
-            <li><a href="{% url 'contact' %}">Contact Support</a></li>
+            <li><a href="{% url 'contact' %}">Help Center</a></li>
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+            <li><a href="{% url 'track_order' %}">Track Order</a></li>
+            <li><a href="{% url 'about' %}">Shipping Information</a></li>
+            <li><a href="{% url 'about' %}">Returns & Refunds</a></li>
+            <li><a href="{% url 'about' %}">Official Warranty</a></li>
+            <li><a href="{% url 'contact' %}">FAQs & Support</a></li>
           </ul>
         </div>
 
-        <!-- Col 4: Company -->
+        <!-- Col 4: Account Links -->
+        <div class="footer-col">
+          <h4>Account</h4>
+          <ul>
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'profile' %}">My Profile</a></li>
+              <li><a href="{% url 'my_orders' %}">My Orders</a></li>
+              <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
+              <li><a href="{% url 'cart' %}">My Cart</a></li>
+              <li><a href="{% url 'profile' %}">Account Settings</a></li>
+              <li><a href="{% url 'logout' %}" style="color: #EF4444;"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</a></li>
+            {% else %}
+              <li><a href="{% url 'login' %}">Sign In</a></li>
+              <li><a href="{% url 'register' %}">Create Account</a></li>
+              <li><a href="{% url 'track_order' %}">Track Orders</a></li>
+              <li><a href="{% url 'cart' %}">Shopping Cart</a></li>
+              <li><a href="{% url 'wishlist' %}">Saved Wishlist</a></li>
+            {% endif %}
+          </ul>
+        </div>
+
+        <!-- Col 5: Company & Payments -->
         <div class="footer-col">
           <h4>Company</h4>
           <ul>
             <li><a href="{% url 'about' %}">About Nexus</a></li>
             <li><a href="{% url 'about' %}">Careers</a></li>
-            <li><a href="{% url 'about' %}">Press & Media</a></li>
-            <li><a href="{% url 'about' %}">Affiliate Program</a></li>
-            <li><a href="{% url 'contact' %}">Store Locations</a></li>
+            <li><a href="{% url 'brands' %}">Authorized Brands</a></li>
+            <li><a href="{% url 'about' %}">Store Locator</a></li>
+            <li><a href="{% url 'contact' %}">Contact Corporate</a></li>
           </ul>
-        </div>
-
-        <!-- Col 5: Legal & Payments -->
-        <div class="footer-col">
-          <h4>Legal & Payment</h4>
-          <ul>
-            <li><a href="{% url 'about' %}">Terms & Conditions</a></li>
-            <li><a href="{% url 'about' %}">Privacy Policy</a></li>
-            <li><a href="{% url 'about' %}">Cookie Policy</a></li>
-          </ul>
-          <div style="margin-top: 16px;">
-            <div style="font-size: 12px; color: #9CA3AF; margin-bottom: 8px; font-weight: 600;">We Accept:</div>
+          
+          <div style="margin-top: 18px;">
+            <div style="font-size: 11px; color: #9CA3AF; margin-bottom: 8px; font-weight: 700; text-transform: uppercase;">Payment Methods:</div>
             <div class="footer-payment-badges">
-              <span class="payment-badge"><i class="fa-brands fa-cc-visa"></i> Visa</span>
-              <span class="payment-badge"><i class="fa-brands fa-cc-mastercard"></i> MC</span>
-              <span class="payment-badge"><i class="fa-brands fa-cc-paypal"></i> PayPal</span>
-              <span class="payment-badge"><i class="fa-brands fa-cc-apple-pay"></i> Apple</span>
+              <span class="payment-badge" title="Visa"><i class="fa-brands fa-cc-visa"></i> Visa</span>
+              <span class="payment-badge" title="Mastercard"><i class="fa-brands fa-cc-mastercard"></i> MC</span>
+              <span class="payment-badge" title="UPI"><i class="fa-solid fa-mobile-screen"></i> UPI</span>
+              <span class="payment-badge" title="Razorpay"><i class="fa-solid fa-bolt"></i> Razorpay</span>
+              <span class="payment-badge" title="PayPal"><i class="fa-brands fa-cc-paypal"></i> PayPal</span>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- Footer Bottom Bar -->
       <div class="footer-bottom">
-        <div>© 2026 Nexus Electronics Inc. All rights reserved.</div>
-        <div style="display: flex; gap: 16px;">
-          <a href="{% url 'about' %}" style="color: #9CA3AF;">Privacy</a>
-          <a href="{% url 'about' %}" style="color: #9CA3AF;">Terms</a>
-          <a href="{% url 'contact' %}" style="color: #9CA3AF;">Security</a>
+        <div>© 2026 Nexus Electronics. All rights reserved.</div>
+        <div style="display: flex; gap: 18px; align-items: center; flex-wrap: wrap;">
+          <a href="{% url 'about' %}" style="color: #9CA3AF;">Privacy Policy</a>
+          <a href="{% url 'about' %}" style="color: #9CA3AF;">Terms & Conditions</a>
+          <a href="{% url 'about' %}" style="color: #9CA3AF;">Refund Policy</a>
+          <a href="{% url 'about' %}" style="color: #9CA3AF;">Cookie Policy</a>
+          <span style="color: #4B5563;">|</span>
+          <span style="color: #9CA3AF; font-size: 11px;">Currency: <strong style="color: #FFFFFF;">{{ currency_code }} ({{ currency_symbol }})</strong></span>
+          <span style="color: #9CA3AF; font-size: 11px;">Lang: <strong style="color: #FFFFFF;">{{ language_name }}</strong></span>
         </div>
       </div>
     </div>
